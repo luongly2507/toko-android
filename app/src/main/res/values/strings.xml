@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Toko</string>
+
+    <string name="title_navigation_home">Trang chủ</string>
+    <string name="title_navigation_dashboard">Danh mục</string>
+    <string name="title_navigation_notification">Thông báo</string>
+    <string name="title_navigation_account">Tài khoản</string>
+
+    <string name="title_home">Trang chủ</string>
+    <string name="title_dashboard">Danh mục</string>
+    <string name="title_notification">Thông báo</string>
+    <string name="title_account">Tài khoản</string>
+    <string name="search_placeholder">Tìm kiếm ...</string>
+    <string name="history_search">Lịch sử tìm kiếm</string>
+</resources>
