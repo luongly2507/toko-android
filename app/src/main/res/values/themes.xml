@@ -14,4 +14,11 @@
         <item name="android:textColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="ImageView.Corner" parent="">
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">25pt</item>
+        <item name="cornerSizeBottomRight">25pt</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
 </resources>

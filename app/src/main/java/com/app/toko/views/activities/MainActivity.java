@@ -10,11 +10,13 @@ import android.os.Bundle;
 
 import com.app.toko.R;
 import com.app.toko.databinding.ActivityMainBinding;
+import com.app.toko.utils.WebSocketClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private WebSocketClient webSocketClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        webSocketClient = new WebSocketClient();
+        webSocketClient.connectWebSocket();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration
                 .Builder(

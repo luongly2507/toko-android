@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.toko.R;
 import com.app.toko.models.Category;
-import com.app.toko.views.activities.SearchBookActivity;
+import com.app.toko.views.activities.SearchResultActivity;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         Category category = categories.get(position);
         holder.categoryParentName.setText(category.getName());
         holder.categoryParentName.setOnClickListener(v -> {
-            Intent intent = new Intent(context, SearchBookActivity.class);
+            Intent intent = new Intent(context, SearchResultActivity.class);
             intent.putExtra("category",category.getName());
             context.startActivity(intent);
         });

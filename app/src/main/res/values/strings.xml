@@ -12,4 +12,27 @@
     <string name="title_account">Tài khoản</string>
     <string name="search_placeholder">Tìm kiếm ...</string>
     <string name="history_search">Lịch sử tìm kiếm</string>
+    <string name="activity_cart_title">Giỏ hàng</string>
+    <string name="login_greeting">Xin chào,</string>
+    <string name="button_login">Tiếp tục</string>
+    <string name="login_instruction">Đăng nhập hoặc tạo tài khoản</string>
+    <string name="register_instruction">Chưa có tài khoản ?</string>
+    <string name="button_register">Đăng kí</string>
+    <string name="password">Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="button_back_content_description">Back</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="forgot_password">Quên mật khẩu ?</string>
+    <string name="register">Đăng kí</string>
+    <string name="account_title">Thành viên Toko</string>
+    <string name="account_information">Thông tin tài khoản</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="fullname">Họ và Tên</string>
+    <string name="email">Email</string>
+    <string name="addresses">Sổ địa chỉ</string>
+    <string name="addresses_management">Quản lý sổ địa chỉ</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="product_favorite">Sản phẩm yêu thích</string>
+    <string name="more">Xem thêm</string>
+    <string name="purchase_history">Lịch sử mua hàng</string>
 </resources>

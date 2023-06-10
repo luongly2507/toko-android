@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_items">
+        <item>Giá tăng dần</item>
+        <item>Giá giảm dần</item>
+        <item>Mới nhất</item>
+    </string-array>
+    <string-array name="language_items">
+        <item>Tất cả</item>
+        <item>Tiếng Việt</item>
+        <item>Tiếng Anh</item>
+        <item>Tiếng Hàn</item>
+        <item>Tiếng Trung</item>
+        <item>Tiếng Nhật</item>
+    </string-array>
+</resources>

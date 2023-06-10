@@ -16,6 +16,7 @@ import com.app.toko.adapters.CategoryRecyclerViewAdapter;
 import com.app.toko.databinding.FragmentDashboardBinding;
 import com.app.toko.models.Category;
 import com.app.toko.viewmodels.DashboardViewModel;
+import com.app.toko.views.activities.CartActivity;
 import com.app.toko.views.activities.SearchBookActivity;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         binding.buttonSearch.setOnClickListener(v -> {startActivity(new Intent(this.getContext(), SearchBookActivity.class));});
+        binding.buttonCart.setOnClickListener(v -> {startActivity(new Intent(this.getContext(), CartActivity.class));});
         View root = binding.getRoot();
         dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);

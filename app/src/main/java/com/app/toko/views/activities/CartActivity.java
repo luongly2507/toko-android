@@ -3,24 +3,23 @@ package com.app.toko.views.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.Toolbar;
 
 import com.app.toko.R;
-import com.app.toko.databinding.ActivitySearchBookBinding;
+import com.app.toko.databinding.ActivityCartBinding;
 
-public class SearchBookActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity {
 
-    private ActivitySearchBookBinding binding;
+    private ActivityCartBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySearchBookBinding.inflate(getLayoutInflater());
+        binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.arrowBackIcon.setOnClickListener(v -> {
+
+        binding.buttonBack.setOnClickListener(v -> {
             onBackPressed();
         });
-
-
     }
-
 }
