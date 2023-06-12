@@ -3,6 +3,7 @@ package com.app.toko.views.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.app.toko.R;
 import com.app.toko.databinding.ActivitySearchBookBinding;
@@ -19,8 +20,6 @@ public class SearchBookActivity extends AppCompatActivity {
         binding.arrowBackIcon.setOnClickListener(v -> {
             onBackPressed();
         });
-
-
     }
 
 }

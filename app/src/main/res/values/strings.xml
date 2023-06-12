@@ -35,4 +35,5 @@
     <string name="product_favorite">Sản phẩm yêu thích</string>
     <string name="more">Xem thêm</string>
     <string name="purchase_history">Lịch sử mua hàng</string>
+    <string name="underline_vnd"><sup><u>đ</u></sup></string>
 </resources>
