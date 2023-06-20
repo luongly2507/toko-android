@@ -17,7 +17,9 @@ import com.app.toko.R;
 import com.app.toko.payload.response.AlbumResponse;
 import com.app.toko.payload.response.BookResponse;
 import com.app.toko.repositories.BookRespository;
+import com.app.toko.utils.ApiService;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -46,15 +48,18 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
         {
             holder.title.setText(bookResponse.getTitle());
             holder.price.setText(bookResponse.getPrice().toString());
+            String imageSource = "";
             for (AlbumResponse i: bookResponse.getAlbums()) {
+                imageSource = i.getImageSource();
                 if(i.isPresentation())
                 {
-                    Glide.with(context)
-                            .load(i.getImageSource())
-                            .into(holder.avatar);
+                    imageSource = i.getImageSource();
                     break;
                 }
             }
+            Glide.with(context)
+                    .load(ApiService.SERVICE_BASE_URL + "img/upload/" + imageSource)
+                    .into(holder.avatar);
 
         }
     }
