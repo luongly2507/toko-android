@@ -2,7 +2,6 @@ package com.app.toko.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,25 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.toko.R;
 import com.app.toko.payload.response.AlbumResponse;
 import com.app.toko.payload.response.BookResponse;
-import com.app.toko.repositories.BookRespository;
 import com.app.toko.utils.ApiService;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<SearchResultRecyclerViewAdapter.SearchResultViewHolder> {
+public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.SearchResultViewHolder> {
 
     private List<BookResponse> bookResponseList;
     private Context context;
 
-    public SearchResultRecyclerViewAdapter(List<BookResponse> bookResponseList) {
+    public BookRecyclerViewAdapter(List<BookResponse> bookResponseList) {
         this.bookResponseList = bookResponseList;
     }
 

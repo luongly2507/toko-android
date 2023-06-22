@@ -6,13 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 
-import com.app.toko.adapters.SearchResultRecyclerViewAdapter;
+import com.app.toko.adapters.BookRecyclerViewAdapter;
 import com.app.toko.databinding.ActivitySearchResultBinding;
 import com.app.toko.payload.response.BookResponse;
 import com.app.toko.viewmodels.SearchResultViewModel;
@@ -24,7 +21,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private ActivitySearchResultBinding binding;
     private SearchResultViewModel searchResultViewModel;
-    private SearchResultRecyclerViewAdapter adapter;
+    private BookRecyclerViewAdapter adapter;
     private List<BookResponse> bookList = new ArrayList<>();
 
     private int pageNumber = 0;
@@ -45,7 +42,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(List<BookResponse> bookResponses) {
                     bookList.addAll(bookResponses);
-                    adapter = new SearchResultRecyclerViewAdapter(bookList);
+                    adapter = new BookRecyclerViewAdapter(bookList);
                     binding.reccyclerViewBookResult.setAdapter(adapter);
                 }
             });
@@ -61,7 +58,7 @@ public class SearchResultActivity extends AppCompatActivity {
                     @Override
                     public void onChanged(List<BookResponse> bookResponses) {
                         bookList.addAll(bookResponses);
-                        adapter = new SearchResultRecyclerViewAdapter(bookList);
+                        adapter = new BookRecyclerViewAdapter(bookList);
                         binding.reccyclerViewBookResult.setAdapter(adapter);
                     }
                 });
