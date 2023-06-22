@@ -16,10 +16,16 @@
     <string name="login_greeting">Xin chào,</string>
     <string name="button_login">Tiếp tục</string>
     <string name="login_instruction">Đăng nhập hoặc tạo tài khoản</string>
+    <string name="signup_instruction">Hãy nhập thông tin cho tài khoản của bạn</string>
     <string name="register_instruction">Chưa có tài khoản ?</string>
     <string name="button_register">Đăng kí</string>
     <string name="password">Mật khẩu</string>
+    <string name="lastname">Họ</string>
+    <string name="firstname">Tên</string>
+    <string name="mail">Email</string>
     <string name="login">Đăng nhập</string>
+    <string name="signup">Đăng ký</string>
+    <string name="gender">Giới tính</string>
     <string name="button_back_content_description">Back</string>
     <string name="phone">Số điện thoại</string>
     <string name="forgot_password">Quên mật khẩu ?</string>
@@ -37,4 +43,7 @@
     <string name="purchase_history">Lịch sử mua hàng</string>
     <string name="underline_vnd"><sup><u>đ</u></sup></string>
     <string name="trending_shopping">Xu hướng mua sắm</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="other_gender">Khác</string>
 </resources>
