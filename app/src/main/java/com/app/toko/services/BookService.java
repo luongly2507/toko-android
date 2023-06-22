@@ -12,4 +12,6 @@ import retrofit2.http.Query;
 public interface BookService {
     @GET("api/v1/books/search/categories/")
     Call<PageBookResponse> getAllBooksByCategory(@Query("categoryName") String category , @Query("page") int pageNumber);
+    @GET("api/v1/books")
+    Call<PageBookResponse> getAllBooks();
 }

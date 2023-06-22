@@ -4,16 +4,27 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.app.toko.payload.response.BookResponse;
+import com.app.toko.repositories.BookRespository;
+
+import java.util.List;
+
 public class HomeViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private BookRespository bookRespository;
+    private LiveData<List<BookResponse>> bookResponseLivaData;
 
     public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        bookRespository = new BookRespository();
+        bookResponseLivaData = bookRespository.getBookResponseLiveData();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<BookResponse>> getBookResponseLivaData() {
+        return bookResponseLivaData;
+    }
+
+    public void getAllBooks()
+    {
+        bookRespository.getAllBooks();
     }
 }
