@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="loginViewModel"
-            type="com.app.toko.viewmodels.LoginViewModel" />
+            name="signupViewModel"
+            type="com.app.toko.viewmodels.SignupVewModel" />
 
     </data>
 
@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".views.activities.LoginActivity">
+            tools:context=".views.activities.SignupActivity">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/ic_back" />
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/loginBackground"
+                android:id="@+id/signupBackground"
                 android:layout_width="0dp"
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
@@ -77,7 +77,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginBackground" />
+                app:layout_constraintTop_toBottomOf="@+id/signupBackground" />
 
             <TextView
                 android:id="@+id/textViewInstruction"
@@ -98,7 +98,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewLoginError"
-                app:error="@{loginViewModel.phoneErrorMessage}"
+                app:error="@{signupViewModel.phoneErrorMessage}"
 
                 >
 
@@ -109,7 +109,7 @@
                     android:background="@android:color/transparent"
                     android:backgroundTint="@android:color/transparent"
                     android:hint="@string/phone"
-                    android:text="@={loginViewModel.phone}"
+                    android:text="@={signupViewModel.phone}"
 
                     android:inputType="phone"
                     />
@@ -124,7 +124,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPhone"
                 app:errorEnabled="true"
-                app:error="@{loginViewModel.passwordErrorMessage}"
+                app:error="@{signupViewModel.passwordErrorMessage}"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="@string/password"
-                    android:text="@={loginViewModel.password}"
+                    android:text="@={signupViewModel.password}"
                     android:inputType="textPassword"
                     />
             </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +147,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
                 app:errorEnabled="true"
-                app:error="@{loginViewModel.passwordErrorMessage}"
+                app:error="@{signupViewModel.passwordErrorMessage}"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="@string/mail"
-                    android:text="@={loginViewModel.password}"
+                    android:text="@={signupViewModel.password}"
                     android:inputType="textPassword"
                     />
             </com.google.android.material.textfield.TextInputLayout>
@@ -170,7 +170,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"
                 app:errorEnabled="true"
-                app:error="@{loginViewModel.passwordErrorMessage}"
+                app:error="@{signupViewModel.passwordErrorMessage}"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="@string/firstname"
-                    android:text="@={loginViewModel.password}"
+                    android:text="@={signupViewModel.password}"
                     android:inputType="textPassword"
                     />
             </com.google.android.material.textfield.TextInputLayout>
@@ -193,7 +193,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutFirstName"
                 app:errorEnabled="true"
-                app:error="@{loginViewModel.passwordErrorMessage}"
+                app:error="@{signupViewModel.passwordErrorMessage}"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="@string/lastname"
-                    android:text="@={loginViewModel.password}"
+                    android:text="@={signupViewModel.password}"
                     android:inputType="textPassword"
                     />
             </com.google.android.material.textfield.TextInputLayout>
