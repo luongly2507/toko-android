@@ -6,7 +6,8 @@ import com.app.toko.services.CategoryService;
 import com.app.toko.services.UserService;
 
 public class ApiService {
-    public static final String SERVICE_BASE_URL = "http://192.168.43.253:3000/";
+
+    public static final String SERVICE_BASE_URL = "http://192.168.1.14:3000/";
 
     public static CategoryService getCategoryService() {
         return RetrofitClient.getClient(SERVICE_BASE_URL).create(CategoryService.class);
