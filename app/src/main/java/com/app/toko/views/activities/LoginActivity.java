@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         binding.buttonBack.setOnClickListener(v-> startActivity(new Intent(this,MainActivity.class)));
         binding.buttonLogin.setOnClickListener(v->loginViewModel.onLoginClicked());
+        binding.textViewRegisterLink.setOnClickListener(view -> startActivity(new Intent(this,SignupActivity.class)));
 
         loginViewModel.getUser().observe(this, new Observer<User>() {
             @Override

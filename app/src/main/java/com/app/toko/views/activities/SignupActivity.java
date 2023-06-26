@@ -3,7 +3,9 @@ package com.app.toko.views.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.app.toko.databinding.ActivityLoginBinding;
 import com.app.toko.databinding.ActivitySignupBinding;
@@ -21,5 +23,9 @@ public class SignupActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         binding.setSignupViewModel(signupVewModel);
         setContentView(binding.getRoot());
+
+        binding.buttonBack.setOnClickListener(v -> onBackPressed());
+        binding.buttonSignup.setOnClickListener(v->signupVewModel.registerUser());
+
     }
 }

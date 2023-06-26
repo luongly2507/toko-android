@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SignupActivity"
+            android:name=".views.activities.SignupActivity"
             android:exported="false" />
         <activity
             android:name=".views.activities.LoginActivity"

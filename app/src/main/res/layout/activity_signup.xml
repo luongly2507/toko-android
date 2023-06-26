@@ -167,8 +167,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:hint="@string/mail"
-                        android:text="@={signupViewModel.password}"
-                        android:inputType="textPassword"
+                        android:text="@={signupViewModel.email}"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,8 +189,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:hint="@string/firstname"
-                        android:text="@={signupViewModel.password}"
-                        android:inputType="textPassword"
+                        android:text="@={signupViewModel.firstname}"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,8 +211,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:hint="@string/lastname"
-                        android:text="@={signupViewModel.password}"
-                        android:inputType="textPassword"
+                        android:text="@={signupViewModel.lastname}"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -43,4 +43,31 @@ public class SignupVewModel extends AndroidViewModel {
         return user;
     }
 
+    public void registerUser() {
+        String firstname = this.firstname.getValue();
+        String lastname = this.lastname.getValue();
+        String email = this.email.getValue();
+        String password = this.password.getValue();
+        String phone = this.phone.getValue();
+        String role = "USER";
+
+        // Kiểm tra thông tin người dùng hợp lệ
+        if (!isValidUser(firstname, lastname, email, password, phone)) {
+            // Xử lý lỗi thông tin người dùng
+            return;
+        }
+
+        User newUser = new User(firstname, lastname, email, password, phone, role);
+        userRepository.registerUser(newUser);
+    }
+
+    private boolean isValidUser(String firstname, String lastname, String email, String password, String phone) {
+        // Kiểm tra các thông tin người dùng hợp lệ
+        // Có thể kiểm tra độ dài, định dạng email, mật khẩu, số điện thoại, v.v.
+        // Nếu thông tin không hợp lệ, gán thông báo lỗi vào các MutableLiveData tương ứng
+        // Và trả về false
+        // Nếu thông tin hợp lệ, trả về true
+        return true;
+    }
+
 }

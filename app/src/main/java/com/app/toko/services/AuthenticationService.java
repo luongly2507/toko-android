@@ -1,5 +1,6 @@
 package com.app.toko.services;
 
+import com.app.toko.models.User;
 import com.app.toko.payload.request.AuthenticationRequest;
 import com.app.toko.payload.response.AuthenticationResponse;
 
@@ -12,5 +13,4 @@ public interface AuthenticationService {
 
     @POST("/api/v1/auth/authenticate")
     Call<AuthenticationResponse> authenticate(@Body AuthenticationRequest authenticationRequest);
-
 }
