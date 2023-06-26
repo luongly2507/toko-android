@@ -42,6 +42,10 @@ public class SearchResultViewModel extends AndroidViewModel {
         }
         return false;
     }
+    public void getAllBooks()
+    {
+        bookRespository.getAllBooks();
+    }
     public void getAllCategories()
     {
         categoryRepository.getAllCategories();

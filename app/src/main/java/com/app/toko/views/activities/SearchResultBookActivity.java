@@ -7,19 +7,18 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.app.toko.R;
 import com.app.toko.adapters.BookRecyclerViewAdapter;
-import com.app.toko.databinding.ActivitySearchResultBinding;
-import com.app.toko.models.Category;
+import com.app.toko.databinding.ActivitySearchResultBookBinding;
 import com.app.toko.payload.response.BookResponse;
-import com.app.toko.viewmodels.SearchResultViewModel;
+import com.app.toko.viewmodels.SearchResultBookViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,93 +26,45 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class SearchResultActivity extends AppCompatActivity {
-
-    private ActivitySearchResultBinding binding;
-    private SearchResultViewModel searchResultViewModel;
+public class SearchResultBookActivity extends AppCompatActivity {
+    private ActivitySearchResultBookBinding binding;
+    private SearchResultBookViewModel searchResultBookViewModel;
     private BookRecyclerViewAdapter adapter;
     private List<BookResponse> bookList = new ArrayList<>();
-    private List<String> categoryNameList = new ArrayList<>();
-    private ArrayAdapter<String> categoryFilterAdapter;
-
-    private int pageNumber = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySearchResultBinding.inflate(getLayoutInflater());
+        binding = ActivitySearchResultBookBinding.inflate(getLayoutInflater());
+        searchResultBookViewModel = new ViewModelProvider(this).get(SearchResultBookViewModel.class);
         setContentView(binding.getRoot());
-        searchResultViewModel = new ViewModelProvider(this).get(SearchResultViewModel.class);
+        binding.reccyclerViewBookResult.setLayoutManager(new GridLayoutManager(this , 2));
+        binding.buttonSearch.setOnClickListener(v -> {startActivity(new Intent(this, SearchBookActivity.class));});
+        binding.buttonCart.setOnClickListener(v -> {startActivity(new Intent(this, CartActivity.class));});
         binding.buttonBack.setOnClickListener(v -> {
             onBackPressed();
         });
-        binding.buttonSearch.setOnClickListener(v -> {startActivity(new Intent(this, SearchBookActivity.class));});
-        binding.buttonCart.setOnClickListener(v -> {startActivity(new Intent(this, CartActivity.class));});
-        binding.reccyclerViewBookResult.setLayoutManager(new GridLayoutManager(this , 2));
-        String categoryName = getIntent().getStringExtra("category");
-
-        if (categoryName != null){
-            binding.filterCategoryList.setText(categoryName);
-            searchResultViewModel.getAllBooksByCategory(categoryName , pageNumber);
-            searchResultViewModel.getBookResponseLiveData().observe(this, new Observer<List<BookResponse>>() {
+        String searchName = getIntent().getStringExtra("SearchName");
+        if(searchName != null && !searchName.isBlank())
+        {
+            binding.buttonSearch.setText(searchName);
+            searchResultBookViewModel.getAllBooks();
+            searchResultBookViewModel.getBookResponseLiveData().observe(this, new Observer<List<BookResponse>>() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onChanged(List<BookResponse> bookResponses) {
-                    bookList.addAll(bookResponses);
+                    bookList = bookResponses.stream().filter(bookResponse -> bookResponse.getTitle().contains(searchName)).collect(Collectors.toList());
                     adapter = new BookRecyclerViewAdapter(bookList);
+                    //Objects.requireNonNull(binding.reccyclerViewBookResult.getAdapter()).notifyDataSetChanged();
                     binding.reccyclerViewBookResult.setAdapter(adapter);
+
                 }
             });
-
-            searchResultViewModel.getAllCategories();
-            searchResultViewModel.getCategoryLiveData().observe(this, new Observer<List<Category>>() {
-                @Override
-                public void onChanged(List<Category> categories) {
-                    if(categories != null)
-                    {
-                        for(Category c : categories)
-                        {
-                            if(Objects.equals(c.getName(), categoryName))
-                            {
-                                categoryNameList.add(categoryName);
-                                categoryNameList.addAll(c.getChildren().stream().map(category -> category.getName()).collect(Collectors.toList()));
-                                break;
-                            }
-                            else
-                            {
-                                boolean findSuccess = false;
-                                if(c.getChildren() != null)
-                                {
-                                    for(Category child : c.getChildren())
-                                    {
-                                        if(Objects.equals(child.getName(), categoryName))
-                                        {
-                                            categoryNameList.add(c.getName());
-                                            categoryNameList.addAll(c.getChildren().stream().map(category -> category.getName()).collect(Collectors.toList()));
-                                            findSuccess = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                if(findSuccess) break;
-                            }
-                        }
-
-                    }
-                    if( categoryNameList != null && categoryNameList.size() > 0)
-                    {
-                        binding.filterCategoryList.setSimpleItems(categoryNameList.toArray(new String[0]));
-                    }
-                }
-            });
-
         }
 
-
-
-
-        //region event more button
-        binding.buttonMore.setOnClickListener(v ->{
+        /*binding.buttonMore.setOnClickListener(v ->{
             if(!searchResultViewModel.getMoreBook(categoryName , ++pageNumber))
             {
                 binding.buttonMore.setVisibility(GONE);
@@ -129,11 +80,12 @@ public class SearchResultActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        });*/
         //endregion
 
         //region Sort theo gia hoac ngay xuat ban
         binding.filterSortList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String sortItem = adapterView.getItemAtPosition(i).toString();
@@ -179,8 +131,6 @@ public class SearchResultActivity extends AppCompatActivity {
                         adapter = new BookRecyclerViewAdapter(bookList);
                         binding.reccyclerViewBookResult.setAdapter(adapter);
                         break;
-                    default:
-                        return;
                 }
             }
         });
@@ -208,26 +158,5 @@ public class SearchResultActivity extends AppCompatActivity {
         });
         //endregion
 
-        binding.filterCategoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String categoryName = adapterView.getItemAtPosition(i).toString();
-                searchResultViewModel.getAllBooksByCategory(categoryName , 0);
-                BookResponseLiveDataObserve();
-
-            }
-        });
     }
-
-    public void BookResponseLiveDataObserve()
-    {
-        searchResultViewModel.getBookResponseLiveData().observe(this, new Observer<List<BookResponse>>() {
-                    @Override
-                    public void onChanged(List<BookResponse> bookResponses) {
-                        adapter = new BookRecyclerViewAdapter(bookResponses);
-                        binding.reccyclerViewBookResult.setAdapter(adapter);
-                    }
-                });
-    }
-
 }
