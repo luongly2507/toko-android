@@ -43,19 +43,18 @@ public class SearchBookActivity extends AppCompatActivity {
         binding.arrowBackIcon.setOnClickListener(v -> {
             onBackPressed();
         });
-        binding.editTextSearchBook.setOnClickListener(v -> {startActivity(new Intent(this, SearchBookActivity.class));});
 
         binding.recyclerViewSearchHistory.setLayoutManager(new FlexboxLayoutManager(this , FlexDirection.ROW));
         adapter = new HistorySearchRecyclerViewAdapter(historyList);
-        adapter.setEditTextSearch(binding.editTextSearchBook);
         binding.recyclerViewSearchHistory.setAdapter(adapter);
         getValueSharedPreferences();
+
         binding.editTextSearchBook.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 boolean handled = false;
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
-                    if(textView.getText() != null)
+                    if(textView.getText() != null && !textView.getText().toString().isBlank())
                     {
                         historySet.add(textView.getText().toString());
                         setValueSharedPreferences(historySet);

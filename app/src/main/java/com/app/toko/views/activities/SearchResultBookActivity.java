@@ -55,11 +55,13 @@ public class SearchResultBookActivity extends AppCompatActivity {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onChanged(List<BookResponse> bookResponses) {
-                    bookList = bookResponses.stream().filter(bookResponse -> bookResponse.getTitle().contains(searchName)).collect(Collectors.toList());
-                    adapter = new BookRecyclerViewAdapter(bookList);
-                    //Objects.requireNonNull(binding.reccyclerViewBookResult.getAdapter()).notifyDataSetChanged();
-                    binding.reccyclerViewBookResult.setAdapter(adapter);
-
+                    if(bookResponses != null && bookResponses.size() > 0)
+                    {
+                        bookList = bookResponses.stream().filter(bookResponse -> bookResponse.getTitle().contains(searchName)).collect(Collectors.toList());
+                        adapter = new BookRecyclerViewAdapter(bookList);
+                        //Objects.requireNonNull(binding.reccyclerViewBookResult.getAdapter()).notifyDataSetChanged();
+                        binding.reccyclerViewBookResult.setAdapter(adapter);
+                    }
                 }
             });
         }
