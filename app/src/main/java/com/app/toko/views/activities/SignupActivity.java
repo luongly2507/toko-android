@@ -25,7 +25,49 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.buttonBack.setOnClickListener(v -> onBackPressed());
-        binding.buttonSignup.setOnClickListener(v->signupVewModel.registerUser());
+        binding.buttonSignup.setOnClickListener(v -> signupVewModel.registerUser());
 
+        // Lắng nghe sự thay đổi trong các MutableLiveData để kiểm tra tính hợp lệ
+        signupVewModel.firstname.observe(this, firstname -> {
+            if (firstname != null && firstname.trim().isEmpty()) {
+                signupVewModel.firstnameErrorMessage.setValue("Hãy nhập tên của bạn!");
+            } else {
+                signupVewModel.firstnameErrorMessage.setValue(null);
+            }
+        });
+
+        signupVewModel.lastname.observe(this, lastname -> {
+            if (lastname != null && lastname.trim().isEmpty()) {
+                signupVewModel.lastnameErrorMessage.setValue("Hãy nhập họ của bạn!");
+            } else {
+                signupVewModel.lastnameErrorMessage.setValue(null);
+            }
+        });
+
+        signupVewModel.email.observe(this, email -> {
+            if (email != null && (email.trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+                signupVewModel.emailErrorMessage.setValue("Hãy nhập đúng định dạng email!");
+            } else {
+                signupVewModel.emailErrorMessage.setValue(null);
+            }
+        });
+
+        signupVewModel.password.observe(this, password -> {
+            if (password != null && (password.trim().isEmpty() || password.length() < 6)) {
+                signupVewModel.passwordErrorMessage.setValue("Mật khẩu phải có ít nhất 6 ký tự!");
+            } else {
+                signupVewModel.passwordErrorMessage.setValue(null);
+            }
+        });
+
+        signupVewModel.phone.observe(this, phone -> {
+            if (phone != null &&
+                    (phone.trim().isEmpty() || !android.util.Patterns.PHONE.matcher(phone).matches())
+                    || phone.length() < 10 || phone.length() > 11) {
+                signupVewModel.phoneErrorMessage.setValue("Số điện thoại phải bao gồm 10 hoặc 11 kí tự!");
+            } else {
+                signupVewModel.phoneErrorMessage.setValue(null);
+            }
+        });
     }
 }

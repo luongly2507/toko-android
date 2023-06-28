@@ -1,15 +1,12 @@
 package com.app.toko.viewmodels;
 
 import android.app.Application;
-import android.os.Handler;
 
-import androidx.databinding.BaseObservable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.toko.models.User;
-import com.app.toko.payload.request.AuthenticationRequest;
 import com.app.toko.repositories.UserRepository;
 
 public class SignupVewModel extends AndroidViewModel {
@@ -19,7 +16,6 @@ public class SignupVewModel extends AndroidViewModel {
     public MutableLiveData<String> firstnameErrorMessage = new MutableLiveData<>();
     public MutableLiveData<String> lastnameErrorMessage = new MutableLiveData<>();
     public MutableLiveData<String> genderErrorMessage = new MutableLiveData<>();
-    public MutableLiveData<String> loginErrorMessage = new MutableLiveData<>();
     public MutableLiveData<String> password = new MutableLiveData<>();
     public MutableLiveData<String> phone = new MutableLiveData<>();
     public MutableLiveData<String> email = new MutableLiveData<>();
@@ -53,7 +49,6 @@ public class SignupVewModel extends AndroidViewModel {
 
         // Kiểm tra thông tin người dùng hợp lệ
         if (!isValidUser(firstname, lastname, email, password, phone)) {
-            // Xử lý lỗi thông tin người dùng
             return;
         }
 
@@ -62,12 +57,36 @@ public class SignupVewModel extends AndroidViewModel {
     }
 
     private boolean isValidUser(String firstname, String lastname, String email, String password, String phone) {
-        // Kiểm tra các thông tin người dùng hợp lệ
-        // Có thể kiểm tra độ dài, định dạng email, mật khẩu, số điện thoại, v.v.
-        // Nếu thông tin không hợp lệ, gán thông báo lỗi vào các MutableLiveData tương ứng
-        // Và trả về false
-        // Nếu thông tin hợp lệ, trả về true
-        return true;
+        boolean isValid = true;
+
+        if (firstname == null || firstname.trim().isEmpty()) {
+            firstnameErrorMessage.setValue("Hãy nhập tên của bạn!");
+            isValid = false;
+        }
+
+        if (lastname == null || lastname.trim().isEmpty()) {
+            lastnameErrorMessage.setValue("Hãy nhập họ của bạn!");
+            isValid = false;
+        }
+
+        if (email == null || email.trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailErrorMessage.setValue("Hãy nhập địa chỉ email hợp lệ!");
+            isValid = false;
+        }
+
+        if (password == null || password.trim().isEmpty() || password.length() < 6) {
+            passwordErrorMessage.setValue("Mật khẩu phải có ít nhất 6 ký tự!");
+            isValid = false;
+        }
+
+        if (phone == null
+                || phone.trim().isEmpty() || !android.util.Patterns.PHONE.matcher(phone).matches()
+                || phone.length() < 10 || phone.length() > 11) {
+            phoneErrorMessage.setValue("Vui lòng nhập đúng định dạng số điện thoại!");
+            isValid = false;
+        }
+
+        return isValid;
     }
 
 }
