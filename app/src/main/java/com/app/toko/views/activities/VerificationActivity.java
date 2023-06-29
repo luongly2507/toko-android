@@ -41,7 +41,7 @@ public class VerificationActivity extends AppCompatActivity {
     private ActivityVerificationBinding binding;
     //Test phone number : +84999999911
     //Test verification code: 111111
-    private String phoneNumber = "+84 339463849";
+    private String phoneNumber = "+84 375546870";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String verificationCode;
     PhoneAuthProvider.ForceResendingToken resendingToken;
@@ -102,8 +102,16 @@ public class VerificationActivity extends AppCompatActivity {
                             binding.editTextOTP6.getText().toString();
                     if (generateOTP.length() == 6) {
                         //Verification success handler
-                        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, generateOTP);
-                        signIn(phoneAuthCredential);
+                        try {
+                            PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, generateOTP);
+                            signIn(phoneAuthCredential);
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.print("Lỗi: " + e);
+                            Toast.makeText(VerificationActivity.this, "Chưa thể gửi OTP, không thể xác thực!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                     }else {
                         Toast.makeText(VerificationActivity.this, "Hãy nhập đầy đủ mã OTP", Toast.LENGTH_SHORT).show();
                     }
@@ -262,13 +270,13 @@ public class VerificationActivity extends AppCompatActivity {
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                                signIn(phoneAuthCredential);
+//                                signIn(phoneAuthCredential);
                             }
 
                             @Override
                             public void onVerificationFailed(@NonNull FirebaseException e) {
                                 Toast.makeText(VerificationActivity.this, "Gửi OTP thất bại!", Toast.LENGTH_SHORT).show();
-                                System.out.print(e.toString());
+                                System.out.print("Lỗi: " + e.toString());
                             }
 
                             @Override
