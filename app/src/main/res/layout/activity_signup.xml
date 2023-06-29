@@ -112,7 +112,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewLoginError"
                     app:error="@{signupViewModel.phoneErrorMessage}"
-                    >
+                    app:counterEnabled="true"
+                    app:counterMaxLength="11">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPhone"
@@ -136,6 +137,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPhone"
                     app:errorEnabled="true"
                     app:error="@{signupViewModel.passwordErrorMessage}"
+                    app:endIconMode="password_toggle">
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -159,6 +161,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
                     app:errorEnabled="true"
                     app:error="@{signupViewModel.emailErrorMessage}"
+                    app:endIconMode="clear_text">
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -181,6 +184,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"
                     app:errorEnabled="true"
                     app:error="@{signupViewModel.firstnameErrorMessage}"
+                    app:endIconMode="clear_text">
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -203,6 +207,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayoutFirstName"
                     app:errorEnabled="true"
                     app:error="@{signupViewModel.lastnameErrorMessage}"
+                    app:endIconMode="clear_text">
                     >
 
                     <com.google.android.material.textfield.TextInputEditText

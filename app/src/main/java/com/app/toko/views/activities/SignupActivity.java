@@ -61,10 +61,8 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         signupVewModel.phone.observe(this, phone -> {
-            if (phone != null &&
-                    (phone.trim().isEmpty() || !android.util.Patterns.PHONE.matcher(phone).matches())
-                    || phone.length() < 10 || phone.length() > 11) {
-                signupVewModel.phoneErrorMessage.setValue("Số điện thoại phải bao gồm 10 hoặc 11 kí tự!");
+            if (phone != null && phone.length() > 11) {
+                signupVewModel.phoneErrorMessage.setValue("Số điện thoại quá dài");
             } else {
                 signupVewModel.phoneErrorMessage.setValue(null);
             }

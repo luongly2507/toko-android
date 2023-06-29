@@ -82,7 +82,7 @@ public class SignupVewModel extends AndroidViewModel {
         if (phone == null
                 || phone.trim().isEmpty() || !android.util.Patterns.PHONE.matcher(phone).matches()
                 || phone.length() < 10 || phone.length() > 11) {
-            phoneErrorMessage.setValue("Vui lòng nhập đúng định dạng số điện thoại!");
+            phoneErrorMessage.setValue("Số điện thoại phải đúng định dạng và có 10 hoặc 11 kí tự!");
             isValid = false;
         }
 

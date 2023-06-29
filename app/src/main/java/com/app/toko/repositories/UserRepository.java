@@ -109,8 +109,23 @@ public class UserRepository {
 
                 } else {
                     // Xử lý lỗi
-                    Toast.makeText(appContext, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
-
+                    switch (response.code()) {
+                        case 400:
+                            Toast.makeText(appContext, "Số điện thoại đã tồn tại", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(appContext, "Số điện thoại trên đã tồn tại", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 409:
+                            Toast.makeText(appContext, "Số điện thoại này đã tồn tại", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 500:
+                            Toast.makeText(appContext, "Lỗi máy chủ, hãy thử lại sau", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(appContext, "Lỗi không xác định, hãy thử lại sau", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
 
