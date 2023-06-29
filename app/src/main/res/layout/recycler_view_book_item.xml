@@ -36,17 +36,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textStyle="bold"
+                android:layout_marginRight="6dp"
                 android:id="@+id/text_view_price"
                 android:textColor="@color/design_default_color_error"
                 android:text="2000"
                 />
-            <TextView
-                android:textColor="@color/design_default_color_error"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:text="@string/underline_vnd"
-                android:gravity="center"
-                android:layout_height="match_parent"/>
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyExposedDropdownMenuStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <!-- Thiết lập màu sắc cho item được chọn -->
+        <item name="android:textColorHighlight">@color/deepskyblue</item>
+    </style>
+</resources>

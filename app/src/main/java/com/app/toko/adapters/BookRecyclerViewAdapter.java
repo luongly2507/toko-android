@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,15 +19,22 @@ import com.app.toko.payload.response.BookResponse;
 import com.app.toko.utils.ApiService;
 import com.bumptech.glide.Glide;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.SearchResultViewHolder> {
 
     private List<BookResponse> bookResponseList;
+
     private Context context;
+
+
 
     public BookRecyclerViewAdapter(List<BookResponse> bookResponseList) {
         this.bookResponseList = bookResponseList;
+
     }
 
     @NonNull
@@ -42,8 +51,9 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
         BookResponse bookResponse = bookResponseList.get(position);
         if(bookResponse != null)
         {
+            String price = DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(bookResponse.getPrice());
             holder.title.setText(bookResponse.getTitle());
-            holder.price.setText(bookResponse.getPrice().toString());
+            holder.price.setText(price);
             String imageSource = "";
             for (AlbumResponse i: bookResponse.getAlbums()) {
                 imageSource = i.getImageSource();
@@ -66,6 +76,7 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
         return 0;
     }
 
+
     public static class SearchResultViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
         TextView price , title;
@@ -76,4 +87,6 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
             title = itemView.findViewById(R.id.text_view_title);
         }
     }
+
+
 }
