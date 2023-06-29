@@ -1,5 +1,6 @@
 package com.app.toko.models;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class Category implements Serializable {
     private UUID id;
     private String name;
     private List<Category> children;

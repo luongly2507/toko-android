@@ -4,4 +4,8 @@
         <!-- Thiết lập màu sắc cho item được chọn -->
         <item name="android:textColorHighlight">@color/deepskyblue</item>
     </style>
+    <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">4dp</item>
+    </style>
 </resources>

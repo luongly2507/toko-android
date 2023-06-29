@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/item_search"
+        android:title="@string/search_placeholder"
+        android:icon="@drawable/ic_search_white"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/item_home"
+        android:icon="@drawable/ic_home_white"
+        android:title="@string/title_home"
+        app:showAsAction="always" />
+    <item android:id="@+id/item_cart"
+        android:title="@string/activity_cart_title"
+        android:icon="@drawable/ic_shopping_cart"
+        app:showAsAction="always"/>
+    <item android:id="@+id/item_more"
+        android:title="More"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_more_white">
+        <menu>
+            <item android:id="@+id/item_account"
+                android:title="@string/title_account"
+                android:icon="@drawable/ic_account"
+                app:showAsAction="withText"/>
+            <item android:id="@+id/item_category"
+                android:icon="@drawable/ic_dashboard"
+                android:title="@string/title_dashboard"
+                app:showAsAction="withText"/>
+        </menu>
+    </item>
+</menu>
