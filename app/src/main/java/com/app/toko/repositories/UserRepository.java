@@ -1,9 +1,14 @@
 package com.app.toko.repositories;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -15,6 +20,8 @@ import com.app.toko.services.AuthenticationService;
 import com.app.toko.services.UserService;
 import com.app.toko.utils.ApiService;
 import com.app.toko.views.activities.LoginActivity;
+import com.app.toko.views.activities.MainActivity;
+import com.app.toko.views.activities.SignupActivity;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,13 +32,13 @@ import retrofit2.Response;
 
 public class UserRepository {
     private AuthenticationService authenticationService;
-
-
     private UserService userService;
     private MutableLiveData<User> userMutableLiveData;
-
     private SharedPreferences sharedPreferences;
+    private Application application;
+
     public UserRepository(Application application){
+        this.application = application;
         this.authenticationService = ApiService.getAuthenticationService();
         this.userService = ApiService.getUserService();
         this.userMutableLiveData = new MutableLiveData<>();
@@ -43,15 +50,15 @@ public class UserRepository {
                 new Callback<AuthenticationResponse>() {
                     @Override
                     public void onResponse(Call<AuthenticationResponse> call, Response<AuthenticationResponse> response) {
-                         if (response.code() == 200) {
-                             AuthenticationResponse authenticationResponse = response.body();
-                             sharedPreferences.edit().putString("access_token",authenticationResponse.getAccessToken()).apply();
-                             sharedPreferences.edit().putString("refresh_token",authenticationResponse.getRefreshToken()).apply();
-                             sharedPreferences.edit().putString("user-id",authenticationResponse.getUserId().toString()).apply();
+                        if (response.code() == 200) {
+                            AuthenticationResponse authenticationResponse = response.body();
+                            sharedPreferences.edit().putString("access_token",authenticationResponse.getAccessToken()).apply();
+                            sharedPreferences.edit().putString("refresh_token",authenticationResponse.getRefreshToken()).apply();
+                            sharedPreferences.edit().putString("user-id",authenticationResponse.getUserId().toString()).apply();
                             getUserDetail(authenticationResponse.getUserId(), "Bearer " + authenticationResponse.getAccessToken());
-                         } else {
-                             userMutableLiveData.postValue(null);
-                         }
+                        } else {
+                            userMutableLiveData.postValue(null);
+                        }
                     }
 
                     @Override
@@ -86,4 +93,50 @@ public class UserRepository {
     public LiveData<User> getUserLiveData(){
         return userMutableLiveData;
     }
+
+    public void registerUser(User user) {
+        Context appContext = application.getApplicationContext();
+
+        userService.register(user).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Xử lý đăng ký thành công
+                    Toast.makeText(appContext, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(appContext, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    appContext.startActivity(intent);
+
+                } else {
+                    // Xử lý lỗi
+                    switch (response.code()) {
+                        case 400:
+                            Toast.makeText(appContext, "Số điện thoại đã tồn tại", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(appContext, "Số điện thoại trên đã tồn tại", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 409:
+                            Toast.makeText(appContext, "Số điện thoại này đã tồn tại", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 500:
+                            Toast.makeText(appContext, "Lỗi máy chủ, hãy thử lại sau", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(appContext, "Lỗi không xác định, hãy thử lại sau", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Xử lý lỗi kết nối
+                Toast.makeText(appContext, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 }
+
+
