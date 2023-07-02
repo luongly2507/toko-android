@@ -233,21 +233,24 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/image_button_decrease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:src="@drawable/ic_minus" />
 
             <TextView
+                android:id="@+id/text_view_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingHorizontal="15dp"
-                android:text="3"
+                android:text="1"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <ImageButton
+                android:id="@+id/image_button_increase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
@@ -255,6 +258,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/button_add_to_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -267,6 +271,7 @@
             android:textSize="12sp" />
 
         <Button
+            android:id="@+id/button_buy_now"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"

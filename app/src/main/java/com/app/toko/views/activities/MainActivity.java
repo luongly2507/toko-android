@@ -45,11 +45,20 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        if(getIntent().getStringExtra("toFrag").equals("account"))
+        if(getIntent().getStringExtra("toFrag") != null)
         {
+            switch (getIntent().getStringExtra("toFrag"))
+            {
+                case "account" :
+                    binding.navView.setSelectedItemId(R.id.navigation_account);
+                    break;
+                case "category" :
+                    binding.navView.setSelectedItemId(R.id.navigation_dashboard);
+                    break;
+                default:
+                    break;
+            }
             getIntent().removeExtra("toFrag");
-            binding.navView.setSelectedItemId(R.id.navigation_account);
         }
-
     }
 }

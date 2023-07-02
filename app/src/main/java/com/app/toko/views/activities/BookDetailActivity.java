@@ -1,10 +1,13 @@
 package com.app.toko.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.app.toko.R;
@@ -50,5 +53,80 @@ public class BookDetailActivity extends AppCompatActivity {
             binding.textViewDescription.setText(selectedBook.getDescription());
             binding.textViewDetailBook.setText(selectedBook.getTitle());
         }
+
+        binding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(BookDetailActivity.this , MainActivity.class);
+                String value = null;
+                switch (item.getItemId())
+                {
+                    case R.id.item_home:
+                        value = "home";
+                        break;
+                    case R.id.item_category:
+                        value = "category";
+                        break;
+                    case R.id.item_account:
+                        value = "account";
+                        break;
+                    case R.id.item_cart:
+                        Intent intentCart = new Intent(BookDetailActivity.this , CartActivity.class);
+                        startActivity(intentCart);
+                        break;
+                    case R.id.item_search:
+                        Intent intentSearch = new Intent(BookDetailActivity.this , SearchBookActivity.class);
+                        startActivity(intentSearch);
+                        break;
+                    default:
+                        break;
+                }
+                if(value != null && !value.isBlank())
+                {
+                    intent.putExtra("toFrag" , value );
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+        binding.imageButtonDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int amount = 0;
+                try {
+                    amount = Integer.parseInt(binding.textViewAmount.getText().toString());
+                }
+                catch (Exception ex)
+                {
+                    Log.e("Parse Fail","Parse integer fail!!");
+                }
+                if(amount - 1 > 0)
+                {
+                    amount--;
+                    binding.textViewAmount.setText(String.valueOf(amount));
+                }
+
+            }
+        });
+        binding.imageButtonIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int amount = 0;
+                try {
+                    amount = Integer.parseInt(binding.textViewAmount.getText().toString());
+                }
+                catch (Exception ex)
+                {
+                    Log.e("Parse Fail","Parse integer fail!!");
+                }
+                if(amount > 0)
+                {
+                    amount++;
+                    binding.textViewAmount.setText(String.valueOf(amount));
+                }
+            }
+        });
     }
+
+
 }

@@ -72,9 +72,12 @@ public class HomeFragment extends Fragment {
         homeViewModel.getBookResponseLivaData().observe(getViewLifecycleOwner(), new Observer<List<BookResponse>>() {
             @Override
             public void onChanged(List<BookResponse> bookResponses) {
-                bookResponseList.addAll(bookResponses);
-                adapter = new BookRecyclerViewAdapter(bookResponseList);
-                binding.recyclerViewTrending.setAdapter(adapter);
+                if(bookResponses != null)
+                {
+                    bookResponseList.addAll(bookResponses);
+                    adapter = new BookRecyclerViewAdapter(bookResponseList);
+                    binding.recyclerViewTrending.setAdapter(adapter);
+                }
             }
         });
 
