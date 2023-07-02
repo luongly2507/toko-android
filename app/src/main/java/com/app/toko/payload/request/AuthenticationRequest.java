@@ -27,9 +27,9 @@ public class AuthenticationRequest {
         if (getPhone() == null) {
             return false;
         }
-        if (getPhone().length() != 10){
+        if ((getPhone().length() != 10 || getPhone().length() != 11)){
             return false;
         }
-        return Patterns.PHONE.matcher(getPhone()).matches();
+        return true;
     }
 }

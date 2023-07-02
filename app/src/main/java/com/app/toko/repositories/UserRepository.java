@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,6 @@ public class UserRepository {
         this.userMutableLiveData = new MutableLiveData<>();
         this.sharedPreferences = application.getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
     }
-
     public void authenticateUser(AuthenticationRequest authenticationRequest){
         authenticationService.authenticate(authenticationRequest).enqueue(
                 new Callback<AuthenticationResponse>() {
@@ -54,7 +54,8 @@ public class UserRepository {
                             AuthenticationResponse authenticationResponse = response.body();
                             sharedPreferences.edit().putString("access_token",authenticationResponse.getAccessToken()).apply();
                             sharedPreferences.edit().putString("refresh_token",authenticationResponse.getRefreshToken()).apply();
-                            sharedPreferences.edit().putString("user-id",authenticationResponse.getUserId().toString()).apply();
+                            sharedPreferences.edit().putString("user_id",authenticationResponse.getUserId().toString()).apply();
+                            Toast.makeText(application, "Đăng nhập thành công !", Toast.LENGTH_SHORT).show();
                             getUserDetail(authenticationResponse.getUserId(), "Bearer " + authenticationResponse.getAccessToken());
                         } else {
                             userMutableLiveData.postValue(null);

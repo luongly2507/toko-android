@@ -14,4 +14,7 @@ public interface BookService {
     Call<PageBookResponse> getAllBooksByCategory(@Query("categoryName") String category , @Query("page") int pageNumber);
     @GET("api/v1/books")
     Call<PageBookResponse> getAllBooks();
+
+    @GET("api/v1/books")
+    Call<PageBookResponse> getAllBooksByPage(@Query("page") int pageNumber);
 }

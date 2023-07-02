@@ -3,6 +3,7 @@ package com.app.toko.views.activities;
 import static android.view.View.GONE;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -117,19 +118,10 @@ public class SearchResultActivity extends AppCompatActivity {
             if(!searchResultViewModel.getMoreBook(categoryName , ++pageNumber))
             {
                 binding.buttonMore.setVisibility(GONE);
-            }
-            else
-            {
-                searchResultViewModel.getBookResponseLiveData().observe(this, new Observer<List<BookResponse>>() {
-                    @Override
-                    public void onChanged(List<BookResponse> bookResponses) {
-                        bookList.addAll(bookResponses);
-                        adapter = new BookRecyclerViewAdapter(bookList);
-                        binding.reccyclerViewBookResult.setAdapter(adapter);
-                    }
-                });
+                binding.textViewNothing.setVisibility(View.VISIBLE);
             }
         });
+
         //endregion
 
         //region Sort theo gia hoac ngay xuat ban
@@ -182,6 +174,7 @@ public class SearchResultActivity extends AppCompatActivity {
                     default:
                         return;
                 }
+
             }
         });
         //endregion
@@ -191,7 +184,6 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String laguageItem = adapterView.getItemAtPosition(i).toString();
-                System.out.println(laguageItem + "Do chinh la item");
                 List<BookResponse> bookResponses = new ArrayList<>();
                 if(!laguageItem.equals("Tất cả"))
                 {

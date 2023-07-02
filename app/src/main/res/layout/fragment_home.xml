@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintTop_toBottomOf="@id/constraintLayout"
-        app:layout_behavior="@string/searchbar_scrolling_view_behavior"
+
         >
         <!-- Screen content goes here. -->
         <ScrollView
@@ -106,8 +106,6 @@
                             android:id="@+id/tab_layout_trending"
                             android:elevation="6dp"
                             app:tabMode="scrollable"
-                            style="@style/Widget.Material3.TabLayout.OnSurface"
-
                             />
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
@@ -142,6 +140,12 @@
                         android:id="@+id/recycler_view_manga"/>
 
                 </LinearLayout>-->
+                <Button
+                    android:id="@+id/button_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/more" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp"/>

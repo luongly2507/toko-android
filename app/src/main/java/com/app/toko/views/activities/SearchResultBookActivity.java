@@ -66,24 +66,8 @@ public class SearchResultBookActivity extends AppCompatActivity {
             });
         }
 
-        /*binding.buttonMore.setOnClickListener(v ->{
-            if(!searchResultViewModel.getMoreBook(categoryName , ++pageNumber))
-            {
-                binding.buttonMore.setVisibility(GONE);
-            }
-            else
-            {
-                searchResultViewModel.getBookResponseLiveData().observe(this, new Observer<List<BookResponse>>() {
-                    @Override
-                    public void onChanged(List<BookResponse> bookResponses) {
-                        bookList.addAll(bookResponses);
-                        adapter = new BookRecyclerViewAdapter(bookList);
-                        binding.reccyclerViewBookResult.setAdapter(adapter);
-                    }
-                });
-            }
-        });*/
-        //endregion
+
+
 
         //region Sort theo gia hoac ngay xuat ban
         binding.filterSortList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
