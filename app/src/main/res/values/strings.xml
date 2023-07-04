@@ -46,4 +46,8 @@
     <string name="male">Nam</string>
     <string name="female">Nữ</string>
     <string name="other_gender">Khác</string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="buy">Mua hàng</string>
+    <string name="choose_all">Tất cả</string>
+    <string name="total_cost">Tổng giá</string>
 </resources>
