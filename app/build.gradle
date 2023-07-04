@@ -6,6 +6,20 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('F:\\HK2-Nam2\\Nhap mon mobile\\toko-android\\app\\toko.keystore')
+            storePassword '123456'
+            keyAlias 'toko'
+            keyPassword '123456'
+        }
+        debug {
+            storeFile file('F:\\HK2-Nam2\\Nhap mon mobile\\toko-android\\app\\toko.keystore')
+            storePassword '123456'
+            keyAlias 'toko'
+            keyPassword '123456'
+        }
+    }
     namespace 'com.app.toko'
     compileSdk 33
 
