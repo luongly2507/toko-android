@@ -65,6 +65,26 @@ public class BookRespository {
             }
         });
     }
+    public void getAllBooksByPage(int page)
+    {
+        bookService.getAllBooksByPage(page).enqueue(new Callback<PageBookResponse>() {
+            @Override
+            public void onResponse(Call<PageBookResponse> call, Response<PageBookResponse> response) {
+                if (response.body() != null) {
+                    bookResponseLiveData.postValue(response.body().getContent());
+                    totalPages = response.body().getTotalPages();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PageBookResponse> call, Throwable t) {
+                System.out.println("Fail: " + t);
+                bookResponseLiveData.postValue(null);
+                totalPages = 0;
+            }
+        });
+    }
+
     public LiveData<List<BookResponse>> getBookResponseLiveData()
     {
         return this.bookResponseLiveData;

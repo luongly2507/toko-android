@@ -9,5 +9,4 @@ public class VerificationViewModel extends AndroidViewModel {
     public VerificationViewModel(@NonNull Application application) {
         super(application);
     }
-
 }

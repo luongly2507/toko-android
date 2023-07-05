@@ -115,7 +115,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewLoginError"
                     app:error="@{loginViewModel.phoneErrorMessage}"
-
+                    app:endIconMode="clear_text"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -126,7 +126,6 @@
                         android:backgroundTint="@android:color/transparent"
                         android:hint="@string/phone"
                         android:text="@={loginViewModel.phone}"
-
                         android:inputType="phone"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -141,6 +140,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPhone"
                     app:errorEnabled="true"
                     app:error="@{loginViewModel.passwordErrorMessage}"
+                    app:endIconMode="password_toggle"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText

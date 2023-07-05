@@ -20,6 +20,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     private List<Integer> imageList;
     private Context context;
 
+
     public ViewPagerAdapter(List<Integer> imageList) {
         this.imageList = imageList;
     }

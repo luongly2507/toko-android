@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -46,7 +47,6 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void onLoginClicked(){
-        System.out.println("Button Login CLicked");
         new Handler().postDelayed(new Runnable(){
 
             @Override

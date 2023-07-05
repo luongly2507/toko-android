@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintTop_toBottomOf="@id/constraintLayout"
-        app:layout_behavior="@string/searchbar_scrolling_view_behavior"
+
         >
         <!-- Screen content goes here. -->
         <ScrollView
@@ -82,37 +82,39 @@
                     android:layout_height="150dp"
                     android:id="@+id/view_pager2_banner"
                     />
-                <LinearLayout
-                    android:padding="4dp"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@color/aliceblue"
-                    android:elevation="4dp"
-
-                    android:layout_margin="8dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/trending_shopping"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                    <com.google.android.material.tabs.TabLayout
-                        android:layout_marginVertical="8dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tab_layout_trending"
-                        android:elevation="6dp"
-                        app:tabMode="scrollable"
-                        style="@style/Widget.Material3.TabLayout.OnSurface"
-
-                        />
-                    <androidx.recyclerview.widget.RecyclerView
+                    app:cardCornerRadius="4dp"
+                    android:layout_margin="4dp"
+                    app:cardBackgroundColor="@color/aliceblue"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/recycler_view_trending"/>
+                        android:orientation="vertical"
+                        android:layout_margin="8dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/trending_shopping"
+                            android:textStyle="bold"
+                            android:textSize="20sp"/>
+                        <com.google.android.material.tabs.TabLayout
+                            android:layout_marginVertical="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tab_layout_trending"
+                            android:elevation="6dp"
+                            app:tabMode="scrollable"
+                            />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/recycler_view_trending"/>
 
-                </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
 
 
                 <!--<LinearLayout
@@ -138,6 +140,12 @@
                         android:id="@+id/recycler_view_manga"/>
 
                 </LinearLayout>-->
+                <Button
+                    android:id="@+id/button_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/more" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp"/>

@@ -18,7 +18,15 @@ public class HomeViewModel extends ViewModel {
         bookRespository = new BookRespository();
         bookResponseLivaData = bookRespository.getBookResponseLiveData();
     }
-
+    public boolean getMoreBook(int pageNumber)
+    {
+        if(pageNumber + 1 < bookRespository.getTotalPages())
+        {
+            this.getAllBooksByPage(pageNumber);
+            return true;
+        }
+        return false;
+    }
     public LiveData<List<BookResponse>> getBookResponseLivaData() {
         return bookResponseLivaData;
     }
@@ -27,4 +35,5 @@ public class HomeViewModel extends ViewModel {
     {
         bookRespository.getAllBooks();
     }
+    public void getAllBooksByPage(int page) {bookRespository.getAllBooksByPage(page);}
 }

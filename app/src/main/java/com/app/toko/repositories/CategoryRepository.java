@@ -8,6 +8,7 @@ import com.app.toko.services.CategoryService;
 import com.app.toko.utils.ApiService;
 
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,8 +42,8 @@ public class CategoryRepository {
                 }
         );
     }
-
     public LiveData<List<Category>> getCategoriesLiveData() {
         return categoriesLiveData;
     }
+
 }
