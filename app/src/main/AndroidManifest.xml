@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".VerificationActivity"
+            android:name=".views.activities.VerificationActivity"
             android:exported="false" />
         <activity
             android:name=".views.activities.BookDetailActivity"
@@ -43,7 +43,10 @@
             android:name=".views.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

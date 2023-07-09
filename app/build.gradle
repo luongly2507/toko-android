@@ -7,14 +7,15 @@ plugins {
 
 android {
     signingConfigs {
+        String dir = Project.DEFAULT_BUILD_DIR_NAME.replace("build" , "");
         release {
-            storeFile file('F:\\HK2-Nam2\\Nhap mon mobile\\toko-android\\app\\toko.keystore')
+            storeFile file(dir + '\\toko.keystore')
             storePassword '123456'
             keyAlias 'toko'
             keyPassword '123456'
         }
         debug {
-            storeFile file('F:\\HK2-Nam2\\Nhap mon mobile\\toko-android\\app\\toko.keystore')
+            storeFile file(dir + '\\toko.keystore')
             storePassword '123456'
             keyAlias 'toko'
             keyPassword '123456'
