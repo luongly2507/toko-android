@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.app.toko.VerificationActivity;
 import com.app.toko.models.Category;
 import com.app.toko.models.User;
 import com.app.toko.payload.request.AuthenticationRequest;
@@ -103,8 +104,8 @@ public class UserRepository {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     // Xử lý đăng ký thành công
-                    Toast.makeText(appContext, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(appContext, LoginActivity.class);
+                    Intent intent = new Intent(appContext, VerificationActivity.class);
+                    intent.putExtra("phone", user.getPhone());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     appContext.startActivity(intent);
 
