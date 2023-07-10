@@ -300,7 +300,7 @@ public class VerificationActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     //Move on to next Activity
-                    Intent intent = new Intent(VerificationActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(VerificationActivity.this, SignupSuccessActivity.class);
                     startActivity(intent);
                 }else {
                     Toast.makeText(VerificationActivity.this, "Xác thực OTP thất bại!", Toast.LENGTH_SHORT).show();

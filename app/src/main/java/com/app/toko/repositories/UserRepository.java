@@ -106,7 +106,6 @@ public class UserRepository {
                     // Xử lý đăng ký thành công
                     Intent intent = new Intent(appContext, VerificationActivity.class);
                     intent.putExtra("phone", user.getPhone());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     appContext.startActivity(intent);
 
                 } else {
