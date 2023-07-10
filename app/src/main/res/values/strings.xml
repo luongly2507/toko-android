@@ -46,4 +46,8 @@
     <string name="male">Nam</string>
     <string name="female">Nữ</string>
     <string name="other_gender">Khác</string>
+    <string name="success">Thành công!</string>
+    <string name="account_created">Tài khoản của bạn đã được đăng ký</string>
+    <string name="redirect">Tự động chuyển hướng sau: </string>
+    <string name="remainning_second">2 giây</string>
 </resources>
