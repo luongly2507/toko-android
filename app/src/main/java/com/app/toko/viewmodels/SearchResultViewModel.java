@@ -20,6 +20,9 @@ public class SearchResultViewModel extends AndroidViewModel {
     private CategoryRepository categoryRepository;
 
     private LiveData<List<Category>> categoryLiveData;
+    public LiveData<Integer> totalPages;
+
+
 
     public SearchResultViewModel(Application application)
     {
@@ -28,20 +31,13 @@ public class SearchResultViewModel extends AndroidViewModel {
         bookResponseLiveData = bookRespository.getBookResponseLiveData();
         categoryRepository = new CategoryRepository();
         categoryLiveData = categoryRepository.getCategoriesLiveData();
+        totalPages = bookRespository.getTotalPagesLiveData();
     }
-    public void getAllBooksByCategory(String category , int pageNumber)
+    public void getAllBooksByCategory(String category ,String language,String sort, int pageNumber)
     {
-        bookRespository.getAllBooksByCategory(category , pageNumber);
+        bookRespository.getAllBooksByCategory(category ,language,sort, pageNumber);
     }
-    public boolean getMoreBook(String category , int pageNumber)
-    {
-        if(pageNumber + 1 < bookRespository.getTotalPages())
-        {
-            this.getAllBooksByCategory(category , pageNumber + 1);
-            return true;
-        }
-        return false;
-    }
+
     public void getAllBooks()
     {
         bookRespository.getAllBooks();

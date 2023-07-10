@@ -130,6 +130,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:inputType="none"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="Ngôn ngữ"
                 android:textSize="12sp"
                 app:simpleItemSelectedColor="@color/deepskyblue"
@@ -162,15 +164,13 @@
                 android:text="@string/more" />
             <TextView
                 android:id="@+id/text_view_nothing"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:textColor="@color/darkgray"
                 android:visibility="gone"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:text="Không còn sản phẩm nào nữa"/>
-            <!--<LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"/>-->
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

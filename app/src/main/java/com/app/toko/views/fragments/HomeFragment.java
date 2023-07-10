@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
     private ViewPagerAdapter bannerAdapter;
     private Boolean load = false;
     private List<Integer> bannerList = new ArrayList<>();
-    private int pageNumber = 0;
+    private int pageNumber = 0 ;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment {
         if(!load)
         {
             homeViewModel.getAllBooks();
+
         }
         load = true;
         homeViewModel.getBookResponseLivaData().observe(getViewLifecycleOwner(), new Observer<List<BookResponse>>() {
@@ -80,14 +81,19 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
-        /*binding.buttonMore.setOnClickListener(v ->{
-            if(!homeViewModel.getMoreBook(++pageNumber))
-            {
-                binding.buttonMore.setVisibility(GONE);
-                //binding.textViewNothing.setVisibility(View.VISIBLE);
+        homeViewModel.totalPages.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer - 1 <= pageNumber)
+                {
+                    binding.buttonMore.setVisibility(GONE);
+                    //binding.textViewNothing.setVisibility(View.VISIBLE);
+                }
             }
-        });*/
+        });
+        binding.buttonMore.setOnClickListener(v ->{
+            homeViewModel.getAllBooksByPage(++pageNumber);
+        });
         /*binding.tabLayoutTrending.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

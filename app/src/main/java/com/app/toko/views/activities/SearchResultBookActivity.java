@@ -34,6 +34,8 @@ public class SearchResultBookActivity extends AppCompatActivity {
     private SearchResultBookViewModel searchResultBookViewModel;
     private BookRecyclerViewAdapter adapter;
     private List<BookResponse> bookList = new ArrayList<>();
+    private String language = null , sort = null;
+    private int pageNumber = 0 , oldPageNumber = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,25 +52,41 @@ public class SearchResultBookActivity extends AppCompatActivity {
         if(searchName != null && !searchName.isBlank())
         {
             binding.buttonSearch.setText(searchName);
-            searchResultBookViewModel.getAllBooks();
+            searchResultBookViewModel.getAllBookByTitle(searchName , language , sort , pageNumber);
+            searchResultBookViewModel.totalPages.observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    if(integer - 1 <= pageNumber)
+                    {
+                        binding.buttonMore.setVisibility(GONE);
+                        binding.textViewNothing.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
             searchResultBookViewModel.getBookResponseLiveData().observe(this, new Observer<List<BookResponse>>() {
-                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onChanged(List<BookResponse> bookResponses) {
-                    if(bookResponses != null && bookResponses.size() > 0)
+                    if(pageNumber != oldPageNumber)
                     {
-                        bookList = bookResponses.stream().filter(bookResponse -> bookResponse.getTitle().contains(searchName)).collect(Collectors.toList());
-                        adapter = new BookRecyclerViewAdapter(bookList);
-                        //Objects.requireNonNull(binding.reccyclerViewBookResult.getAdapter()).notifyDataSetChanged();
-                        binding.reccyclerViewBookResult.setAdapter(adapter);
+                        oldPageNumber = pageNumber;
+                        bookList.addAll(bookResponses);
                     }
+                    else bookList = bookResponses;
+                    adapter = new BookRecyclerViewAdapter(bookList);
+                    binding.reccyclerViewBookResult.setAdapter(adapter);
+
                 }
             });
         }
 
-
-
-
+        //region Event button more
+        binding.buttonMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchResultBookViewModel.getAllBookByTitle(searchName , language , sort , ++pageNumber);
+            }
+        });
+        //endregion
         //region Sort theo gia hoac ngay xuat ban
         binding.filterSortList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -78,44 +96,16 @@ public class SearchResultBookActivity extends AppCompatActivity {
                 switch (sortItem)
                 {
                     case "Giá tăng dần":
-                        bookList.sort(new Comparator<BookResponse>() {
-                            @Override
-                            public int compare(BookResponse bookResponse, BookResponse t1) {
-                                return bookResponse.getPrice().compareTo(t1.getPrice());
-                            }
-                        });
-                        adapter = new BookRecyclerViewAdapter(bookList);
-                        binding.reccyclerViewBookResult.setAdapter(adapter);
+                        sort = "price,asc";
+                        searchResultBookViewModel.getAllBookByTitle(searchName ,language, sort, pageNumber);
                         break;
                     case "Giá giảm dần" :
-                        bookList.sort(new Comparator<BookResponse>() {
-                            @Override
-                            public int compare(BookResponse bookResponse, BookResponse t1) {
-                                return t1.getPrice().compareTo(bookResponse.getPrice());
-                            }
-                        });
-                        adapter = new BookRecyclerViewAdapter(bookList);
-                        binding.reccyclerViewBookResult.setAdapter(adapter);
+                        sort = "price,desc";
+                        searchResultBookViewModel.getAllBookByTitle(searchName ,language, sort , pageNumber);
                         break;
                     case "Mới nhất" :
-                        bookList.sort(new Comparator<BookResponse>() {
-                            @Override
-                            public int compare(BookResponse bookResponse, BookResponse t1) {
-                                try {
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                    Date bookResponseDate = simpleDateFormat.parse(bookResponse.getPublishcationDate());
-                                    Date t1Date = simpleDateFormat.parse(t1.getPublishcationDate());
-
-                                    return bookResponseDate.compareTo(t1Date);
-                                }catch(Exception ex)
-                                {
-                                    Log.e("FAIL!!" , "Fail to parse date from string");
-                                }
-                                return 0;
-                            }
-                        });
-                        adapter = new BookRecyclerViewAdapter(bookList);
-                        binding.reccyclerViewBookResult.setAdapter(adapter);
+                        sort = "publishcationDate,desc";
+                        searchResultBookViewModel.getAllBookByTitle(searchName ,language,sort ,pageNumber);
                         break;
                 }
             }
@@ -126,19 +116,18 @@ public class SearchResultBookActivity extends AppCompatActivity {
         binding.filterLanguageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String laguageItem = adapterView.getItemAtPosition(i).toString();
-                System.out.println(laguageItem + "Do chinh la item");
+                String languageItem = adapterView.getItemAtPosition(i).toString();
+                System.out.println(languageItem + "Do chinh la item");
                 List<BookResponse> bookResponses = new ArrayList<>();
-                if(!laguageItem.equals("Tất cả"))
+                if(languageItem.equals("Tất cả"))
                 {
-                    bookResponses = bookList.stream().filter(bookResponse -> Objects.equals(bookResponse.getLanguage(), laguageItem)).collect(Collectors.toList());
-                    adapter = new BookRecyclerViewAdapter(bookResponses);
-                    binding.reccyclerViewBookResult.setAdapter(adapter);
+                    language = null;
+                    searchResultBookViewModel.getAllBookByTitle(searchName ,language, sort ,pageNumber);
                 }
                 else
                 {
-                    adapter = new BookRecyclerViewAdapter(bookList);
-                    binding.reccyclerViewBookResult.setAdapter(adapter);
+                    language = languageItem;
+                    searchResultBookViewModel.getAllBookByTitle(searchName , language , sort , pageNumber);
                 }
             }
         });

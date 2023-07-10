@@ -13,19 +13,18 @@ public class HomeViewModel extends ViewModel {
 
     private BookRespository bookRespository;
     private LiveData<List<BookResponse>> bookResponseLivaData;
+    public LiveData<Integer> totalPages;
 
     public HomeViewModel() {
         bookRespository = new BookRespository();
         bookResponseLivaData = bookRespository.getBookResponseLiveData();
+        totalPages = bookRespository.getTotalPagesLiveData();
     }
     public boolean getMoreBook(int pageNumber)
     {
-        if(pageNumber + 1 < bookRespository.getTotalPages())
-        {
-            this.getAllBooksByPage(pageNumber);
-            return true;
-        }
-        return false;
+        this.getAllBooksByPage(pageNumber);
+        return true;
+
     }
     public LiveData<List<BookResponse>> getBookResponseLivaData() {
         return bookResponseLivaData;

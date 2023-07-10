@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageBookResponse {
-    private List<BookResponse> content;
+public class Page<T> {
+    private List<T> content;
     private int totalPages;
 }
