@@ -1,5 +1,6 @@
 package com.app.toko.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.toko.R;
+import com.app.toko.views.activities.SearchBookActivity;
 import com.app.toko.views.activities.SearchResultBookActivity;
 import com.google.android.material.card.MaterialCardView;
 
@@ -25,7 +27,11 @@ public class HistorySearchRecyclerViewAdapter extends RecyclerView.Adapter<Histo
 
     private List<String> searchList = new ArrayList<>();
     private Context mContext;
+    private SearchBookActivity searchBookActivity;
 
+    public void setSearchBookActivity(SearchBookActivity searchBookActivity) {
+        this.searchBookActivity = searchBookActivity;
+    }
 
     public List<String> getSearchList() {
         return searchList;
@@ -75,6 +81,7 @@ public class HistorySearchRecyclerViewAdapter extends RecyclerView.Adapter<Histo
         Intent intent = new Intent(mContext , SearchResultBookActivity.class);
         intent.putExtra("SearchName" , searchName);
         mContext.startActivity(intent);
+        searchBookActivity.finish();
     }
 
 

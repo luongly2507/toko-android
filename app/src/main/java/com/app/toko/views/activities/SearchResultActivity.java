@@ -66,7 +66,7 @@ public class SearchResultActivity extends AppCompatActivity {
                     if(pageNumber != oldPageNumber)
                     {
                         oldPageNumber = pageNumber;
-                        bookList.addAll(bookResponses);
+                        if(bookResponses != null) bookList.addAll(bookResponses);
                     }
                     else bookList = bookResponses;
                     adapter = new BookRecyclerViewAdapter(bookList);
@@ -78,9 +78,9 @@ public class SearchResultActivity extends AppCompatActivity {
                 public void onChanged(Integer integer) {
                     if(integer - 1 <= pageNumber)
                     {
-                        binding.buttonMore.setVisibility(GONE);
+                        //binding.buttonMore.setVisibility(GONE);
                         binding.textViewNothing.setVisibility(View.VISIBLE);
-                    }
+                    } else binding.buttonMore.setVisibility(View.VISIBLE);
                 }
             });
             searchResultViewModel.getAllCategories();

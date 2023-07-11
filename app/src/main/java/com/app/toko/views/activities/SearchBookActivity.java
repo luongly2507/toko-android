@@ -46,6 +46,7 @@ public class SearchBookActivity extends AppCompatActivity {
 
         binding.recyclerViewSearchHistory.setLayoutManager(new FlexboxLayoutManager(this , FlexDirection.ROW));
         adapter = new HistorySearchRecyclerViewAdapter(historyList);
+        adapter.setSearchBookActivity(this);
         binding.recyclerViewSearchHistory.setAdapter(adapter);
         getValueSharedPreferences();
 
@@ -72,12 +73,14 @@ public class SearchBookActivity extends AppCompatActivity {
         Intent intent = new Intent(this , SearchResultBookActivity.class);
         intent.putExtra("SearchName" , searchName);
         startActivity(intent);
+        finish();
     }
     @SuppressLint("NotifyDataSetChanged")
     public void setValueSharedPreferences(Set<String> historySet)
     {
         SharedPreferences preferences = this.getSharedPreferences("HISTORY_SEARCH" , MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("HistorySet").apply();
         editor.putStringSet("HistorySet" , historySet).apply();
         adapter.setSearchList(new ArrayList<>(historySet));
         Objects.requireNonNull(binding.recyclerViewSearchHistory.getAdapter()).notifyDataSetChanged();

@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -58,9 +59,10 @@ public class SearchResultBookActivity extends AppCompatActivity {
                 public void onChanged(Integer integer) {
                     if(integer - 1 <= pageNumber)
                     {
-                        binding.buttonMore.setVisibility(GONE);
+                        //binding.buttonMore.setVisibility(GONE);
                         binding.textViewNothing.setVisibility(View.VISIBLE);
                     }
+                    else binding.buttonMore.setVisibility(View.VISIBLE);
                 }
             });
             searchResultBookViewModel.getBookResponseLiveData().observe(this, new Observer<List<BookResponse>>() {
@@ -69,7 +71,7 @@ public class SearchResultBookActivity extends AppCompatActivity {
                     if(pageNumber != oldPageNumber)
                     {
                         oldPageNumber = pageNumber;
-                        bookList.addAll(bookResponses);
+                        if(bookResponses != null) bookList.addAll(bookResponses);
                     }
                     else bookList = bookResponses;
                     adapter = new BookRecyclerViewAdapter(bookList);

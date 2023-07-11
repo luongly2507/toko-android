@@ -59,6 +59,7 @@ public class UserRepository {
                             Toast.makeText(application, "Đăng nhập thành công !", Toast.LENGTH_SHORT).show();
                             getUserDetail(authenticationResponse.getUserId(), "Bearer " + authenticationResponse.getAccessToken());
                         } else {
+                            Toast.makeText(application, "Đăng nhập thất bại !", Toast.LENGTH_SHORT).show();
                             userMutableLiveData.postValue(null);
                         }
                     }
