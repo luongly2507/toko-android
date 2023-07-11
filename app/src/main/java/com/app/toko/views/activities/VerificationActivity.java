@@ -1,11 +1,6 @@
 package com.app.toko.views.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,12 +8,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.app.toko.R;
 import com.app.toko.databinding.ActivityVerificationBinding;
@@ -31,7 +28,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.auth.internal.RecaptchaActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +58,17 @@ public class VerificationActivity extends AppCompatActivity {
         binding.setVerificationViewModel(verificationViewModel);
 
         setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("phone")) {
+            String phone = intent.getStringExtra("phone");
+            phoneNumber = verificationViewModel.formatPhoneNumber(phone);
+        }
+        else
+        {
+            Toast.makeText(this, "Chưa thể gửi OTP, không thể xác thực!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         //set string phone number
         binding.textViewPhoneNumber.setText(phoneNumber);
@@ -275,7 +282,7 @@ public class VerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onVerificationFailed(@NonNull FirebaseException e) {
-                                Toast.makeText(VerificationActivity.this, "Gửi OTP thất bại!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VerificationActivity.this, "Gửi OTP thất bại! Hãy kiểm tra lại số điện thoại", Toast.LENGTH_SHORT).show();
                                 System.out.print("Lỗi: " + e.toString());
                             }
 
@@ -299,9 +306,10 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    //Move on to next Activity
-                    Intent intent = new Intent(VerificationActivity.this, SignupSuccessActivity.class);
-                    startActivity(intent);
+                    //Return to SignupActivity
+                    Intent resultIntent = new Intent();
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish(); // Đóng Activity và quay về màn hình trước đó
                 }else {
                     Toast.makeText(VerificationActivity.this, "Xác thực OTP thất bại!", Toast.LENGTH_SHORT).show();
                 }

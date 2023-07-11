@@ -6,7 +6,6 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.app.toko.VerificationActivity;
 import com.app.toko.views.activities.SignupSuccessActivity;
 
 public class VerificationViewModel extends AndroidViewModel {
@@ -21,4 +20,11 @@ public class VerificationViewModel extends AndroidViewModel {
         getApplication().startActivity(intent);
     }
 
+    public String formatPhoneNumber(String phoneNumber) {
+        // Xóa khoảng trắng và ký tự đầu của số điện thoại
+        String formattedNumber = phoneNumber.trim().substring(1);
+        // Ghép chuỗi "+84 " vào trước số điện thoại
+        formattedNumber = "+84 " + formattedNumber;
+        return formattedNumber;
+    }
 }

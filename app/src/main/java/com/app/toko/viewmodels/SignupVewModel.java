@@ -3,7 +3,6 @@ package com.app.toko.viewmodels;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.toko.models.User;
@@ -23,40 +22,31 @@ public class SignupVewModel extends AndroidViewModel {
     public MutableLiveData<String> lastname = new MutableLiveData<>();
     public MutableLiveData<Integer> gender = new MutableLiveData<>();
 
-    private LiveData<User> user;
+    private User user;
     private UserRepository userRepository;
 
     public SignupVewModel(Application application){
         super(application);
         userRepository = new UserRepository(getApplication());
-        user = userRepository.getUserLiveData();
-    }
-
-    public LiveData<User> getUser(){
-        if (user == null) {
-            user = new MutableLiveData<>();
-        }
-        return user;
     }
 
     public void registerUser() {
+        user = new User(firstname.getValue(),
+                lastname.getValue(),
+                email.getValue(),
+                password.getValue(),
+                phone.getValue(),
+                "USER");
+        userRepository.registerUser(user);
+    }
+
+    public boolean isValidUser() {
         String firstname = this.firstname.getValue();
         String lastname = this.lastname.getValue();
         String email = this.email.getValue();
         String password = this.password.getValue();
         String phone = this.phone.getValue();
-        String role = "USER";
 
-        // Kiểm tra thông tin người dùng hợp lệ
-        if (!isValidUser(firstname, lastname, email, password, phone)) {
-            return;
-        }
-
-        User newUser = new User(firstname, lastname, email, password, phone, role);
-        userRepository.registerUser(newUser);
-    }
-
-    private boolean isValidUser(String firstname, String lastname, String email, String password, String phone) {
         boolean isValid = true;
 
         if (firstname == null || firstname.trim().isEmpty()) {
