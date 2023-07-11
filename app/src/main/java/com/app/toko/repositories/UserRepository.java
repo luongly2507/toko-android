@@ -24,6 +24,7 @@ import com.app.toko.utils.ApiService;
 import com.app.toko.views.activities.LoginActivity;
 import com.app.toko.views.activities.MainActivity;
 import com.app.toko.views.activities.SignupActivity;
+import com.app.toko.views.activities.SignupSuccessActivity;
 
 import java.util.List;
 import java.util.UUID;
@@ -104,8 +105,8 @@ public class UserRepository {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     // Xử lý đăng ký thành công
-                    Intent intent = new Intent(appContext, VerificationActivity.class);
-                    intent.putExtra("phone", user.getPhone());
+                    Intent intent = new Intent(appContext, SignupSuccessActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     appContext.startActivity(intent);
 
                 } else {
