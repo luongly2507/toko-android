@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".views.activities.NewPasswordActitivy"
+            android:exported="false" />
+        <activity
+            android:name=".views.activities.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.activities.SignupSuccessActivity"
             android:exported="false" />
         <activity
@@ -48,6 +54,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -50,4 +50,9 @@
     <string name="account_created">Tài khoản của bạn đã được đăng ký</string>
     <string name="redirect">Tự động chuyển hướng sau: </string>
     <string name="remainning_second">2 giây</string>
+    <string name="retrieve_password">Lấy lại mật khẩu</string>
+    <string name="forgot_username">Số điện thoại</string>
+    <string name="change_password">Thay đổi mật khẩu</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="repeat_password">Nhập lại mật khẩu</string>
 </resources>

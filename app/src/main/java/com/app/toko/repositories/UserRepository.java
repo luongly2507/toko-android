@@ -1,32 +1,23 @@
 package com.app.toko.repositories;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.app.toko.VerificationActivity;
-import com.app.toko.models.Category;
 import com.app.toko.models.User;
 import com.app.toko.payload.request.AuthenticationRequest;
 import com.app.toko.payload.response.AuthenticationResponse;
 import com.app.toko.services.AuthenticationService;
 import com.app.toko.services.UserService;
 import com.app.toko.utils.ApiService;
-import com.app.toko.views.activities.LoginActivity;
-import com.app.toko.views.activities.MainActivity;
-import com.app.toko.views.activities.SignupActivity;
 import com.app.toko.views.activities.SignupSuccessActivity;
 
-import java.util.List;
 import java.util.UUID;
 
 import retrofit2.Call;

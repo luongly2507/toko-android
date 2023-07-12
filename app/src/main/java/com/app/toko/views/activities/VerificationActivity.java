@@ -307,9 +307,21 @@ public class VerificationActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     //Return to SignupActivity
-                    Intent resultIntent = new Intent();
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish(); // Đóng Activity và quay về màn hình trước đó
+                    switch (getIntent().getStringExtra("fromActivity"))
+                    {
+                        case "SignupActivity":
+                            Intent resultIntent = new Intent();
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish(); // Đóng Activity và quay về màn hình trước đó
+                            break;
+                        case "ForgotPasswordActivity":
+                            Intent toNewPassIntent = new Intent(VerificationActivity.this , NewPasswordActitivy.class);
+                            toNewPassIntent.putExtra("phone" , getIntent().getStringExtra("phone"));
+                            startActivity(toNewPassIntent);
+                            finish();
+                            break;
+                    }
+
                 }else {
                     Toast.makeText(VerificationActivity.this, "Xác thực OTP thất bại!", Toast.LENGTH_SHORT).show();
                 }

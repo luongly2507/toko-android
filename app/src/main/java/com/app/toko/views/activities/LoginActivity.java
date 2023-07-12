@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.window.OnBackInvokedCallback;
@@ -69,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
                     onBackPressed();
                 }
 
+            }
+        });
+        binding.textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this , ForgotPasswordActivity.class);
+                startActivity(intent);
             }
         });
     }

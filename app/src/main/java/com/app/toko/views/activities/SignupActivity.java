@@ -45,6 +45,7 @@ public class SignupActivity extends AppCompatActivity {
                 // Chuyển đến màn hình xác thực
                 Intent intent = new Intent(this, VerificationActivity.class);
                 intent.putExtra("phone", signupVewModel.phone.getValue());
+                intent.putExtra("fromActivity" , "SignupActivity");
                 verificationLauncher.launch(intent);
             }
         });
