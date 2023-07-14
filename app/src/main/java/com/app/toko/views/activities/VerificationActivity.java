@@ -277,7 +277,7 @@ public class VerificationActivity extends AppCompatActivity {
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//                                signIn(phoneAuthCredential);
+                                //signIn(phoneAuthCredential);
                             }
 
                             @Override

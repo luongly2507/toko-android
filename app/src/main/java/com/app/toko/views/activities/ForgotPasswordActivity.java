@@ -2,11 +2,13 @@ package com.app.toko.views.activities;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.app.toko.databinding.ActivityForgotPasswordBinding;
 import com.app.toko.viewmodels.ForgotPasswordViewModel;
@@ -31,11 +33,24 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Intent intent = new Intent(ForgotPasswordActivity.this , VerificationActivity.class);
-                    intent.putExtra("phone" , username);
-                    intent.putExtra("fromActivity" , "ForgotPasswordActivity");
-                    startActivity(intent);
-                    finish();
+                    forgotPasswordViewModel.getUser(username);
+                    forgotPasswordViewModel.isExistUser.observe(ForgotPasswordActivity.this, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(Boolean isExist) {
+                            if(isExist)
+                            {
+                                Intent intent = new Intent(ForgotPasswordActivity.this , VerificationActivity.class);
+                                intent.putExtra("phone" , username);
+                                intent.putExtra("fromActivity" , "ForgotPasswordActivity");
+                                startActivity(intent);
+                                finish();
+                            }
+                            else
+                                Toast.makeText(ForgotPasswordActivity.this, "Số điện thoại hiện chưa được đăng kí!!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    
                 }
             }
         });

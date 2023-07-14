@@ -27,7 +27,8 @@ import retrofit2.Response;
 public class UserRepository {
     private AuthenticationService authenticationService;
     private UserService userService;
-    private MutableLiveData<User> userMutableLiveData;
+    private MutableLiveData<User> userMutableLiveData ;
+    private MutableLiveData<Boolean> isExistUser;
     private SharedPreferences sharedPreferences;
     private Application application;
 
@@ -36,6 +37,7 @@ public class UserRepository {
         this.authenticationService = ApiService.getAuthenticationService();
         this.userService = ApiService.getUserService();
         this.userMutableLiveData = new MutableLiveData<>();
+        this.isExistUser = new MutableLiveData<>();
         this.sharedPreferences = application.getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
     }
     public void authenticateUser(AuthenticationRequest authenticationRequest){
@@ -130,6 +132,55 @@ public class UserRepository {
 
             }
         });
+    }
+    public void updateUserPassword(String phone , String password)
+    {
+        userService.updateUserPassword(phone,password).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 204){
+                    Toast.makeText(application, "Mật khẩu của bạn đã được thay đổi !", Toast.LENGTH_SHORT).show();
+                } else {
+                    System.out.println("Somethings wrong !");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Failure");
+            }
+        });
+    }
+    public void isExistUserByPhone(String phone)
+    {
+        userService.isExistUserByPhone(phone).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code())
+                {
+                    case 204 :
+                        isExistUser.postValue(true);
+                        break;
+                    case 404:
+                        isExistUser.postValue(false);
+                        break;
+                    default:
+                        isExistUser.postValue(false);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(application, "Lỗi kết nối !", Toast.LENGTH_SHORT).show();
+                isExistUser.postValue(false);
+            }
+        });
+    }
+
+    public MutableLiveData<Boolean> getIsExistUser() {
+        return isExistUser;
     }
 }
 
