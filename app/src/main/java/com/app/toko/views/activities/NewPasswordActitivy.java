@@ -22,6 +22,7 @@ public class NewPasswordActitivy extends AppCompatActivity {
     private NewPasswordViewModel newPasswordViewModel;
     private ActivityNewPasswordActitivyBinding binding;
     private AlertDialog.Builder dialogBuilder;
+    private String phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,7 @@ public class NewPasswordActitivy extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         newPasswordViewModel = new ViewModelProvider(this).get(NewPasswordViewModel.class);
         binding.setNewPasswordViewModel(newPasswordViewModel);
+        phone = getIntent().getStringExtra("phone");
         newPasswordViewModel.password.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String password) {
@@ -61,8 +63,12 @@ public class NewPasswordActitivy extends AppCompatActivity {
             public void onClick(View view) {
                 if(Objects.equals(newPasswordViewModel.password.getValue(), newPasswordViewModel.repeatPassword.getValue()))
                 {
-                    //update ....
-                    Toast.makeText(NewPasswordActitivy.this, "chức năng cập nhật user", Toast.LENGTH_SHORT).show();
+                    newPasswordViewModel.updatePassword(phone , newPasswordViewModel.password.getValue());
+                    Intent intent = new Intent(NewPasswordActitivy.this , MainActivity.class);
+                    intent.putExtra("toFrag" , "account");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 }
                 else Toast.makeText(NewPasswordActitivy.this, "Mật khẩu không khớp !", Toast.LENGTH_SHORT).show();
             }
