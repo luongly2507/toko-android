@@ -156,19 +156,10 @@ public class UserRepository {
         userService.isExistUserByPhone(phone).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                switch (response.code())
-                {
-                    case 204 :
-                        isExistUser.postValue(true);
-                        break;
-                    case 404:
-                        isExistUser.postValue(false);
-                        break;
-                    default:
-                        isExistUser.postValue(false);
-                        break;
+                if (response.code() == 204) {
+                    isExistUser.postValue(true);
                 }
-
+                else isExistUser.postValue(false);
             }
 
             @Override
@@ -177,6 +168,7 @@ public class UserRepository {
                 isExistUser.postValue(false);
             }
         });
+
     }
 
     public MutableLiveData<Boolean> getIsExistUser() {

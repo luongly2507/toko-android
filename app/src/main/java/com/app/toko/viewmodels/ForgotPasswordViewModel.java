@@ -20,7 +20,7 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
     }
     public void getUser(String phone)
     {
-        userRepository.isExistUserByPhone(phone);
+       userRepository.isExistUserByPhone(phone);
     }
 
 }
