@@ -64,6 +64,11 @@ public class NewPasswordActitivy extends AppCompatActivity {
                 if(Objects.equals(newPasswordViewModel.password.getValue(), newPasswordViewModel.repeatPassword.getValue()))
                 {
                     newPasswordViewModel.updatePassword(phone , newPasswordViewModel.password.getValue());
+                    Intent intent = new Intent(NewPasswordActitivy.this , MainActivity.class);
+                    intent.putExtra("toFrag" , "account");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 }
                 else Toast.makeText(NewPasswordActitivy.this, "Mật khẩu không khớp !", Toast.LENGTH_SHORT).show();
             }
