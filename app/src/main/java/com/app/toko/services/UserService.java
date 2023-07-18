@@ -1,5 +1,6 @@
 package com.app.toko.services;
 
+import com.app.toko.models.CartItem;
 import com.app.toko.models.Category;
 import com.app.toko.models.User;
 
@@ -27,4 +28,9 @@ public interface UserService {
 
     @GET("api/v1/users")
     Call<Void> isExistUserByPhone(@Query("phone") String phone);
+
+    //http://localhost:3000/api/v1/users/90d6d0d0-7187-4685-83b5-ffa91bd8ef0f/carts/
+    @GET("api/v1/users/{id}/carts")
+    Call<List<CartItem>> getUserCartItems(@Path("id") UUID userId, @Header("Authorization") String authHeader);
+
 }

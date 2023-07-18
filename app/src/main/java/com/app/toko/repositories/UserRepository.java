@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.app.toko.models.CartItem;
 import com.app.toko.models.User;
 import com.app.toko.payload.request.AuthenticationRequest;
 import com.app.toko.payload.response.AuthenticationResponse;
@@ -18,6 +19,7 @@ import com.app.toko.services.UserService;
 import com.app.toko.utils.ApiService;
 import com.app.toko.views.activities.SignupSuccessActivity;
 
+import java.util.List;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -31,6 +33,7 @@ public class UserRepository {
     private MutableLiveData<Boolean> isExistUser;
     private SharedPreferences sharedPreferences;
     private Application application;
+    private MutableLiveData<List<CartItem>> cartItemsLiveData;
 
     public UserRepository(Application application){
         this.application = application;
@@ -39,6 +42,7 @@ public class UserRepository {
         this.userMutableLiveData = new MutableLiveData<>();
         this.isExistUser = new MutableLiveData<>();
         this.sharedPreferences = application.getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
+        this.cartItemsLiveData = new MutableLiveData<>();
     }
     public void authenticateUser(AuthenticationRequest authenticationRequest){
         authenticationService.authenticate(authenticationRequest).enqueue(
@@ -174,6 +178,30 @@ public class UserRepository {
     public MutableLiveData<Boolean> getIsExistUser() {
         return isExistUser;
     }
+
+    public MutableLiveData<List<CartItem>> getCartItemsLiveData() {
+        return cartItemsLiveData;
+    }
+
+    public void getUserCartItems(UUID userId, String token) {
+        userService.getUserCartItems(userId, token).enqueue(new Callback<List<CartItem>>() {
+            @Override
+            public void onResponse(Call<List<CartItem>> call, Response<List<CartItem>> response) {
+                if (response.isSuccessful()) {
+                    List<CartItem> cartItems = response.body();
+                    cartItemsLiveData.postValue(cartItems);
+                } else {
+                    Toast.makeText(application, "Lỗi không xác định, hãy thử lại sau !", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CartItem>> call, Throwable t) {
+                Toast.makeText(application, "Lỗi kết nối hoặc lỗi mạng !", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
 
 
