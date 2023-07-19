@@ -1,4 +1,4 @@
-package com.app.toko.models;
+package com.app.toko.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItem {
+public class CartResponse {
     private String bookId;
     private String userId;
     private int quantity;

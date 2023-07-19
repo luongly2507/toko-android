@@ -1,7 +1,7 @@
 package com.app.toko.services;
 
-import com.app.toko.models.CartItem;
-import com.app.toko.models.Category;
+import com.app.toko.payload.request.UpdateCartItemRequest;
+import com.app.toko.payload.response.CartResponse;
 import com.app.toko.models.User;
 
 import java.util.List;
@@ -30,7 +30,8 @@ public interface UserService {
     Call<Void> isExistUserByPhone(@Query("phone") String phone);
 
     //http://localhost:3000/api/v1/users/90d6d0d0-7187-4685-83b5-ffa91bd8ef0f/carts/
-    @GET("api/v1/users/{id}/carts")
-    Call<List<CartItem>> getUserCartItems(@Path("id") UUID userId, @Header("Authorization") String authHeader);
-
+    @GET("api/v1/users/{id}/carts/")
+    Call<List<CartResponse>> getUserCartItems(@Path("id") UUID userId, @Header("Authorization") String authHeader);
+    @PUT("api/v1/users/{id}/carts/")
+    Call<Void> updateCartItem(@Path("id") UUID id , @Header("Authorization") String authHeader , @Body UpdateCartItemRequest updateCartItemRequest);
 }

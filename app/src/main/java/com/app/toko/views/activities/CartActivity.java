@@ -33,7 +33,7 @@ public class CartActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         binding.setCartViewModel(cartViewModel);
-
+        sharedPreferences = getSharedPreferences("toko-preferences" , MODE_PRIVATE);
         setContentView(binding.getRoot());
 
         // Set up button back
@@ -47,20 +47,15 @@ public class CartActivity extends AppCompatActivity {
         cartItemAdapter = new CartItemAdapter();
         recyclerView.setAdapter(cartItemAdapter);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            userIdString = extras.getString("user_id");
-            token = extras.getString("token");
-        }
-        else {
-            Toast.makeText(this, "Không nhận được intent token", Toast.LENGTH_SHORT).show();
-        }
+
+        userIdString = sharedPreferences.getString("user_id" , null);
+        token = sharedPreferences.getString("access_token" , null);
 
         if (userIdString != null && token != null) {
             cartViewModel.fetchCartItems(UUID.fromString(userIdString), token);
         }
         else {
-            Toast.makeText(this, "Không nhận được token", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Lỗi xảy ra!", Toast.LENGTH_SHORT).show();
         }
 
         cartViewModel.getCartItemsLiveData().observe(this, cartItems -> cartItemAdapter.setCartItemList(cartItems));

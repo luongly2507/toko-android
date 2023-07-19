@@ -9,16 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.toko.R;
-import com.app.toko.models.CartItem;
+import com.app.toko.payload.response.CartResponse;
 
 import java.util.List;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder> {
 
-    private List<CartItem> cartItemList;
+    private List<CartResponse> cartResponseList;
 
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
+    public void setCartItemList(List<CartResponse> cartResponseList) {
+        this.cartResponseList = cartResponseList;
         notifyDataSetChanged();
     }
 
@@ -33,13 +33,13 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     @Override
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, int position) {
         // Hiển thị dữ liệu của mục trong giỏ hàng tại vị trí position
-        CartItem cartItem = cartItemList.get(position);
-        holder.bindData(cartItem);
+        CartResponse cartResponse = cartResponseList.get(position);
+        holder.bindData(cartResponse);
     }
 
     @Override
     public int getItemCount() {
-        return cartItemList != null ? cartItemList.size() : 0;
+        return cartResponseList != null ? cartResponseList.size() : 0;
     }
 
     public static class CartItemViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +53,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             tvQuantity = itemView.findViewById(R.id.editTextQuantity);
         }
 
-        public void bindData(CartItem cartItem) {
+        public void bindData(CartResponse cartResponse) {
             // Hiển thị dữ liệu của mục trong giỏ hàng
 //            tvBookName.setText(cartItem.getBookId());
 //            tvQuantity.setText(String.valueOf(cartItem.getQuantity()));
