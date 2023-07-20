@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.toko.adapters.CartItemAdapter;
 import com.app.toko.databinding.ActivityCartBinding;
 import com.app.toko.models.CartItem;
-import com.app.toko.repositories.UserRepository;
 import com.app.toko.viewmodels.CartViewModel;
 
 import java.math.BigDecimal;
@@ -25,21 +24,15 @@ import java.util.stream.Collectors;
 
 
 public class CartActivity extends AppCompatActivity {
-    private CartViewModel cartViewModel;
     private ActivityCartBinding binding;
-    private RecyclerView recyclerView;
     private CartItemAdapter cartItemAdapter;
-    private String userIdString;
-    private String token;
-    private SharedPreferences sharedPreferences;
-    private boolean isConnectedToServer = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         binding.setLifecycleOwner(this);
-        cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+        CartViewModel cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         binding.setCartViewModel(cartViewModel);
 
         setContentView(binding.getRoot());
@@ -55,16 +48,40 @@ public class CartActivity extends AppCompatActivity {
             cartItemAdapter.checkAllItems(isChecked);
         });
 
+        // Xóa các sản phẩm được check khỏi giỏ hàng
+        binding.textViewDelete.setOnClickListener(view -> {
+            List<CartItem> selectedItems = cartItemAdapter.getSelectedItems();
+            for (CartItem item : selectedItems) {
+                cartItemAdapter.removeCartItem(cartItemAdapter.getCartItemList().indexOf(item));
+            }
+
+            // Cập nhật lại giá tiền sau khi xóa
+            BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+            binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
+
+            // Bỏ check tất cả sau khi xóa
+            binding.checkBoxSelectAll.setChecked(false);
+        });
+
         // Khởi tạo RecyclerView và adapter
-        recyclerView = binding.recyclerViewCart;
+        RecyclerView recyclerView = binding.recyclerViewCart;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartItemAdapter = new CartItemAdapter();
         recyclerView.setAdapter(cartItemAdapter);
 
+        // Xóa các sản phẩm được chọn khỏi giỏ hàng
+        cartItemAdapter.setOnItemClickListener(position -> {
+            cartItemAdapter.removeCartItem(position);
+
+            // Cập nhật lại giá tiền sau khi xóa
+            BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+            binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
+        });
+
         // Lấy userId và token từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
-        userIdString = sharedPreferences.getString("user_id", null);
-        token = sharedPreferences.getString("access_token", null);
+        String userIdString = sharedPreferences.getString("user_id", null);
+        String token = sharedPreferences.getString("access_token", null);
 
         // Lấy danh sách giỏ hàng từ server
         cartViewModel.getCartResponsesLiveData().observe(this, cartResponses -> {
@@ -82,14 +99,17 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
+        boolean isConnectedToServer = false;
         if (userIdString != null && token != null) {
             cartViewModel.fetchCartItems(UUID.fromString(userIdString), token);
             isConnectedToServer = true;
         }
         else {
-            isConnectedToServer = false;
             binding.checkBoxSelectAll.setEnabled(false);
             Toast.makeText(this, "Không nhận được token", Toast.LENGTH_SHORT).show();
         }
+
+        binding.checkBoxSelectAll.setEnabled(isConnectedToServer);
+
     }
 }
