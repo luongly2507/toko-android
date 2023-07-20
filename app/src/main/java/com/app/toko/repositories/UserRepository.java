@@ -228,6 +228,26 @@ public class UserRepository {
             }
         });
     }
+
+    public void deleteCartItem(UUID userId, UUID bookId, String token) {
+        userService.deleteCartItem(userId, bookId, "Bearer " + token).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(application, "Xóa sản phẩm khỏi giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(application, "Lỗi khi xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Xử lý lỗi kết nối
+                Toast.makeText(application, "Lỗi kết nối khi xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
 
 

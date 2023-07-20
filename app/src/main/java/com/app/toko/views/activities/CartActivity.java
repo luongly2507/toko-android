@@ -37,6 +37,20 @@ public class CartActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
+        // Lấy userId và token từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
+        String userIdString = sharedPreferences.getString("user_id", null);
+        String token = sharedPreferences.getString("access_token", null);
+
+        boolean isConnectedToServer = false;
+        if (userIdString != null && token != null) {
+            cartViewModel.fetchCartItems(UUID.fromString(userIdString), token);
+        }
+        else {
+            Toast.makeText(this, "Không nhận được token", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Thiết lập sự kiện cho nút back
         binding.buttonBack.setOnClickListener(v -> {
             onBackPressed();
@@ -52,7 +66,13 @@ public class CartActivity extends AppCompatActivity {
         binding.textViewDelete.setOnClickListener(view -> {
             List<CartItem> selectedItems = cartItemAdapter.getSelectedItems();
             for (CartItem item : selectedItems) {
+                // Xóa phía người dùng
                 cartItemAdapter.removeCartItem(cartItemAdapter.getCartItemList().indexOf(item));
+
+                // Xóa phía database
+                UUID bookId = UUID.fromString(item.getBookId());
+                UUID userId = UUID.fromString(userIdString);
+                cartViewModel.deleteCartItem(userId, bookId, token);
             }
 
             // Cập nhật lại giá tiền sau khi xóa
@@ -69,19 +89,20 @@ public class CartActivity extends AppCompatActivity {
         cartItemAdapter = new CartItemAdapter();
         recyclerView.setAdapter(cartItemAdapter);
 
-        // Xóa các sản phẩm được chọn khỏi giỏ hàng
+        // Thêm sự kiện xóa các sản phẩm được chọn khỏi giỏ hàng
         cartItemAdapter.setOnItemClickListener(position -> {
-            cartItemAdapter.removeCartItem(position);
+            CartItem selectedItem = cartItemAdapter.getCartItemList().get(position);
 
-            // Cập nhật lại giá tiền sau khi xóa
+            // Xóa phía người dùng, cập nhật lại tổng giá
+            cartItemAdapter.removeCartItem(position);
             BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
             binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
-        });
 
-        // Lấy userId và token từ SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
-        String userIdString = sharedPreferences.getString("user_id", null);
-        String token = sharedPreferences.getString("access_token", null);
+            // Xóa ở database
+            UUID userId = UUID.fromString(userIdString);
+            UUID bookId = UUID.fromString(selectedItem.getBookId());
+            cartViewModel.deleteCartItem(userId, bookId, token);
+        });
 
         // Lấy danh sách giỏ hàng từ server
         cartViewModel.getCartResponsesLiveData().observe(this, cartResponses -> {
@@ -98,18 +119,6 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(this, "Không nhận được danh sách giỏ hàng", Toast.LENGTH_SHORT).show();
             }
         });
-
-        boolean isConnectedToServer = false;
-        if (userIdString != null && token != null) {
-            cartViewModel.fetchCartItems(UUID.fromString(userIdString), token);
-            isConnectedToServer = true;
-        }
-        else {
-            binding.checkBoxSelectAll.setEnabled(false);
-            Toast.makeText(this, "Không nhận được token", Toast.LENGTH_SHORT).show();
-        }
-
-        binding.checkBoxSelectAll.setEnabled(isConnectedToServer);
 
     }
 }
