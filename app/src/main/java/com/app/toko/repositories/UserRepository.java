@@ -16,6 +16,7 @@ import com.app.toko.payload.response.CartResponse;
 import com.app.toko.models.User;
 import com.app.toko.payload.request.AuthenticationRequest;
 import com.app.toko.payload.response.AuthenticationResponse;
+import com.app.toko.payload.response.CartResponse;
 import com.app.toko.services.AuthenticationService;
 import com.app.toko.services.UserService;
 import com.app.toko.utils.ApiService;
@@ -35,7 +36,7 @@ public class UserRepository {
     private MutableLiveData<Boolean> isExistUser , isSuccessful;
     private SharedPreferences sharedPreferences;
     private Application application;
-    private MutableLiveData<List<CartResponse>> cartItemsLiveData;
+    private MutableLiveData<List<CartResponse>> cartResponsesLiveData;
 
     public UserRepository(Application application){
         this.application = application;
@@ -45,7 +46,7 @@ public class UserRepository {
         this.isExistUser = new MutableLiveData<>();
         this.isSuccessful = new MutableLiveData<>();
         this.sharedPreferences = application.getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
-        this.cartItemsLiveData = new MutableLiveData<>();
+        this.cartResponsesLiveData = new MutableLiveData<>();
     }
     public void authenticateUser(AuthenticationRequest authenticationRequest){
         authenticationService.authenticate(authenticationRequest).enqueue(
@@ -182,8 +183,8 @@ public class UserRepository {
         return isExistUser;
     }
 
-    public MutableLiveData<List<CartResponse>> getCartItemsLiveData() {
-        return cartItemsLiveData;
+    public MutableLiveData<List<CartResponse>> getCartResponsesLiveData() {
+        return cartResponsesLiveData;
     }
 
     public void getUserCartItems(UUID userId, String token) {
@@ -191,8 +192,7 @@ public class UserRepository {
             @Override
             public void onResponse(Call<List<CartResponse>> call, Response<List<CartResponse>> response) {
                 if (response.isSuccessful()) {
-                    List<CartResponse> cartResponses = response.body();
-                    cartItemsLiveData.postValue(cartResponses);
+                    cartResponsesLiveData.postValue(response.body());
                 } else {
                     Toast.makeText(application, "Lỗi không xác định, hãy thử lại sau !", Toast.LENGTH_SHORT).show();
                 }
@@ -227,7 +227,6 @@ public class UserRepository {
                 Toast.makeText(application, "Lỗi kết nối hoặc lỗi mạng !", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }
 

@@ -14,16 +14,16 @@ import java.util.UUID;
 
 public class CartViewModel extends AndroidViewModel {
     private UserRepository userRepository;
-    private MutableLiveData<List<CartResponse>> cartItemsLiveData;
+    private MutableLiveData<List<CartResponse>> cartResponsesLiveData;
 
     public CartViewModel(@NonNull Application application) {
         super(application);
         userRepository = new UserRepository(application);
-        cartItemsLiveData = userRepository.getCartItemsLiveData();
+        cartResponsesLiveData = userRepository.getCartResponsesLiveData();
     }
 
-    public MutableLiveData<List<CartResponse>> getCartItemsLiveData() {
-        return cartItemsLiveData;
+    public MutableLiveData<List<CartResponse>> getCartResponsesLiveData() {
+        return cartResponsesLiveData;
     }
 
     public void fetchCartItems(UUID userId, String token) {
