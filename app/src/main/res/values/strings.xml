@@ -59,4 +59,5 @@
     <string name="buy">Mua hàng</string>
     <string name="choose_all">Tất cả</string>
     <string name="total_cost">Tổng giá</string>
+    <string name="delete">Xóa</string>
 </resources>
