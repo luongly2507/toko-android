@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="15dp"
-    android:layout_marginTop="27dp"
+    android:layout_marginTop="15dp"
     app:cardCornerRadius="15dp"
     app:cardElevation="8dp">
 
@@ -55,12 +55,12 @@
             app:layout_constraintTop_toTopOf="@+id/imageViewBookImg" />
 
         <TextView
-            android:id="@+id/textviewCost"
+            android:id="@+id/textViewPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="125.000 đồng"
             android:textColor="@color/design_default_color_error"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/layoutQuantity"
             app:layout_constraintStart_toStartOf="@+id/textviewBookName"
             app:layout_constraintTop_toBottomOf="@id/textviewBookName" />
@@ -70,12 +70,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewBookImg"
-            app:layout_constraintStart_toStartOf="@+id/textviewCost">
+            app:layout_constraintStart_toStartOf="@+id/textViewPrice">
 
             <ImageButton
                 android:id="@+id/imageButtonAdd"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -86,21 +86,22 @@
                 android:id="@+id/editTextQuantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="@color/transparent"
                 android:text="10"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
+                android:paddingHorizontal="10dp"
+                android:inputType="number"
+                android:background="@drawable/et_round_border"
                 app:layout_constraintBottom_toBottomOf="parent"
+
                 app:layout_constraintStart_toEndOf="@+id/imageButtonAdd"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/imageButtonMinus"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/editTextQuantity"
@@ -111,8 +112,8 @@
 
         <ImageButton
             android:id="@+id/imageButtonDelete"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:background="@color/transparent"
             app:layout_constraintBottom_toBottomOf="@+id/layoutQuantity"
             app:layout_constraintEnd_toEndOf="@+id/textviewBookName"
