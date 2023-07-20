@@ -16,7 +16,10 @@ import com.app.toko.models.CartItem;
 import com.app.toko.repositories.UserRepository;
 import com.app.toko.viewmodels.CartViewModel;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,6 +32,7 @@ public class CartActivity extends AppCompatActivity {
     private String userIdString;
     private String token;
     private SharedPreferences sharedPreferences;
+    private boolean isConnectedToServer = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +44,18 @@ public class CartActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
-        // Set up button back
+        // Thiết lập sự kiện cho nút back
         binding.buttonBack.setOnClickListener(v -> {
             onBackPressed();
         });
 
-        // Set up RecyclerView
+        // Thiết lập sự kiện cho checkbox Tất cả
+        binding.checkBoxSelectAll.setOnClickListener(view -> {
+            boolean isChecked = binding.checkBoxSelectAll.isChecked();
+            cartItemAdapter.checkAllItems(isChecked);
+        });
+
+        // Khởi tạo RecyclerView và adapter
         recyclerView = binding.recyclerViewCart;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartItemAdapter = new CartItemAdapter();
@@ -56,22 +66,29 @@ public class CartActivity extends AppCompatActivity {
         userIdString = sharedPreferences.getString("user_id", null);
         token = sharedPreferences.getString("access_token", null);
 
+        // Lấy danh sách giỏ hàng từ server
         cartViewModel.getCartResponsesLiveData().observe(this, cartResponses -> {
             if (cartResponses != null) {
                 List<CartItem> cartItems = cartResponses.stream()
                         .map(CartItem::fromCartResponse)
                         .collect(Collectors.toList());
                 cartItemAdapter.setCartItemList(cartItems);
+
+                // Hiển thị tổng giá tiền
+                BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
             } else {
-                // Xử lý khi danh sách rỗng hoặc có lỗi
                 Toast.makeText(this, "Không nhận được danh sách giỏ hàng", Toast.LENGTH_SHORT).show();
             }
         });
 
         if (userIdString != null && token != null) {
             cartViewModel.fetchCartItems(UUID.fromString(userIdString), token);
+            isConnectedToServer = true;
         }
         else {
+            isConnectedToServer = false;
+            binding.checkBoxSelectAll.setEnabled(false);
             Toast.makeText(this, "Không nhận được token", Toast.LENGTH_SHORT).show();
         }
     }

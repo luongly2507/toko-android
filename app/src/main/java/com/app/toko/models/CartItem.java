@@ -20,6 +20,20 @@ public class CartItem {
     private BigDecimal price;
     private int quantity;
     private String imgSource;
+    private boolean isChecked;
+
+    public BigDecimal getTotalPrice() {
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
 
     public static CartItem fromCartResponse(CartResponse cartResponse) {
         BookResponse bookResponse = cartResponse.getBookResponse();

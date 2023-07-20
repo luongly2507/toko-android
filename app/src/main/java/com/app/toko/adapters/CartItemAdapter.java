@@ -3,6 +3,7 @@ package com.app.toko.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,18 +15,15 @@ import com.app.toko.models.CartItem;
 import com.app.toko.utils.ApiService;
 import com.bumptech.glide.Glide;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder> {
 
     private List<CartItem> cartItemList;
-
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
@@ -47,11 +45,42 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         return cartItemList != null ? cartItemList.size() : 0;
     }
 
+    public void setCartItemList(List<CartItem> cartItemList) {
+        this.cartItemList = cartItemList;
+        notifyDataSetChanged();
+    }
+
+    public BigDecimal calculateTotalPrice() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (CartItem cartItem : cartItemList) {
+            total = total.add(cartItem.getTotalPrice());
+        }
+        return total;
+    }
+
+    public void checkAllItems(boolean isChecked) {
+        for (CartItem cartItem : cartItemList) {
+            cartItem.setChecked(isChecked);
+        }
+        notifyDataSetChanged();
+    }
+
+    public List<CartItem> getSelectedItems() {
+        List<CartItem> selectedItems = new ArrayList<>();
+        for (CartItem item : cartItemList) {
+            if (item.isChecked()) {
+                selectedItems.add(item);
+            }
+        }
+        return selectedItems;
+    }
+
     public static class CartItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivBookImg;
         private TextView tvBookName;
         private TextView tvPrice;
         private TextView tvQuantity;
+        private CheckBox checkBox;
 
         public CartItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,6 +88,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             tvBookName = itemView.findViewById(R.id.textviewBookName);
             tvPrice = itemView.findViewById(R.id.textViewPrice);
             tvQuantity = itemView.findViewById(R.id.editTextQuantity);
+            checkBox = itemView.findViewById(R.id.checkBoxItem);
         }
 
         public void bindData(CartItem cartItem) {
@@ -72,6 +102,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
             String price = DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(cartItem.getPrice());
             tvPrice.setText(price);
+
+            checkBox.setChecked(cartItem.isChecked());
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                cartItem.setChecked(isChecked);
+            });
         }
     }
 }
