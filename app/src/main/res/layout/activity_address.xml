@@ -12,7 +12,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".views.activities.AddressActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -105,7 +106,8 @@
                     app:endIconMode="clear_text"
                     style="?attr/textInputOutlinedStyle">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/sdt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="SĐT"
@@ -127,14 +129,14 @@
                     android:paddingHorizontal="15dp"
                     style="@style/MyExposedDropdownMenuStyle">
 
-                    <AutoCompleteTextView
+                        <AutoCompleteTextView
                         android:id="@+id/city"
                         android:hint="Tỉnh / Thành phố"
-                        android:text="@={AddressViewModel.city}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:inputType="none"/>
+                        android:inputType="none"
+                        android:text="@={AddressViewModel.tp}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,11 +158,11 @@
                     <AutoCompleteTextView
                         android:id="@+id/district"
                         android:hint= "Quận / Huyện"
-                        android:text="@={AddressViewModel.district}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:inputType="text"/>
+                        android:inputType="none"
+                        android:text="@={AddressViewModel.quan}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,11 +184,11 @@
                     <AutoCompleteTextView
                         android:id="@+id/wards"
                         android:hint="Phường / Xã"
-                        android:text="@={AddressViewModel.wards}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:inputType="text"/>
+                        android:inputType="none"
+                        android:text="@={AddressViewModel.phuong}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -211,7 +213,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Tòa nhà, số nhà, tên đường"
-                        android:text="@={AddressViewModel.address}"/>
+                        android:text="@={AddressViewModel.duong}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

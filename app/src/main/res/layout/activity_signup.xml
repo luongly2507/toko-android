@@ -138,7 +138,7 @@
                     app:errorEnabled="true"
                     app:error="@{signupViewModel.passwordErrorMessage}"
                     app:endIconMode="password_toggle">
-                    >
+
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPassword"
@@ -147,8 +147,7 @@
                         android:background="@android:color/transparent"
                         android:hint="@string/password"
                         android:text="@={signupViewModel.password}"
-                        android:inputType="textPassword"
-                        />
+                        android:inputType="textPassword"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
