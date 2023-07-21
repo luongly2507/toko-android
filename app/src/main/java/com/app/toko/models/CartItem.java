@@ -19,12 +19,13 @@ public class CartItem {
     private String bookId;
     private String title;
     private BigDecimal price;
-    private int quantity;
+    private int cartQuantity;
+    private int stockQuantity;
     private String imgSource;
     private boolean isChecked;
 
     public BigDecimal getTotalPrice() {
-        return price.multiply(BigDecimal.valueOf(quantity));
+        return price.multiply(BigDecimal.valueOf(cartQuantity));
     }
 
     public boolean isChecked() {
@@ -51,7 +52,8 @@ public class CartItem {
                 .bookId(bookResponse.getId().toString())
                 .title(bookResponse.getTitle())
                 .price(bookResponse.getPrice())
-                .quantity(cartResponse.getQuantity())
+                .cartQuantity(cartResponse.getQuantity())
+                .stockQuantity(bookResponse.getQuantity())
                 .imgSource(imgSource)
                 .build();
     }

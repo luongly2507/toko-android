@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.toko.adapters.CartItemAdapter;
 import com.app.toko.databinding.ActivityCartBinding;
 import com.app.toko.models.CartItem;
+import com.app.toko.payload.request.UpdateCartItemRequest;
 import com.app.toko.viewmodels.CartViewModel;
 
 import java.math.BigDecimal;
@@ -104,6 +105,7 @@ public class CartActivity extends AppCompatActivity {
             cartViewModel.deleteCartItem(userId, bookId, token);
         });
 
+        // Thêm sự kiện check/uncheck cho các item
         cartItemAdapter.setOnCartItemCheckedChangeListener((position, isChecked) -> {
             cartItemAdapter.getCartItemList().get(position).setChecked(isChecked);
 
@@ -124,6 +126,25 @@ public class CartActivity extends AppCompatActivity {
                 binding.checkBoxSelectAll.setChecked(isAllChecked);
             }
         });
+
+        // Thêm sự kiện thay đổi số lượng sách
+        cartItemAdapter.setOnCartItemChangeListener((position, newQuantity) -> {
+            cartItemAdapter.notifyItemChanged(position);
+
+            // Tính lại tổng tiền và cập nhật lên giao diện
+            BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+            binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(totalPrice));
+
+            // Lấy thông tin sách được thay đổi số lượng
+            CartItem changedCartItem = cartItemAdapter.getCartItemList().get(position);
+            UUID bookId = UUID.fromString(changedCartItem.getBookId());
+            UUID userId = UUID.fromString(userIdString);
+
+            // Cập nhật số lượng sách trong database
+            UpdateCartItemRequest updateCartItemRequest = new UpdateCartItemRequest(bookId , newQuantity);
+            cartViewModel.updateCartItem(userId, token, updateCartItemRequest);
+        });
+
 
         // Lấy danh sách giỏ hàng từ server
         cartViewModel.getCartResponsesLiveData().observe(this, cartResponses -> {

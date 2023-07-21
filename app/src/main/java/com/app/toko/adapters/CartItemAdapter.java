@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,9 +28,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     private List<CartItem> cartItemList;
     private OnItemClickListener onItemClickListener;
     private OnCartItemCheckedChangeListener cartItemCheckedChangeListener;
+    private OnCartItemQuantityChangedListener onCartItemQuantityChangedListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public interface OnCartItemCheckedChangeListener {
@@ -40,9 +46,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         this.cartItemCheckedChangeListener = listener;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public interface OnCartItemQuantityChangedListener {
+        void onCartItemQuantityChanged(int position, int newQuantity);
     }
+
+    public void setOnCartItemChangeListener(OnCartItemQuantityChangedListener listener) {
+        this.onCartItemQuantityChangedListener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -56,7 +67,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, int position) {
         // Hiển thị dữ liệu của mục trong giỏ hàng tại vị trí position
         CartItem cartItem = cartItemList.get(position);
-        holder.bindData(cartItem);
+        holder.bindData(cartItem, onCartItemQuantityChangedListener);
     }
 
     @Override
@@ -79,7 +90,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             if (cartItem.isChecked()) {
                 total = total.add(cartItem
                         .getPrice()
-                        .multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+                        .multiply(BigDecimal.valueOf(cartItem.getCartQuantity())));
             }
         }
         return total;
@@ -113,7 +124,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         private ImageView ivBookImg;
         private TextView tvBookName;
         private TextView tvPrice;
-        private TextView tvQuantity;
+        private EditText etQuantity;
         private CheckBox checkBox;
         private ImageButton imageButtonDelete;
 
@@ -124,7 +135,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             ivBookImg = itemView.findViewById(R.id.imageViewBookImg);
             tvBookName = itemView.findViewById(R.id.textviewBookName);
             tvPrice = itemView.findViewById(R.id.textViewPrice);
-            tvQuantity = itemView.findViewById(R.id.editTextQuantity);
+            etQuantity = itemView.findViewById(R.id.editTextQuantity);
             checkBox = itemView.findViewById(R.id.checkBoxItem);
             imageButtonDelete = itemView.findViewById(R.id.imageButtonDelete); // Initialize the ImageButton
 
@@ -140,19 +151,50 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
         }
 
-        public void bindData(CartItem cartItem) {
+        public void bindData(CartItem cartItem, OnCartItemQuantityChangedListener onCartItemQuantityChangedListener) {
             // Hiển thị dữ liệu của mục trong giỏ hàng
             Glide.with(itemView)
                     .load(ApiService.SERVICE_BASE_URL + "img/upload/" + cartItem.getImgSource())
                     .into(ivBookImg);
 
             tvBookName.setText(cartItem.getTitle());
-            tvQuantity.setText(String.valueOf(cartItem.getQuantity()));
+            etQuantity.setText(String.valueOf(cartItem.getCartQuantity()));
 
             String price = DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(cartItem.getPrice());
             tvPrice.setText(price);
 
             checkBox.setChecked(cartItem.isChecked());
+
+            etQuantity.setOnEditorActionListener((v, actionId, event) -> {
+                if (!etQuantity.getText().toString().isEmpty()) {
+                    // Xử lý khi người dùng nhập xong
+                    String quantityText = etQuantity.getText().toString();
+                    try {
+                        int quantity = Integer.parseInt(quantityText);
+                        // Kiểm tra số lượng nhập vào có hợp lệ không
+                        if (quantity <= 0 || quantity > cartItem.getStockQuantity()) {
+                            // Nếu số lượng không hợp lệ, tự động điền số lượng là 1
+                            quantity = 1;
+                            etQuantity.setText(String.valueOf(quantity));
+                        }
+                        // Cập nhật cartItem với số lượng mới
+                        cartItem.setCartQuantity(quantity);
+                    } catch (NumberFormatException e) {
+                        // Nếu nhập vào không phải số, tự động điền số lượng là 1
+                        etQuantity.setText("1");
+                        cartItem.setCartQuantity(1);
+                    }
+
+                    if (onCartItemQuantityChangedListener != null) {
+                        int newQuantity = Integer.parseInt(etQuantity.getText().toString());
+                        onCartItemQuantityChangedListener.onCartItemQuantityChanged(getAdapterPosition(), newQuantity);
+                    }
+                }
+
+                etQuantity.clearFocus();
+                return false;
+            });
+
         }
     }
 }

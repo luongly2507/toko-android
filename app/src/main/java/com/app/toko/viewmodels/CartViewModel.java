@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.toko.models.CartItem;
+import com.app.toko.payload.request.UpdateCartItemRequest;
 import com.app.toko.payload.response.CartResponse;
 import com.app.toko.repositories.UserRepository;
 
@@ -36,5 +37,9 @@ public class CartViewModel extends AndroidViewModel {
 
     public void deleteCartItem(UUID userId, UUID bookId, String token) {
         userRepository.deleteCartItem(userId, bookId, token);
+    }
+
+public void updateCartItem(UUID userId, String token, UpdateCartItemRequest updateCartItemRequest) {
+        userRepository.updateCartItem(userId, token, updateCartItemRequest);
     }
 }
