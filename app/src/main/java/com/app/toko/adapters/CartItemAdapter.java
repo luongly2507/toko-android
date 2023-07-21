@@ -29,6 +29,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     private OnItemClickListener onItemClickListener;
     private OnCartItemCheckedChangeListener cartItemCheckedChangeListener;
     private OnCartItemQuantityChangedListener onCartItemQuantityChangedListener;
+    private OnQuantityChangeByButtonListener quantityChangeListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -54,13 +55,22 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         this.onCartItemQuantityChangedListener = listener;
     }
 
+    public interface OnQuantityChangeByButtonListener {
+        void onQuantityIncrease(int position);
+
+        void onQuantityDecrease(int position);
+    }
+
+    public void setOnQuantityChangeByButtonListener(OnQuantityChangeByButtonListener listener) {
+        this.quantityChangeListener = listener;
+    }
 
     @NonNull
     @Override
     public CartItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Định nghĩa layout cho mục trong giỏ hàng (cart item)
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_cart_item, parent, false);
-        return new CartItemViewHolder(view, onItemClickListener, cartItemCheckedChangeListener);
+        return new CartItemViewHolder(view, onItemClickListener, cartItemCheckedChangeListener, quantityChangeListener);
     }
 
     @Override
@@ -127,10 +137,13 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         private EditText etQuantity;
         private CheckBox checkBox;
         private ImageButton imageButtonDelete;
+        private ImageButton buttonPlus;
+        private ImageButton buttonMinus;
 
         public CartItemViewHolder(@NonNull View itemView,
                                   OnItemClickListener onItemClickListener,
-                                  OnCartItemCheckedChangeListener cartItemCheckedChangeListener) {
+                                  OnCartItemCheckedChangeListener cartItemCheckedChangeListener,
+                                  OnQuantityChangeByButtonListener quantityChangeListener) {
             super(itemView);
             ivBookImg = itemView.findViewById(R.id.imageViewBookImg);
             tvBookName = itemView.findViewById(R.id.textviewBookName);
@@ -149,6 +162,16 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                 }
             });
 
+            buttonPlus = itemView.findViewById(R.id.imageButtonPlus);
+            buttonMinus = itemView.findViewById(R.id.imageButtonMinus);
+
+            buttonPlus.setOnClickListener(v -> {
+                quantityChangeListener.onQuantityIncrease(getAdapterPosition());
+            });
+
+            buttonMinus.setOnClickListener(v -> {
+                quantityChangeListener.onQuantityDecrease(getAdapterPosition());
+            });
         }
 
         public void bindData(CartItem cartItem, OnCartItemQuantityChangedListener onCartItemQuantityChangedListener) {
@@ -172,11 +195,16 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                     try {
                         int quantity = Integer.parseInt(quantityText);
                         // Kiểm tra số lượng nhập vào có hợp lệ không
-                        if (quantity <= 0 || quantity > cartItem.getStockQuantity()) {
-                            // Nếu số lượng không hợp lệ, tự động điền số lượng là 1
+                        if (quantity <= 0) {
+                            etQuantity.setText("1");
                             quantity = 1;
-                            etQuantity.setText(String.valueOf(quantity));
                         }
+                        else
+                            if (quantity > cartItem.getStockQuantity()) {
+                            etQuantity.setText(String.valueOf(cartItem.getStockQuantity()));
+                            quantity = cartItem.getStockQuantity();
+                            }
+
                         // Cập nhật cartItem với số lượng mới
                         cartItem.setCartQuantity(quantity);
                     } catch (NumberFormatException e) {

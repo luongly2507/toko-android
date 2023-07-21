@@ -127,7 +127,7 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        // Thêm sự kiện thay đổi số lượng sách
+        // Thêm sự kiện thay đổi số lượng sách bằng EditText
         cartItemAdapter.setOnCartItemChangeListener((position, newQuantity) -> {
             cartItemAdapter.notifyItemChanged(position);
 
@@ -143,6 +143,59 @@ public class CartActivity extends AppCompatActivity {
             // Cập nhật số lượng sách trong database
             UpdateCartItemRequest updateCartItemRequest = new UpdateCartItemRequest(bookId , newQuantity);
             cartViewModel.updateCartItem(userId, token, updateCartItemRequest);
+        });
+
+        // Thêm sự kiện thay đổi số lượng sách bằng nút +/-
+        cartItemAdapter.setOnQuantityChangeByButtonListener(new CartItemAdapter.OnQuantityChangeByButtonListener() {
+            @Override
+            public void onQuantityIncrease(int position) {
+                CartItem changedCartItem = cartItemAdapter.getCartItemList().get(position);
+                if(changedCartItem.getCartQuantity() < changedCartItem.getStockQuantity()) {
+                    changedCartItem.setCartQuantity(changedCartItem.getCartQuantity() + 1);
+                    cartItemAdapter.notifyItemChanged(position);
+
+                    // Tính lại tổng tiền và cập nhật lên giao diện
+                    BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                    binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(totalPrice));
+
+                    // Lấy thông tin sách được thay đổi số lượng
+                    UUID bookId = UUID.fromString(changedCartItem.getBookId());
+                    UUID userId = UUID.fromString(userIdString);
+
+                    // Cập nhật số lượng sách trong database
+                    UpdateCartItemRequest updateCartItemRequest = new UpdateCartItemRequest(bookId , changedCartItem.getCartQuantity());
+                    cartViewModel.updateCartItem(userId, token, updateCartItemRequest);
+                }
+                else {
+                    Toast.makeText(CartActivity.this, "Số lượng sách trong giỏ hàng đã đạt giới hạn", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onQuantityDecrease(int position) {
+                CartItem changedCartItem = cartItemAdapter.getCartItemList().get(position);
+
+                // Giảm số lượng sách trong giỏ hàng
+                if(changedCartItem.getCartQuantity() > 1) {
+                    changedCartItem.setCartQuantity(changedCartItem.getCartQuantity() - 1);
+                    cartItemAdapter.notifyItemChanged(position);
+
+                    // Tính lại tổng tiền và cập nhật lên giao diện
+                    BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                    binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(totalPrice));
+
+                    // Lấy thông tin sách được thay đổi số lượng
+                    UUID bookId = UUID.fromString(changedCartItem.getBookId());
+                    UUID userId = UUID.fromString(userIdString);
+
+                    // Cập nhật số lượng sách trong database
+                    UpdateCartItemRequest updateCartItemRequest = new UpdateCartItemRequest(bookId , changedCartItem.getCartQuantity());
+                    cartViewModel.updateCartItem(userId, token, updateCartItemRequest);
+                }
+                else {
+                    Toast.makeText(CartActivity.this, "Số lượng sách trong giỏ hàng phải lớn hơn 0", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
 

@@ -71,7 +71,7 @@
             app:layout_constraintStart_toStartOf="@+id/textViewPrice">
 
             <ImageButton
-                android:id="@+id/imageButtonAdd"
+                android:id="@+id/imageButtonMinus"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@color/aliceblue"
@@ -92,11 +92,11 @@
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
 
-                app:layout_constraintStart_toEndOf="@+id/imageButtonAdd"
+                app:layout_constraintStart_toEndOf="@+id/imageButtonMinus"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/imageButtonMinus"
+                android:id="@+id/imageButtonPlus"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@color/aliceblue"

@@ -39,7 +39,7 @@ public class CartViewModel extends AndroidViewModel {
         userRepository.deleteCartItem(userId, bookId, token);
     }
 
-public void updateCartItem(UUID userId, String token, UpdateCartItemRequest updateCartItemRequest) {
+    public void updateCartItem(UUID userId, String token, UpdateCartItemRequest updateCartItemRequest) {
         userRepository.updateCartItem(userId, token, updateCartItemRequest);
     }
 }
