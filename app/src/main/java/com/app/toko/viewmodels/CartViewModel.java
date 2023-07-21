@@ -34,10 +34,6 @@ public class CartViewModel extends AndroidViewModel {
         userRepository.getUserCartItems(userId, token);
     }
 
-    public void setSelectedItems(List<CartItem> selectedItems) {
-        selectedItemsLiveData.setValue(selectedItems);
-    }
-
     public void deleteCartItem(UUID userId, UUID bookId, String token) {
         userRepository.deleteCartItem(userId, bookId, token);
     }

@@ -104,6 +104,27 @@ public class CartActivity extends AppCompatActivity {
             cartViewModel.deleteCartItem(userId, bookId, token);
         });
 
+        cartItemAdapter.setOnCartItemCheckedChangeListener((position, isChecked) -> {
+            cartItemAdapter.getCartItemList().get(position).setChecked(isChecked);
+
+            // Cập nhật lại tổng giá
+            BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+            binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
+
+            // Bỏ check tất cả nếu có 1 item không được check
+            if (!isChecked) {
+                binding.checkBoxSelectAll.setChecked(false);
+            }
+            else {
+                // Kiểm tra xem tất cả các item có được check không
+                boolean isAllChecked = cartItemAdapter
+                        .getCartItemList()
+                        .stream()
+                        .allMatch(CartItem::isChecked);
+                binding.checkBoxSelectAll.setChecked(isAllChecked);
+            }
+        });
+
         // Lấy danh sách giỏ hàng từ server
         cartViewModel.getCartResponsesLiveData().observe(this, cartResponses -> {
             if (cartResponses != null) {
@@ -120,5 +141,9 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
+        binding.checkBoxSelectAll.setOnClickListener(view -> {
+            boolean isChecked = binding.checkBoxSelectAll.isChecked();
+            cartItemAdapter.checkAllItems(isChecked);
+        });
     }
 }

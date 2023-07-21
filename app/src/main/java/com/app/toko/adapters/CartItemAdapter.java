@@ -26,9 +26,18 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
     private List<CartItem> cartItemList;
     private OnItemClickListener onItemClickListener;
+    private OnCartItemCheckedChangeListener cartItemCheckedChangeListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    public interface OnCartItemCheckedChangeListener {
+        void onCartItemCheckedChange(int position, boolean isChecked);
+    }
+
+    public void setOnCartItemCheckedChangeListener(OnCartItemCheckedChangeListener listener) {
+        this.cartItemCheckedChangeListener = listener;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -40,7 +49,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public CartItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Định nghĩa layout cho mục trong giỏ hàng (cart item)
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_cart_item, parent, false);
-        return new CartItemViewHolder(view, onItemClickListener);
+        return new CartItemViewHolder(view, onItemClickListener, cartItemCheckedChangeListener);
     }
 
     @Override
@@ -67,7 +76,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public BigDecimal calculateTotalPrice() {
         BigDecimal total = BigDecimal.ZERO;
         for (CartItem cartItem : cartItemList) {
-            total = total.add(cartItem.getTotalPrice());
+            if (cartItem.isChecked()) {
+                total = total.add(cartItem
+                        .getPrice()
+                        .multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+            }
         }
         return total;
     }
@@ -96,7 +109,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         }
     }
 
-
     public static class CartItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivBookImg;
         private TextView tvBookName;
@@ -104,9 +116,10 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         private TextView tvQuantity;
         private CheckBox checkBox;
         private ImageButton imageButtonDelete;
-        private CartItemAdapter cartItemAdapter;
 
-        public CartItemViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
+        public CartItemViewHolder(@NonNull View itemView,
+                                  OnItemClickListener onItemClickListener,
+                                  OnCartItemCheckedChangeListener cartItemCheckedChangeListener) {
             super(itemView);
             ivBookImg = itemView.findViewById(R.id.imageViewBookImg);
             tvBookName = itemView.findViewById(R.id.textviewBookName);
@@ -119,6 +132,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                 onItemClickListener.onItemClick(getAdapterPosition());
             });
 
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (cartItemCheckedChangeListener != null) {
+                    cartItemCheckedChangeListener.onCartItemCheckedChange(getAdapterPosition(), isChecked);
+                }
+            });
 
         }
 
@@ -135,9 +153,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             tvPrice.setText(price);
 
             checkBox.setChecked(cartItem.isChecked());
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                cartItem.setChecked(isChecked);
-            });
         }
     }
 }
