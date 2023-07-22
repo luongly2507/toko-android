@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.toko.models.CartItem;
 import com.app.toko.payload.request.UpdateCartItemRequest;
+import com.app.toko.payload.response.BookResponse;
 import com.app.toko.payload.response.CartResponse;
 import com.app.toko.repositories.UserRepository;
 
@@ -41,5 +42,18 @@ public class CartViewModel extends AndroidViewModel {
 
     public void updateCartItem(UUID userId, String token, UpdateCartItemRequest updateCartItemRequest) {
         userRepository.updateCartItem(userId, token, updateCartItemRequest);
+    }
+
+    public BookResponse getBookResponseForCartItem(CartItem cartItem) {
+        List<CartResponse> cartResponses = cartResponsesLiveData.getValue();
+        if (cartResponses != null) {
+            for (CartResponse cartResponse : cartResponses) {
+                UUID bookId = UUID.fromString(cartItem.getBookId());
+                if (cartResponse.getBookResponse().getId().equals(bookId)) {
+                    return cartResponse.getBookResponse();
+                }
+            }
+        }
+        return null;
     }
 }

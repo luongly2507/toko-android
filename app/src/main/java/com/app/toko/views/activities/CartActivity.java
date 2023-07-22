@@ -1,6 +1,7 @@
 package com.app.toko.views.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import com.app.toko.adapters.CartItemAdapter;
 import com.app.toko.databinding.ActivityCartBinding;
 import com.app.toko.models.CartItem;
 import com.app.toko.payload.request.UpdateCartItemRequest;
+import com.app.toko.payload.response.BookResponse;
+import com.app.toko.payload.response.CartResponse;
 import com.app.toko.viewmodels.CartViewModel;
 
 import java.math.BigDecimal;
@@ -43,7 +46,6 @@ public class CartActivity extends AppCompatActivity {
         String userIdString = sharedPreferences.getString("user_id", null);
         String token = sharedPreferences.getString("access_token", null);
 
-        boolean isConnectedToServer = false;
         if (userIdString != null && token != null) {
             cartViewModel.fetchCartItems(UUID.fromString(userIdString), token);
         }
@@ -90,19 +92,37 @@ public class CartActivity extends AppCompatActivity {
         cartItemAdapter = new CartItemAdapter();
         recyclerView.setAdapter(cartItemAdapter);
 
-        // Thêm sự kiện xóa các sản phẩm được chọn khỏi giỏ hàng
-        cartItemAdapter.setOnItemClickListener(position -> {
-            CartItem selectedItem = cartItemAdapter.getCartItemList().get(position);
+        cartItemAdapter.setOnItemClickListener(new CartItemAdapter.OnItemClickListener() {
+            // Thêm sự kiện xóa các sản phẩm bằng nút delete
+            @Override
+            public void onItemDeleteClick(int position) {
+                CartItem selectedItem = cartItemAdapter.getCartItemList().get(position);
 
-            // Xóa phía người dùng, cập nhật lại tổng giá
-            cartItemAdapter.removeCartItem(position);
-            BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
-            binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
+                // Xóa phía người dùng, cập nhật lại tổng giá
+                cartItemAdapter.removeCartItem(position);
+                BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
 
-            // Xóa ở database
-            UUID userId = UUID.fromString(userIdString);
-            UUID bookId = UUID.fromString(selectedItem.getBookId());
-            cartViewModel.deleteCartItem(userId, bookId, token);
+                // Xóa ở database
+                UUID userId = UUID.fromString(userIdString);
+                UUID bookId = UUID.fromString(selectedItem.getBookId());
+                cartViewModel.deleteCartItem(userId, bookId, token);
+            }
+
+            // Thêm sự kiện chuyển sang màn hình chi tiết sách khi click vào item
+            @Override
+            public void onItemClick(CartItem cartItem, Context context) {
+                BookResponse bookResponse = cartViewModel.getBookResponseForCartItem(cartItem);
+
+                if (bookResponse != null) {
+                    Intent intent = new Intent(context , BookDetailActivity.class);
+                    intent.putExtra("BookDetail" , bookResponse);
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "Chức năng đang phát triển", Toast.LENGTH_SHORT).show();
+                }
+
+            }
         });
 
         // Thêm sự kiện check/uncheck cho các item

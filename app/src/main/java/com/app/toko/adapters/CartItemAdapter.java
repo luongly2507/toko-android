@@ -1,5 +1,6 @@
 package com.app.toko.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.toko.R;
@@ -30,9 +32,12 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     private OnCartItemCheckedChangeListener cartItemCheckedChangeListener;
     private OnCartItemQuantityChangedListener onCartItemQuantityChangedListener;
     private OnQuantityChangeByButtonListener quantityChangeListener;
+    private Context context;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemDeleteClick(int position);
+
+        void onItemClick(CartItem cartItem, Context context);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -70,6 +75,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public CartItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Định nghĩa layout cho mục trong giỏ hàng (cart item)
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_cart_item, parent, false);
+        context = parent.getContext();
         return new CartItemViewHolder(view, onItemClickListener, cartItemCheckedChangeListener, quantityChangeListener);
     }
 
@@ -77,7 +83,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, int position) {
         // Hiển thị dữ liệu của mục trong giỏ hàng tại vị trí position
         CartItem cartItem = cartItemList.get(position);
-        holder.bindData(cartItem, onCartItemQuantityChangedListener);
+        holder.bindData(cartItem, onCartItemQuantityChangedListener, onItemClickListener, context);
     }
 
     @Override
@@ -139,6 +145,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         private ImageButton imageButtonDelete;
         private ImageButton buttonPlus;
         private ImageButton buttonMinus;
+        private CardView cardView;
 
         public CartItemViewHolder(@NonNull View itemView,
                                   OnItemClickListener onItemClickListener,
@@ -153,7 +160,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             imageButtonDelete = itemView.findViewById(R.id.imageButtonDelete); // Initialize the ImageButton
 
             imageButtonDelete.setOnClickListener(v -> {
-                onItemClickListener.onItemClick(getAdapterPosition());
+                onItemClickListener.onItemDeleteClick(getAdapterPosition());
             });
 
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -172,9 +179,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             buttonMinus.setOnClickListener(v -> {
                 quantityChangeListener.onQuantityDecrease(getAdapterPosition());
             });
+
+            cardView = itemView.findViewById(R.id.cardViewCartItem);
         }
 
-        public void bindData(CartItem cartItem, OnCartItemQuantityChangedListener onCartItemQuantityChangedListener) {
+        public void bindData(CartItem cartItem,
+                             OnCartItemQuantityChangedListener onCartItemQuantityChangedListener,
+                             OnItemClickListener onItemClickListener,
+                             Context context) {
             // Hiển thị dữ liệu của mục trong giỏ hàng
             Glide.with(itemView)
                     .load(ApiService.SERVICE_BASE_URL + "img/upload/" + cartItem.getImgSource())
@@ -221,6 +233,10 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
                 etQuantity.clearFocus();
                 return false;
+            });
+
+            cardView.setOnClickListener(v -> {
+                onItemClickListener.onItemClick(cartItem, context);
             });
 
         }
