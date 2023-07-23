@@ -70,6 +70,7 @@
                     android:paddingHorizontal="16dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/address_HT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -77,6 +78,7 @@
                     app:counterEnabled="true"
                     app:counterMaxLength="50"
                     app:errorEnabled="true"
+                    app:errorTextAppearance="@style/TextAppearance.AppCompat.Small"
                     app:endIconMode="clear_text"
                     style="?attr/textInputOutlinedStyle">
 
@@ -96,12 +98,13 @@
                     android:paddingHorizontal="16dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/address_SDT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:paddingHorizontal="15dp"
                     app:counterEnabled="true"
-                    app:counterMaxLength="10"
+                    app:counterMaxLength="11"
                     app:errorEnabled="true"
                     app:endIconMode="clear_text"
                     style="?attr/textInputOutlinedStyle">
@@ -149,10 +152,12 @@
                     android:paddingHorizontal="16dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/address_Quan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:paddingHorizontal="15dp"
+                    app:errorEnabled="true"
                     style="@style/MyExposedDropdownMenuStyle">
 
                     <AutoCompleteTextView
@@ -175,10 +180,12 @@
                     android:paddingHorizontal="16dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/address_Phuong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:paddingHorizontal="15dp"
+                    app:errorEnabled="true"
                     style="@style/MyExposedDropdownMenuStyle">
 
                     <AutoCompleteTextView
@@ -201,6 +208,7 @@
                     android:paddingHorizontal="16dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/address_DC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

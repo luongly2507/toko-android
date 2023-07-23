@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.app.toko.databinding.FragmentAccountBinding;
 import com.app.toko.models.User;
 import com.app.toko.viewmodels.AccountViewModel;
+import com.app.toko.views.activities.AddressActivity;
 import com.app.toko.views.activities.LoginActivity;
 
 import java.util.Objects;
@@ -69,6 +70,14 @@ public class AccountFragment extends Fragment {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("access_token" , null).apply();
                     startActivity(new Intent(getContext(), LoginActivity.class));
+                }
+            });
+
+            binding.btnAddressesManagement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), AddressActivity.class);
+                    startActivity(intent);
                 }
             });
 

@@ -9,18 +9,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class Contact {
+    private String id;
     private String telephone;
     private String city;
     private String district;
     private String ward;
     private String line;
 
-    public Contact(String telephone, String city, String district, String ward, String line) {
+    public Contact(String id, String telephone, String city, String district, String ward, String line) {
+        this.id = id;
         this.telephone = telephone;
         this.city = city;
         this.district = district;
         this.ward = ward;
         this.line = line;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTelephone() {
@@ -66,7 +76,8 @@ public class Contact {
     @Override
     public String toString() {
         return "Contact{" +
-                "telephone='" + telephone + '\'' +
+                "id='" + id + '\'' +
+                ", telephone='" + telephone + '\'' +
                 ", city='" + city + '\'' +
                 ", district='" + district + '\'' +
                 ", ward='" + ward + '\'' +

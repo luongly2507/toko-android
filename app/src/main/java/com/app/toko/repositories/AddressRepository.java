@@ -2,6 +2,7 @@ package com.app.toko.repositories;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -49,7 +50,7 @@ public class AddressRepository {
         addressService.getCities().enqueue(new Callback<Map<String, City>>() {
             @Override
             public void onResponse(Call<Map<String, City>> call, Response<Map<String, City>> response) {
-                Toast.makeText(appContext, "Get API City Success", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API City Success");
                 if (response.isSuccessful()) {
 
                     Map<String, City> cities = response.body();
@@ -62,7 +63,7 @@ public class AddressRepository {
 
             @Override
             public void onFailure(Call<Map<String, City>> call, Throwable t) {
-                Toast.makeText(appContext, "Get API City Failure", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API City Failure");
             }
         });
     }
@@ -71,7 +72,7 @@ public class AddressRepository {
         addressService.getDistricts().enqueue(new Callback<Map<String, District>>() {
             @Override
             public void onResponse(Call<Map<String, District>> call, Response<Map<String, District>> response) {
-                Toast.makeText(appContext, "Get API District Success", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API District Success");
                 if (response.isSuccessful()) {
 
                     Map<String, District> districts = response.body();
@@ -84,7 +85,7 @@ public class AddressRepository {
 
             @Override
             public void onFailure(Call<Map<String, District>> call, Throwable t) {
-                Toast.makeText(appContext, "Get API District Failure", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API District Failure");
             }
         });
     }
@@ -93,7 +94,7 @@ public class AddressRepository {
         addressService.getWards().enqueue(new Callback<Map<String, Wards>>() {
             @Override
             public void onResponse(Call<Map<String, Wards>> call, Response<Map<String, Wards>> response) {
-                Toast.makeText(appContext, "Get API Wards Success", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API Wards Success");
                 if (response.isSuccessful()) {
 
                     Map<String, Wards> wards = response.body();
@@ -106,7 +107,7 @@ public class AddressRepository {
 
             @Override
             public void onFailure(Call<Map<String, Wards>> call, Throwable t) {
-                Toast.makeText(appContext, "Get API Wards Failure", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API Wards Failure");
             }
         });
     }
@@ -115,7 +116,7 @@ public class AddressRepository {
         addressService.getDistrictsDetail(CityCode).enqueue(new Callback<Map<String, District>>() {
             @Override
             public void onResponse(Call<Map<String, District>> call, Response<Map<String, District>> response) {
-                Toast.makeText(appContext, "Get API District by City Success", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API District by City Success");
                 if (response.isSuccessful()) {
 
                     Map<String, District> districts = response.body();
@@ -128,7 +129,7 @@ public class AddressRepository {
 
             @Override
             public void onFailure(Call<Map<String, District>> call, Throwable t) {
-                Toast.makeText(appContext, "Get API District by City Failure", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API District by City Failure");
             }
         });
     }
@@ -137,7 +138,7 @@ public class AddressRepository {
         addressService.getWardsDetial(DistrictCode).enqueue(new Callback<Map<String, Wards>>() {
             @Override
             public void onResponse(Call<Map<String, Wards>> call, Response<Map<String, Wards>> response) {
-                Toast.makeText(appContext, "Get API Wards by District Success", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API Wards by District Success");
                 if (response.isSuccessful()) {
 
                     Map<String, Wards> wards = response.body();
@@ -150,7 +151,7 @@ public class AddressRepository {
 
             @Override
             public void onFailure(Call<Map<String, Wards>> call, Throwable t) {
-                Toast.makeText(appContext, "Get API Wards by District Failure", Toast.LENGTH_SHORT).show();
+                Log.d("Address", "Get API Wards by District Failure");
             }
         });
     }

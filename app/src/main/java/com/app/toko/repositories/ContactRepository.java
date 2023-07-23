@@ -15,6 +15,7 @@ import org.checkerframework.checker.units.qual.C;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,11 +35,11 @@ public class ContactRepository {
         this.contactMutableLiveData = new MutableLiveData<>();
     }
 
-    public void LoadContact(){
-        contactService.getAllContact().enqueue(new Callback<ArrayList<Contact>>() {
+    public void LoadContact(UUID userId, String token){
+        contactService.getAllContact(userId, token).enqueue(new Callback<ArrayList<Contact>>() {
             @Override
             public void onResponse(Call<ArrayList<Contact>> call, Response<ArrayList<Contact>> response) {
-                Toast.makeText(appContext, "Get API Contact Success", Toast.LENGTH_SHORT).show();
+                Log.d("Contact","Get API Contact Success" );
 
                 ArrayList<Contact> contacts = response.body();
                 contactMutableLiveData.postValue(contacts);
@@ -46,28 +47,28 @@ public class ContactRepository {
 
             @Override
             public void onFailure(Call<ArrayList<Contact>> call, Throwable t) {
-                Toast.makeText(appContext, "Get API Contact Failure", Toast.LENGTH_SHORT).show();
+                Log.d("Contact","Get API Contact Failure" );
                 contactMutableLiveData.postValue(null);
             }
         });
     }
 
-    public void RegisterContact(MutableLiveData<Contact> contact){
+    public void RegisterContact(MutableLiveData<Contact> contact, UUID userId, String token){
 
-        contactService.createNewContact(contact.getValue()).enqueue(new Callback<Contact>() {
+        contactService.createNewContact(contact.getValue(), userId, token).enqueue(new Callback<Contact>() {
             @Override
             public void onResponse(Call<Contact> call, Response<Contact> response) {
-                Toast.makeText(appContext, "Post API Contact Success", Toast.LENGTH_SHORT).show();
+                Log.d("Contact","Post API Contact Success");
 
                 Contact contactResult = response.body();
                 if (contactResult != null){
-                    Log.e("Post Contact",contactResult.toString());
+                    Log.d("Contact",contactResult.toString());
                 }
             }
 
             @Override
             public void onFailure(Call<Contact> call, Throwable t) {
-                Toast.makeText(appContext, "Post API Contact Failure", Toast.LENGTH_SHORT).show();
+                Log.d("Contact","Post API Contact Failure");
             }
         });
     }

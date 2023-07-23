@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiService {
 
-    public static final String SERVICE_BASE_URL = "http://192.168.56.1:3000/";
+    public static final String SERVICE_BASE_URL = "http://192.168.1.11:3000/";
     public static final String SERVICE_BASE_URL2 = "https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/";
 
     public static CategoryService getCategoryService() {
