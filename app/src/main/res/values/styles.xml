@@ -8,4 +8,14 @@
         <item name="android:overlapAnchor">false</item>
         <item name="android:dropDownVerticalOffset">4dp</item>
     </style>
+    <style name="HorizontalSeparator">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/deepskyblue</item>
+    </style>
+    <style name="VerticalSeparator">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@color/deepskyblue</item>
+    </style>
 </resources>

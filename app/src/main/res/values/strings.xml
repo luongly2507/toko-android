@@ -55,4 +55,15 @@
     <string name="change_password">Thay đổi mật khẩu</string>
     <string name="new_password">Mật khẩu mới</string>
     <string name="repeat_password">Nhập lại mật khẩu</string>
+    <string name="total_order_cost">Tổng tiền</string>
+    <string name="order">Đặt hàng</string>
+    <string name="order_confirmation">Xác nhận đơn hàng</string>
+    <string name="address">Địa chỉ</string>
+    <string name="choose_shipping_method">Chọn phương thức giao hàng</string>
+    <string name="economical_delivery">Giao hàng tiết kiệm</string>
+    <string name="package_deliver_on">Gói: Giao vào </string>
+    <string name="choose_Payment_Method">Chọn phương thức thanh toán</string>
+    <string name="cash_payment">Thanh toán bằng tiền mặt</string>
+    <string name="product_value">Tạm tính</string>
+    <string name="shipping_fee">Phí vận chuyển</string>
 </resources>
