@@ -1,7 +1,5 @@
 package com.app.toko.repositories;
 
-import android.widget.Toast;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -10,6 +8,7 @@ import com.app.toko.payload.response.Page;
 import com.app.toko.services.BookService;
 import com.app.toko.utils.ApiService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -102,6 +101,25 @@ public class BookRespository {
                 System.out.println("Fail: " + t);
                 bookResponseLiveData.postValue(null);
                 totalPages.postValue(0);
+            }
+        });
+    }
+    public void getAllBooksByPurchase(String sort)
+    {
+        bookService.getAllBookByPurchase(sort).enqueue(new Callback<Page<BookResponse>>() {
+            @Override
+            public void onResponse(Call<Page<BookResponse>> call, Response<Page<BookResponse>> response) {
+                if(response.isSuccessful())
+                {
+                    if(response.body() != null) bookResponseLiveData.postValue(response.body().getContent());
+                }
+                else bookResponseLiveData.postValue(null);
+            }
+
+            @Override
+            public void onFailure(Call<Page<BookResponse>> call, Throwable t) {
+                System.out.println("Fail: " + t);
+                bookResponseLiveData.postValue(null);
             }
         });
     }

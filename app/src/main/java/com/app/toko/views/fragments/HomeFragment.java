@@ -36,6 +36,8 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
 
@@ -60,45 +62,30 @@ public class HomeFragment extends Fragment {
         binding.buttonSearch.setOnClickListener(v -> {startActivity(new Intent(this.getContext(), SearchBookActivity.class));});
         binding.buttonCart.setOnClickListener(v -> {startActivity(new Intent(this.getContext(), CartActivity.class));});
         binding.tabLayoutTrending.addTab(binding.tabLayoutTrending.newTab().setText("Xu hướng mỗi ngày"));
-        binding.tabLayoutTrending.addTab(binding.tabLayoutTrending.newTab().setText("Sách HOT - Giảm sốc"));
-        binding.tabLayoutTrending.addTab(binding.tabLayoutTrending.newTab().setText("Bestseller ngoại ngữ"));
+        binding.tabLayoutTrending.addTab(binding.tabLayoutTrending.newTab().setText("Sách mới về"));
+        binding.tabLayoutTrending.addTab(binding.tabLayoutTrending.newTab().setText("Sách ngoại ngữ mới"));
         binding.recyclerViewTrending.setLayoutManager(new GridLayoutManager(getActivity() , 2));
-        binding.viewPager2Banner.setAdapter(new ViewPagerAdapter(bannerList));
-        if(!load)
-        {
-            homeViewModel.getAllBooks();
-
-        }
-        load = true;
-        homeViewModel.getBookResponseLivaData().observe(getViewLifecycleOwner(), new Observer<List<BookResponse>>() {
-            @Override
-            public void onChanged(List<BookResponse> bookResponses) {
-                if(bookResponses != null)
-                {
-                    bookResponseList.addAll(bookResponses);
-                    adapter = new BookRecyclerViewAdapter(bookResponseList);
-                    binding.recyclerViewTrending.setAdapter(adapter);
-                }
-            }
-        });
-        homeViewModel.totalPages.observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if(integer - 1 <= pageNumber)
-                {
-                    binding.buttonMore.setVisibility(GONE);
-                    //binding.textViewNothing.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        binding.buttonMore.setOnClickListener(v ->{
-            homeViewModel.getAllBooksByPage(++pageNumber);
-        });
-        /*binding.tabLayoutTrending.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        bannerAdapter = new ViewPagerAdapter(bannerList);
+        binding.viewPager2Banner.setAdapter(bannerAdapter);
+        binding.tabLayoutTrending.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
-
+                String sort;
+                switch (tab.getPosition())
+                {
+                    case 0:
+                        sort = "quantity,desc";
+                        homeViewModel.getAllBooksByPurchase(sort);
+                        break;
+                    case 1:
+                        sort = "publishcationDate,desc";
+                        homeViewModel.getAllBooksBySort(sort , "");
+                        break;
+                    case 2:
+                        sort = "publishcationDate,desc";
+                        homeViewModel.getAllBooksBySort(sort , "Tiếng Anh");
+                        break;
+                }
             }
 
             @Override
@@ -110,7 +97,31 @@ public class HomeFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });*/
+        });
+        homeViewModel.getAllBooksByPurchase("quantity,desc");
+        homeViewModel.getBookResponseLivaData().observe(getViewLifecycleOwner(), new Observer<List<BookResponse>>() {
+            @Override
+            public void onChanged(List<BookResponse> bookResponses) {
+                if(bookResponses != null)
+                {
+                    if(bookResponses.size() < 10 && bookResponseList.size() > 0)
+                    {
+                        Random random = new Random();
+                        for(int i = 0 ; i < 10 ;)
+                        {
+                            int number = random.nextInt(bookResponseList.size());
+                            if(!bookResponses.contains(bookResponseList.get(number)))
+                            {
+                                bookResponses.add(bookResponseList.get(number));
+                                i++;
+                            }
+                        }
+                    }
+                    adapter = new BookRecyclerViewAdapter(bookResponses.stream().limit(10).collect(Collectors.toList()));
+                    binding.recyclerViewTrending.setAdapter(adapter);
+                }
+            }
+        });
 
         return binding.getRoot();
     }

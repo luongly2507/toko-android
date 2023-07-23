@@ -4,8 +4,6 @@ import com.app.toko.payload.response.BookResponse;
 import com.app.toko.payload.response.Page;
 
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -21,5 +19,6 @@ public interface BookService {
 
     @GET("api/v1/books/search/")
     Call<Page<BookResponse>> getAllBookByTitle(@Query("title") String title  , @Query("language") String language , @Query("sort") String sort , @Query("page") int pageNumber );
-
+    @GET("api/v1/books/purchase/")
+    Call<Page<BookResponse>> getAllBookByPurchase(@Query("sort") String sort);
 }

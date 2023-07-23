@@ -13,26 +13,27 @@ public class HomeViewModel extends ViewModel {
 
     private BookRespository bookRespository;
     private LiveData<List<BookResponse>> bookResponseLivaData;
-    public LiveData<Integer> totalPages;
-
     public HomeViewModel() {
         bookRespository = new BookRespository();
         bookResponseLivaData = bookRespository.getBookResponseLiveData();
-        totalPages = bookRespository.getTotalPagesLiveData();
+
     }
-    public boolean getMoreBook(int pageNumber)
+    public void getAllBooksByPurchase(String sort)
     {
-        this.getAllBooksByPage(pageNumber);
-        return true;
-
+        bookRespository.getAllBooksByPurchase(sort);
     }
-    public LiveData<List<BookResponse>> getBookResponseLivaData() {
-        return bookResponseLivaData;
-    }
-
     public void getAllBooks()
     {
         bookRespository.getAllBooks();
     }
-    public void getAllBooksByPage(int page) {bookRespository.getAllBooksByPage(page);}
+    public void getAllBooksBySort(String sort , String language)
+    {
+        bookRespository.getAllBooksByTitle("" , language , sort , 0);
+    }
+
+    public LiveData<List<BookResponse>> getBookResponseLivaData() {
+        return bookResponseLivaData;
+    }
+
+
 }
