@@ -180,6 +180,7 @@ public class AddressViewModel extends AndroidViewModel {
     }
 
     public void ConvertToWards(Map<String, Wards> wardsMap){
+
         if (wardsMap != null) {
             List<String> wardsNames = new ArrayList<>();
             for (Wards wards : wardsMap.values()) {
@@ -211,17 +212,17 @@ public class AddressViewModel extends AndroidViewModel {
 
     public boolean isValidCity (){
         if (tp == null || tp.getValue() == null) return false;
-        return !TextUtils.isEmpty(tp.getValue());
+        return !TextUtils.isEmpty(tp.getValue().trim());
     }
 
     public  boolean isValidDistrict() {
         if (quan == null || quan.getValue() == null) return false;
-        return !TextUtils.isEmpty(quan.getValue());
+        return !TextUtils.isEmpty(quan.getValue().trim());
     }
 
     public  boolean isValidWards() {
         if (phuong == null || phuong.getValue() == null) return false;
-        return !TextUtils.isEmpty(phuong.getValue());
+        return !TextUtils.isEmpty(phuong.getValue().trim());
     }
 
     public boolean isValidAddress() {
@@ -252,7 +253,7 @@ public class AddressViewModel extends AndroidViewModel {
     public  boolean isValidLocation()
     {
         if (location == null || location.getValue() == null) return false;
-        return !TextUtils.isEmpty(location.getValue());
+        return !TextUtils.isEmpty(location.getValue().trim());
     }
 
 

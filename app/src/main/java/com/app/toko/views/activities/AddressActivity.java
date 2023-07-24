@@ -67,7 +67,6 @@ public class AddressActivity extends AppCompatActivity {
         mActivityAddressBinding.buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddressActivity.this, "Back", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -76,14 +75,39 @@ public class AddressActivity extends AppCompatActivity {
         mActivityAddressBinding.buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (addressViewModel.isValidName()
-                        && addressViewModel.isValidPhone()
-                        && addressViewModel.isValidCity()
-                        && addressViewModel.isValidDistrict()
-                        && addressViewModel.isValidWards()
-                        && addressViewModel.isValidAddress()
-                        && addressViewModel.isValidLocation()) {
+                boolean isValid = true;
+                if (!addressViewModel.isValidName()) {
+                    Toast.makeText(AddressActivity.this, "Họ và tên không hợp lệ", Toast.LENGTH_SHORT).show();
+                    isValid = false;
+                }
+                if (!addressViewModel.isValidPhone()) {
+                    Toast.makeText(AddressActivity.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+                    isValid = false;
+                }
+                if (!addressViewModel.isValidCity()) {
+                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn tỉnh / thành phố ", Toast.LENGTH_SHORT).show();
+                    isValid = false;
+                }
+                if (!addressViewModel.isValidDistrict()) {
+                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn quận / huyện ", Toast.LENGTH_SHORT).show();
+                    isValid = false;
+                }
+                if (!addressViewModel.isValidWards()) {
+                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn phường / xã ", Toast.LENGTH_SHORT).show();
+                    isValid = false;
+                }
+                if (!addressViewModel.isValidAddress()){
+                    Toast.makeText(AddressActivity.this, "Địa chỉ giao hàng không hợp lệ", Toast.LENGTH_SHORT).show();
+                    isValid = false;
+                }
+                if (!addressViewModel.isValidLocation())
+                {
+                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn loại địa chỉ", Toast.LENGTH_SHORT).show();
+                    isValid = false;
+                }
 
+                if (isValid == false) return;
+                else {
                     addressViewModel.registerAddress();
                     addressViewModel.getContact().observe(AddressActivity.this, new Observer<Contact>() {
                         @Override
@@ -92,14 +116,10 @@ public class AddressActivity extends AppCompatActivity {
                                 Log.d("Contact", "NULL");
                                 return;
                             }
-                            Toast.makeText(AddressActivity.this, "Xác Nhận", Toast.LENGTH_SHORT).show();
                             addressViewModel.getContactRepository().RegisterContact(addressViewModel.getContact(),UUID.fromString(userIDStr),"Bearer " + access_token);
                             finish();
                         }
                     });
-
-                } else {
-                    Toast.makeText(AddressActivity.this, "Không thể xác nhận", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -179,7 +199,14 @@ public class AddressActivity extends AppCompatActivity {
 
         addressViewModel.quan.observe(this, s -> {
             if (s != null) {
-                addressViewModel.loadWards();
+                if (s.equals(""))
+                {
+                    wards= new String[0];
+                    setupACTwards();
+                }
+                else {
+                    addressViewModel.loadWards();
+                }
                 addressViewModel.phuong.setValue("");
             }
         });
@@ -214,37 +241,6 @@ public class AddressActivity extends AppCompatActivity {
             }
         });
 
-        addressViewModel.quan.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if (!addressViewModel.isValidCity()){
-                    mActivityAddressBinding.addressQuan.setError("Bạn chưa nhập tỉnh / thành phố");
-                }
-                else mActivityAddressBinding.addressQuan.setErrorEnabled(false);
-            }
-        });
-
-        addressViewModel.phuong.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if (!addressViewModel.isValidDistrict()){
-                    mActivityAddressBinding.addressPhuong.setError("Bạn chưa nhập quận / huyên");
-                }
-                else mActivityAddressBinding.addressPhuong.setErrorEnabled(false);
-            }
-        });
-
-        addressViewModel.getContact().observe(this, new Observer<Contact>() {
-            @Override
-            public void onChanged(Contact contact) {
-                Log.d("AddressViewModel", contact.getId());
-                Log.d("AddressViewModel", contact.getTelephone());
-                Log.d("AddressViewModel", contact.getCity());
-                Log.d("AddressViewModel", contact.getDistrict());
-                Log.d("AddressViewModel", contact.getWard());
-                Log.d("AddressViewModel", contact.getLine());
-            }
-        });
 
     }
 
@@ -265,7 +261,6 @@ public class AddressActivity extends AppCompatActivity {
     }
 
     private void setupACTwards() {
-
         AutoCompleteTextView ACTwards = mActivityAddressBinding.wards;
         ArrayAdapter<String> arrayAdapter3 = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, wards);
         ACTwards.setAdapter(arrayAdapter3);
