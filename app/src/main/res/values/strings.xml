@@ -67,4 +67,14 @@
     <string name="product_value">Tạm tính</string>
     <string name="shipping_fee">Phí vận chuyển</string>
     <string name="old_password_string">Mật khẩu cũ</string>
+    <string name="orders">Đơn hàng</string>
+    <string name="order_id">Mã đơn hàng: </string>
+    <string name="order_date">Ngày đặt hàng: </string>
+    <string name="order_state">Trạng thái: </string>
+    <string name="receiver_address">Địa chỉ người nhận</string>
+    <string name="shipping_method">Hình thức giao hàng</string>
+    <string name="shipping_info">Thông tin vận chuyển</string>
+    <string name="track_order">Theo dõi đơn hàng</string>
+    <string name="payment_method">Hình thức thanh toán</string>
+    <string name="package_info">Thông tin đơn hàng</string>
 </resources>
