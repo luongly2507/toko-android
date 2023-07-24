@@ -66,4 +66,5 @@
     <string name="cash_payment">Thanh toán bằng tiền mặt</string>
     <string name="product_value">Tạm tính</string>
     <string name="shipping_fee">Phí vận chuyển</string>
+    <string name="old_password_string">Mật khẩu cũ</string>
 </resources>

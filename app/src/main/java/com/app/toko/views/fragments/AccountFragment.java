@@ -19,6 +19,7 @@ import com.app.toko.databinding.FragmentAccountBinding;
 import com.app.toko.models.User;
 import com.app.toko.viewmodels.AccountViewModel;
 import com.app.toko.views.activities.LoginActivity;
+import com.app.toko.views.activities.UpdateInfoActivity;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -60,6 +61,13 @@ public class AccountFragment extends Fragment {
                         binding.textViewEmail.setText(user.getEmail());
                         binding.textViewPhone.setText(user.getPhone());
                     }
+                    else
+                    {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear().apply();
+                        Intent intent = new Intent(getActivity() , LoginActivity.class);
+                        startActivity(intent);
+                    }
 
                 }
             });
@@ -67,11 +75,17 @@ public class AccountFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("access_token" , null).apply();
+                    editor.clear().apply();
                     startActivity(new Intent(getContext(), LoginActivity.class));
                 }
             });
-
+            binding.textViewEditAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity() , UpdateInfoActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             return binding.getRoot();
         }

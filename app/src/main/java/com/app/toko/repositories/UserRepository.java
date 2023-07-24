@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.toko.models.User;
 import com.app.toko.payload.request.AuthenticationRequest;
+import com.app.toko.payload.request.UpdateUserInfoRequest;
 import com.app.toko.payload.response.AuthenticationResponse;
 import com.app.toko.services.AuthenticationService;
 import com.app.toko.services.UserService;
@@ -169,6 +170,24 @@ public class UserRepository {
             }
         });
 
+    }
+    public void updateUserInfo(UUID userId , UpdateUserInfoRequest updateUserInfoRequest , String token)
+    {
+        userService.updateUserInfo(userId , updateUserInfoRequest ,  token).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    Toast.makeText(application, "Thông tin đã được thay đổi!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println(t.getMessage());
+                Toast.makeText(application, "Lỗi kết nối !", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public MutableLiveData<Boolean> getIsExistUser() {

@@ -22,7 +22,6 @@ public class NewPasswordViewModel extends AndroidViewModel {
 
     public void updatePassword(String phone , String password)
     {
-
         userRepository.updateUserPassword(phone, password);
     }
 

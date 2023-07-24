@@ -126,6 +126,12 @@ public class BookDetailActivity extends AppCompatActivity {
                 }
             }
         });
+        binding.buttonBuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
 

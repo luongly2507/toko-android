@@ -2,6 +2,9 @@ package com.app.toko.services;
 
 import com.app.toko.models.Category;
 import com.app.toko.models.User;
+import com.app.toko.payload.request.UpdateUserInfoRequest;
+
+import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,4 +30,7 @@ public interface UserService {
 
     @GET("api/v1/users")
     Call<Void> isExistUserByPhone(@Query("phone") String phone);
+
+    @PUT("api/v1/users/{id}")
+    Call<Void> updateUserInfo(@Path("id") UUID userId , @Body UpdateUserInfoRequest updateUserInfoRequest , @Header("Authorization") String authHeader);
 }
