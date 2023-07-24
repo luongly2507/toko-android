@@ -71,7 +71,14 @@ public class CartActivity extends AppCompatActivity {
             List<CartItem> selectedItems = cartItemAdapter.getSelectedItems();
             for (CartItem item : selectedItems) {
                 // Xóa phía người dùng
-                cartItemAdapter.removeCartItem(cartItemAdapter.getCartItemList().indexOf(item));
+
+                boolean isEmpty = cartItemAdapter.removeCartItem(cartItemAdapter
+                                                                .getCartItemList()
+                                                                .indexOf(item));
+                if (isEmpty) {
+                    binding.recyclerViewCart.setVisibility(View.GONE);
+                    binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
+                }
 
                 // Xóa phía database
                 UUID bookId = UUID.fromString(item.getBookId());
@@ -94,13 +101,18 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setAdapter(cartItemAdapter);
 
         cartItemAdapter.setOnItemClickListener(new CartItemAdapter.OnItemClickListener() {
-            // Thêm sự kiện xóa các sản phẩm bằng nút delete
+            // Thêm sự kiện xóa các sản phẩm bằng nút icon delete
             @Override
             public void onItemDeleteClick(int position) {
                 CartItem selectedItem = cartItemAdapter.getCartItemList().get(position);
 
                 // Xóa phía người dùng, cập nhật lại tổng giá
-                cartItemAdapter.removeCartItem(position);
+                boolean isEmpty = cartItemAdapter.removeCartItem(position);
+                if (isEmpty) {
+                    binding.recyclerViewCart.setVisibility(View.GONE);
+                    binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
+                }
+
                 BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
                 binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
 
@@ -215,7 +227,12 @@ public class CartActivity extends AppCompatActivity {
                 }
                 else {
                     // Xóa phía người dùng, cập nhật lại tổng giá
-                    cartItemAdapter.removeCartItem(position);
+                    boolean isEmpty = cartItemAdapter.removeCartItem(position);
+                    if (isEmpty) {
+                        binding.recyclerViewCart.setVisibility(View.GONE);
+                        binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
+                    }
+
                     BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
                     binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
 
@@ -230,7 +247,10 @@ public class CartActivity extends AppCompatActivity {
 
         // Lấy danh sách giỏ hàng từ server
         cartViewModel.getCartResponsesLiveData().observe(this, cartResponses -> {
-            if (cartResponses != null) {
+            if (cartResponses != null && cartResponses.size() > 0) {
+                binding.recyclerViewCart.setVisibility(View.VISIBLE);
+                binding.textViewEmptyCartMessage.setVisibility(View.GONE);
+
                 List<CartItem> cartItems = cartResponses.stream()
                         .map(CartItem::fromCartResponse)
                         .collect(Collectors.toList());
@@ -240,7 +260,8 @@ public class CartActivity extends AppCompatActivity {
                 BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
                 binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
             } else {
-                Toast.makeText(this, "Không nhận được danh sách giỏ hàng", Toast.LENGTH_SHORT).show();
+                binding.recyclerViewCart.setVisibility(View.GONE);
+                binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
             }
         });
 

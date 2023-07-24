@@ -129,11 +129,13 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         return selectedItems;
     }
 
-    public void removeCartItem(int position) {
+    public boolean removeCartItem(int position) {
         if (position >= 0 && position < cartItemList.size()) {
             cartItemList.remove(position);
             notifyItemRemoved(position);
         }
+
+        return cartItemList.size() == 0;
     }
 
     public static class CartItemViewHolder extends RecyclerView.ViewHolder {
