@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -213,7 +214,15 @@ public class CartActivity extends AppCompatActivity {
                     cartViewModel.updateCartItem(userId, token, updateCartItemRequest);
                 }
                 else {
-                    Toast.makeText(CartActivity.this, "Số lượng sách trong giỏ hàng phải lớn hơn 0", Toast.LENGTH_SHORT).show();
+                    // Xóa phía người dùng, cập nhật lại tổng giá
+                    cartItemAdapter.removeCartItem(position);
+                    BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                    binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
+
+                    // Xóa ở database
+                    UUID userId = UUID.fromString(userIdString);
+                    UUID bookId = UUID.fromString(changedCartItem.getBookId());
+                    cartViewModel.deleteCartItem(userId, bookId, token);
                 }
             }
         });
@@ -239,5 +248,11 @@ public class CartActivity extends AppCompatActivity {
             boolean isChecked = binding.checkBoxSelectAll.isChecked();
             cartItemAdapter.checkAllItems(isChecked);
         });
+
+        binding.cardViewUserInfo.setOnClickListener(v -> {
+            Intent intent = new Intent(CartActivity.this, AddressActivity.class);
+            startActivity(intent);
+        });
+
     }
 }
