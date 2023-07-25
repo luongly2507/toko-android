@@ -67,4 +67,8 @@
     <string name="product_value">Tạm tính</string>
     <string name="shipping_fee">Phí vận chuyển</string>
     <string name="old_password_string">Mật khẩu cũ</string>
+    <string name="my_orders">Đơn hàng của tôi</string>
+    <string name="see_details">Xem chi tiết</string>
+    <string name="repurchase">Mua lại</string>
+    <string name="amount">Số lượng: </string>
 </resources>
