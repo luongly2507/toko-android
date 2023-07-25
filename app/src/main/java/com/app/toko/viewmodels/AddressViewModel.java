@@ -71,6 +71,7 @@ public class AddressViewModel extends AndroidViewModel {
         Contact mcontact = new Contact(
                 id,
                 sdt.getValue(),
+                ht.getValue(),
                 tp.getValue(),
                 quan.getValue(),
                 phuong.getValue(),

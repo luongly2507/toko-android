@@ -19,6 +19,7 @@ import com.app.toko.databinding.FragmentAccountBinding;
 import com.app.toko.models.User;
 import com.app.toko.viewmodels.AccountViewModel;
 import com.app.toko.views.activities.AddressActivity;
+import com.app.toko.views.activities.AddressSelectionActivity;
 import com.app.toko.views.activities.LoginActivity;
 
 import java.util.Objects;
@@ -76,7 +77,7 @@ public class AccountFragment extends Fragment {
             binding.btnAddressesManagement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), AddressActivity.class);
+                    Intent intent = new Intent(getContext(), AddressSelectionActivity.class);
                     startActivity(intent);
                 }
             });

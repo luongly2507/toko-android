@@ -6,13 +6,14 @@
 
     <data>
         <variable
-            name="AddressViewModel"
-            type="com.app.toko.viewmodels.AddressViewModel"/>
+            name="AddressSelectionViewModel"
+            type="com.app.toko.viewmodels.AddressSelectionViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context=".views.activities.AddressSelectionActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -53,7 +54,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fitsSystemWindows="true"
             app:layout_constraintTop_toBottomOf="@id/toolbarAddress2"
             app:layout_constraintBottom_toTopOf="@id/btnCreateNewAddress">
 
@@ -62,12 +66,13 @@
         <Button
             android:id="@+id/btnCreateNewAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="Thêm địa chỉ mới"
             android:textStyle="normal"
             android:textColor="@color/black"
             android:backgroundTint="@android:color/transparent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_address"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@id/btnSelect"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

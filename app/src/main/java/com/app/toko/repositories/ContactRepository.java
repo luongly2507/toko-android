@@ -11,10 +11,8 @@ import com.app.toko.models.Contact;
 import com.app.toko.services.ContactService;
 import com.app.toko.utils.ApiService;
 
-import org.checkerframework.checker.units.qual.C;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -26,29 +24,33 @@ public class ContactRepository {
     private Application application;
     private Context appContext;
 
-    private MutableLiveData<ArrayList<Contact>> contactMutableLiveData;
+    private MutableLiveData<List<Contact>> mListMutableLiveData;
 
     public ContactRepository(Application application) {
         this.contactService = ApiService.getContactService();
         this.application = application;
         this.appContext = application.getApplicationContext();
-        this.contactMutableLiveData = new MutableLiveData<>();
+        this.mListMutableLiveData = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<List<Contact>> getListMutableLiveData() {
+        return mListMutableLiveData;
     }
 
     public void LoadContact(UUID userId, String token){
-        contactService.getAllContact(userId, token).enqueue(new Callback<ArrayList<Contact>>() {
+        contactService.getAllContact(userId, token).enqueue(new Callback<List<Contact>>() {
             @Override
-            public void onResponse(Call<ArrayList<Contact>> call, Response<ArrayList<Contact>> response) {
+            public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                 Log.d("Contact","Get API Contact Success" );
 
-                ArrayList<Contact> contacts = response.body();
-                contactMutableLiveData.postValue(contacts);
+                List<Contact> contacts = response.body();
+                mListMutableLiveData.postValue(contacts);
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Contact>> call, Throwable t) {
+            public void onFailure(Call<List<Contact>> call, Throwable t) {
                 Log.d("Contact","Get API Contact Failure" );
-                contactMutableLiveData.postValue(null);
+                mListMutableLiveData.postValue(null);
             }
         });
     }
