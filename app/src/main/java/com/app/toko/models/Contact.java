@@ -11,14 +11,16 @@ import lombok.NoArgsConstructor;
 public class Contact {
     private String id;
     private String telephone;
+    private String receiver;
     private String city;
     private String district;
     private String ward;
     private String line;
 
-    public Contact(String id, String telephone, String city, String district, String ward, String line) {
+    public Contact(String id, String telephone, String receiver, String city, String district, String ward, String line) {
         this.id = id;
         this.telephone = telephone;
+        this.receiver = receiver;
         this.city = city;
         this.district = district;
         this.ward = ward;
@@ -39,6 +41,14 @@ public class Contact {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getCity() {
@@ -78,6 +88,7 @@ public class Contact {
         return "Contact{" +
                 "id='" + id + '\'' +
                 ", telephone='" + telephone + '\'' +
+                ", receiver='" + receiver + '\'' +
                 ", city='" + city + '\'' +
                 ", district='" + district + '\'' +
                 ", ward='" + ward + '\'' +
