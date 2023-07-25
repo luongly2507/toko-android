@@ -20,6 +20,7 @@ import com.app.toko.payload.response.BookResponse;
 import com.app.toko.payload.response.CartResponse;
 import com.app.toko.viewmodels.CartViewModel;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -275,5 +276,19 @@ public class CartActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        binding.buttonBuy.setOnClickListener(v -> {
+            if (cartItemAdapter.getCartItemList().size() > 0) {
+                if (cartItemAdapter.getSelectedItems().isEmpty())
+                    Toast.makeText(CartActivity.this, "Vui lòng chọn sách", Toast.LENGTH_SHORT).show();
+                else {
+                    Intent intent = new Intent(CartActivity.this, ConfirmOrderActivity.class);
+                    intent.putExtra("selectedItems", (Serializable) cartItemAdapter.getSelectedItems());
+                    startActivity(intent);
+                }
+            }
+            else {
+                Toast.makeText(CartActivity.this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

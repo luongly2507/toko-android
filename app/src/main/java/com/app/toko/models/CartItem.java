@@ -4,6 +4,7 @@ import com.app.toko.payload.response.AlbumResponse;
 import com.app.toko.payload.response.BookResponse;
 import com.app.toko.payload.response.CartResponse;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItem {
+public class CartItem implements Serializable {
     private String bookId;
     private String title;
     private BigDecimal price;
