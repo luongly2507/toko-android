@@ -40,9 +40,13 @@ public class AddressActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String access_token;
     private String userIDStr;
+
     private String[] cities;
     private String[] districts;
     private String[] wards;
+
+    private Boolean isUpdate = false;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,52 +79,7 @@ public class AddressActivity extends AppCompatActivity {
         mActivityAddressBinding.buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isValid = true;
-                if (!addressViewModel.isValidName()) {
-                    Toast.makeText(AddressActivity.this, "Họ và tên không hợp lệ", Toast.LENGTH_SHORT).show();
-                    isValid = false;
-                }
-                if (!addressViewModel.isValidPhone()) {
-                    Toast.makeText(AddressActivity.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
-                    isValid = false;
-                }
-                if (!addressViewModel.isValidCity()) {
-                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn tỉnh / thành phố ", Toast.LENGTH_SHORT).show();
-                    isValid = false;
-                }
-                if (!addressViewModel.isValidDistrict()) {
-                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn quận / huyện ", Toast.LENGTH_SHORT).show();
-                    isValid = false;
-                }
-                if (!addressViewModel.isValidWards()) {
-                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn phường / xã ", Toast.LENGTH_SHORT).show();
-                    isValid = false;
-                }
-                if (!addressViewModel.isValidAddress()){
-                    Toast.makeText(AddressActivity.this, "Địa chỉ giao hàng không hợp lệ", Toast.LENGTH_SHORT).show();
-                    isValid = false;
-                }
-                if (!addressViewModel.isValidLocation())
-                {
-                    Toast.makeText(AddressActivity.this, "Bạn chưa chọn loại địa chỉ", Toast.LENGTH_SHORT).show();
-                    isValid = false;
-                }
-
-                if (isValid == false) return;
-                else {
-                    addressViewModel.registerAddress();
-                    addressViewModel.getContact().observe(AddressActivity.this, new Observer<Contact>() {
-                        @Override
-                        public void onChanged(Contact contact) {
-                            if (contact == null) {
-                                Log.d("Contact", "NULL");
-                                return;
-                            }
-                            addressViewModel.getContactRepository().RegisterContact(addressViewModel.getContact(),UUID.fromString(userIDStr),"Bearer " + access_token);
-                            finish();
-                        }
-                    });
-                }
+                onClickOk();
             }
         });
 
@@ -242,8 +201,102 @@ public class AddressActivity extends AppCompatActivity {
         });
 
 
+        // Update Address
+        updateAddress();
+
+
+
     }
 
+    private void onClickOk(){
+        boolean isValid = true;
+        if (!addressViewModel.isValidName()) {
+            Toast.makeText(AddressActivity.this, "Họ và tên không hợp lệ", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (!addressViewModel.isValidPhone()) {
+            Toast.makeText(AddressActivity.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (!addressViewModel.isValidCity()) {
+            Toast.makeText(AddressActivity.this, "Bạn chưa chọn tỉnh / thành phố ", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (!addressViewModel.isValidDistrict()) {
+            Toast.makeText(AddressActivity.this, "Bạn chưa chọn quận / huyện ", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (!addressViewModel.isValidWards()) {
+            Toast.makeText(AddressActivity.this, "Bạn chưa chọn phường / xã ", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (!addressViewModel.isValidAddress()){
+            Toast.makeText(AddressActivity.this, "Địa chỉ giao hàng không hợp lệ", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (!addressViewModel.isValidDefault())
+        {
+            Toast.makeText(AddressActivity.this, "Lỗi khi chọn làm mặt định", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        if (isValid == false) return;
+        else {
+            if (isUpdate)
+            {
+                Toast.makeText(AddressActivity.this, "Update Address", Toast.LENGTH_SHORT).show();
+                addressViewModel.registerAddress(id);
+                addressViewModel.getContact().observe(AddressActivity.this, new Observer<Contact>() {
+                    @Override
+                    public void onChanged(Contact contact) {
+                        if (contact == null) {
+                            Log.d("Contact", "NULL");
+                            return;
+                        }
+                        addressViewModel.getContactRepository().UpdateContact(addressViewModel.getContact(),UUID.fromString(userIDStr),"Bearer " + access_token,UUID.fromString(id));
+                    }
+                });
+            }
+            else {
+                Toast.makeText(AddressActivity.this, "Register Address", Toast.LENGTH_SHORT).show();
+                id = UUID.randomUUID().toString();
+                addressViewModel.registerAddress(id);
+                addressViewModel.getContact().observe(AddressActivity.this, new Observer<Contact>() {
+                    @Override
+                    public void onChanged(Contact contact) {
+                        if (contact == null) {
+                            Log.d("Contact", "NULL");
+                            return;
+                        }
+                        addressViewModel.getContactRepository().RegisterContact(addressViewModel.getContact(),UUID.fromString(userIDStr),"Bearer " + access_token);
+
+                    }
+                });
+            }
+            finish();
+        }
+    }
+
+    private void updateAddress(){
+        Bundle bundle = getIntent().getBundleExtra("Data Address");
+        if (bundle == null){
+            return;
+        }
+        else{
+            Contact mContact = (Contact) bundle.get("update Contact");
+            isUpdate = (Boolean) bundle.getBoolean("is Update") ;
+            id = mContact.getId();
+            addressViewModel.ht.postValue(mContact.getReceiver());
+            addressViewModel.sdt.postValue(mContact.getTelephone());
+            addressViewModel.tp.postValue(mContact.getCity());
+            addressViewModel.quan.postValue(mContact.getDistrict());
+            addressViewModel.phuong.postValue(mContact.getWard());
+            addressViewModel.duong.postValue(mContact.getLine());
+            addressViewModel.isDefault.postValue(mContact.getDefault());
+
+
+        }
+    }
 
     private void setupACTcities() {
 

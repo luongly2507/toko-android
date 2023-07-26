@@ -1,5 +1,7 @@
 package com.app.toko.models;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 
-public class Contact {
+public class Contact implements Serializable {
     private String id;
     private String telephone;
     private String receiver;
@@ -16,8 +18,9 @@ public class Contact {
     private String district;
     private String ward;
     private String line;
+    private Boolean isDefault;
 
-    public Contact(String id, String telephone, String receiver, String city, String district, String ward, String line) {
+    public Contact(String id, String telephone, String receiver, String city, String district, String ward, String line, Boolean isDefault) {
         this.id = id;
         this.telephone = telephone;
         this.receiver = receiver;
@@ -25,6 +28,7 @@ public class Contact {
         this.district = district;
         this.ward = ward;
         this.line = line;
+        this.isDefault = isDefault;
     }
 
     public String getId() {
@@ -83,16 +87,11 @@ public class Contact {
         this.line = line;
     }
 
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "id='" + id + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", receiver='" + receiver + '\'' +
-                ", city='" + city + '\'' +
-                ", district='" + district + '\'' +
-                ", ward='" + ward + '\'' +
-                ", line='" + line + '\'' +
-                '}';
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
     }
 }

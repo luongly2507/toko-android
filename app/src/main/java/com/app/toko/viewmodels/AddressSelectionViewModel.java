@@ -32,5 +32,10 @@ public class AddressSelectionViewModel extends AndroidViewModel {
     public ContactRepository getContactRepository() {
         return contactRepository;
     }
+    public void DeleteContact(UUID userId, String token, UUID userIdDelete)
+    {
+        contactRepository.DeleteContact(userId, token, userIdDelete);
+    }
+
 
 }

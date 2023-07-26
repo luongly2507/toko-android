@@ -39,7 +39,7 @@ public class AddressViewModel extends AndroidViewModel {
     public MutableLiveData<String> quan;
     public MutableLiveData<String> phuong;
     public MutableLiveData<String> duong;
-    private MutableLiveData<String> location;
+    public MutableLiveData<Boolean> isDefault;
 
     private MutableLiveData<String[]> cities;
     private MutableLiveData<String[]> districts;
@@ -59,15 +59,14 @@ public class AddressViewModel extends AndroidViewModel {
         quan = new MutableLiveData<>();
         phuong = new MutableLiveData<>();
         duong = new MutableLiveData<>();
-        location = new MutableLiveData<>();
+        isDefault = new MutableLiveData<>(false);
 
         cities = new MutableLiveData<>();
         districts = new MutableLiveData<>();
         wards = new MutableLiveData<>();
     }
 
-    public void registerAddress(){
-        String id = UUID.randomUUID().toString();
+    public void registerAddress(String id){
         Contact mcontact = new Contact(
                 id,
                 sdt.getValue(),
@@ -75,7 +74,8 @@ public class AddressViewModel extends AndroidViewModel {
                 tp.getValue(),
                 quan.getValue(),
                 phuong.getValue(),
-                duong.getValue());
+                duong.getValue(),
+                isDefault.getValue());
         contact.postValue(mcontact);
     }
 
@@ -193,11 +193,6 @@ public class AddressViewModel extends AndroidViewModel {
         }
     }
 
-
-    public void onClickLocation(String location){
-        this.location.postValue(location);
-    }
-
     public boolean isValidName (){
         if (ht == null || ht.getValue() == null) return false;
         String name = ht.getValue().trim();
@@ -251,10 +246,10 @@ public class AddressViewModel extends AndroidViewModel {
     }
 
 
-    public  boolean isValidLocation()
+    public boolean isValidDefault()
     {
-        if (location == null || location.getValue() == null) return false;
-        return !TextUtils.isEmpty(location.getValue().trim());
+        if (isDefault == null || isDefault.getValue() == null) isDefault.postValue(false);
+        return true;
     }
 
 
