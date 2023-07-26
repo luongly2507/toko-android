@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 
 public class Contact {
     private String id;
@@ -16,72 +18,9 @@ public class Contact {
     private String district;
     private String ward;
     private String line;
+    private boolean isDefault;
 
-    public Contact(String id, String telephone, String receiver, String city, String district, String ward, String line) {
-        this.id = id;
-        this.telephone = telephone;
-        this.receiver = receiver;
-        this.city = city;
-        this.district = district;
-        this.ward = ward;
-        this.line = line;
-    }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getWard() {
-        return ward;
-    }
-
-    public void setWard(String ward) {
-        this.ward = ward;
-    }
-
-    public String getLine() {
-        return line;
-    }
-
-    public void setLine(String line) {
-        this.line = line;
-    }
 
     @Override
     public String toString() {

@@ -8,9 +8,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.toko.models.CartItem;
+import com.app.toko.models.Contact;
 import com.app.toko.payload.request.UpdateCartItemRequest;
 import com.app.toko.payload.response.BookResponse;
 import com.app.toko.payload.response.CartResponse;
+import com.app.toko.repositories.ContactRepository;
 import com.app.toko.repositories.UserRepository;
 
 import java.util.ArrayList;
@@ -19,13 +21,18 @@ import java.util.UUID;
 
 public class CartViewModel extends AndroidViewModel {
     private UserRepository userRepository;
+    private ContactRepository contactRepository;
+    public MutableLiveData<List<Contact>> contactListLiveData = new MutableLiveData<>();
     private MutableLiveData<List<CartResponse>> cartResponsesLiveData;
     private MutableLiveData<List<CartItem>> selectedItemsLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> address = new MutableLiveData<>();
 
     public CartViewModel(@NonNull Application application) {
         super(application);
         userRepository = new UserRepository(application);
         cartResponsesLiveData = userRepository.getCartResponsesLiveData();
+        contactRepository = new ContactRepository(getApplication());
+        contactListLiveData = contactRepository.getListMutableLiveData();
     }
 
     public MutableLiveData<List<CartResponse>> getCartResponsesLiveData() {
@@ -55,5 +62,42 @@ public class CartViewModel extends AndroidViewModel {
             }
         }
         return null;
+    }
+
+    public void fetchContacts(UUID userId, String token) {
+        contactRepository.LoadContact(userId, "Bearer " + token);
+    }
+
+    public Contact getDefaultContact(List<Contact> contacts) {
+        for (Contact contact : contacts) {
+            if (contact.isDefault()) {
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    public void setTextAddress(List<Contact> contacts) {
+        if(contacts != null && contacts.size() > 0) {
+            Contact defaultContact = getDefaultContact(contacts);
+            if (defaultContact != null) {
+                address.setValue(defaultContact.getLine()
+                        + ", " + defaultContact.getWard()
+                        + ", " + defaultContact.getDistrict()
+                        + ", " + defaultContact.getCity());
+            }
+            else {
+                address.setValue("Không tìm thấy địa chỉ giao hàng");
+            }
+        }
+        else {
+            address.setValue("Không tìm thấy địa chỉ giao hàng");
+        }
+
+    }
+
+    public MutableLiveData
+            <List<Contact>> getContactListLiveData() {
+        return contactListLiveData;
     }
 }

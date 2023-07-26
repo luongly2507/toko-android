@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.toko.adapters.CartItemAdapter;
 import com.app.toko.databinding.ActivityCartBinding;
 import com.app.toko.models.CartItem;
+import com.app.toko.models.Contact;
 import com.app.toko.payload.request.UpdateCartItemRequest;
 import com.app.toko.payload.response.BookResponse;
 import com.app.toko.payload.response.CartResponse;
@@ -50,6 +52,7 @@ public class CartActivity extends AppCompatActivity {
 
         if (userIdString != null && token != null) {
             cartViewModel.fetchCartItems(UUID.fromString(userIdString), token);
+            cartViewModel.fetchContacts(UUID.fromString(userIdString), token);
         }
         else {
             Toast.makeText(this, "Không nhận được token", Toast.LENGTH_SHORT).show();
@@ -272,7 +275,7 @@ public class CartActivity extends AppCompatActivity {
         });
 
         binding.cardViewUserInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(CartActivity.this, AddressActivity.class);
+            Intent intent = new Intent(CartActivity.this, AddressSelectionActivity.class);
             startActivity(intent);
         });
 
@@ -289,6 +292,11 @@ public class CartActivity extends AppCompatActivity {
             else {
                 Toast.makeText(CartActivity.this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        cartViewModel.getContactListLiveData().observe(this, contacts -> {
+            cartViewModel.contactListLiveData.postValue(contacts);
+            cartViewModel.setTextAddress(contacts);
         });
     }
 }

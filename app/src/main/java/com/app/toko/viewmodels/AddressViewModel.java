@@ -68,6 +68,7 @@ public class AddressViewModel extends AndroidViewModel {
 
     public void registerAddress(){
         String id = UUID.randomUUID().toString();
+        boolean isDefault = true;
         Contact mcontact = new Contact(
                 id,
                 sdt.getValue(),
@@ -75,7 +76,8 @@ public class AddressViewModel extends AndroidViewModel {
                 tp.getValue(),
                 quan.getValue(),
                 phuong.getValue(),
-                duong.getValue());
+                duong.getValue(),
+                isDefault);
         contact.postValue(mcontact);
     }
 
