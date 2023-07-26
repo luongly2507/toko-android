@@ -81,7 +81,8 @@ public class CartViewModel extends AndroidViewModel {
         if(contacts != null && contacts.size() > 0) {
             Contact defaultContact = getDefaultContact(contacts);
             if (defaultContact != null) {
-                address.setValue(defaultContact.getLine()
+                address.setValue(defaultContact.getReceiver() + " | " + defaultContact.getTelephone() + "\n" +
+                        defaultContact.getLine()
                         + ", " + defaultContact.getWard()
                         + ", " + defaultContact.getDistrict()
                         + ", " + defaultContact.getCity());

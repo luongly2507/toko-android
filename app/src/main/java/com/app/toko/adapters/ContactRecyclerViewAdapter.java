@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,11 +74,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
 
 
-        if (contact.getReceiver() == null)
+        if (contact.getReceiver() != null)
         {
-            holder.recyclerViewAddressItemBinding.itemHT.setText("I am testuser");
+            holder.recyclerViewAddressItemBinding.itemHT.setText(contact.getReceiver());
         }
-        else holder.recyclerViewAddressItemBinding.itemHT.setText(contact.getReceiver());
 
         holder.recyclerViewAddressItemBinding.itemSDT.setText(contact.getTelephone());
         holder.recyclerViewAddressItemBinding.itemDC.setText(contact.getLine() + ", " + contact.getWard() + ", " + contact.getDistrict() + ", " + contact.getCity());
@@ -110,7 +110,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         holder.recyclerViewAddressItemBinding.menuMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("MyViewModel", "onClick" + holder.getAdapterPosition());
                 showPopupMenu(v, holder.getAdapterPosition(), contact.getId());
             }
         });
@@ -191,17 +190,21 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         break;
 
                     case R.id.address_delete:
-                        if (position == checkPosition){
-                            checkPosition = 0;
-                            notifyItemChanged(checkPosition);
-                        }
-                        if (position == setDefault) {
-                            setDefault = 0;
-                            notifyItemChanged(checkPosition);
-                        }
                         mAddressSelectionViewModel.DeleteContact(UUID.fromString(userIDStr),"Bearer " + access_token, UUID.fromString(id));
-                        mListContact.remove(position);
-                        notifyItemRemoved(position);
+                        int oldSize = mListContact.size();
+                        mListContact = mAddressSelectionViewModel.mListMutableLiveData.getValue();
+                        if(mListContact.size() != oldSize)
+                        {
+                            if (position == checkPosition){
+                                checkPosition = 0;
+                                notifyItemChanged(checkPosition);
+                            }
+                            if (position == setDefault) {
+                                setDefault = 0;
+                                notifyItemChanged(setDefault);
+                            }
+                        }
+                        notifyDataSetChanged();
                         break;
                 }
                 return false;

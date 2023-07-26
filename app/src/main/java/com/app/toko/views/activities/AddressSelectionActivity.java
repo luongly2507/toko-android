@@ -66,7 +66,7 @@ public class AddressSelectionActivity extends AppCompatActivity {
         }
 
         // RecyclerView
-            loadContact();
+        loadContact();
 
 
         // Button Back
@@ -86,25 +86,6 @@ public class AddressSelectionActivity extends AppCompatActivity {
             }
         });
 
-        // Select Address (Button OK)
-        mActivityAddressSelectionBinding.btnSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Contact contact = contactRecyclerViewAdapter.getSelected();
-                if (contact != null) {
-                    Intent intent = new Intent(AddressSelectionActivity.this, CartActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("Cart Contact", contact);
-                    intent.putExtra("Data Address for Cart", bundle);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(AddressSelectionActivity.this, "Bundle null", Toast.LENGTH_SHORT).show();
-                }
-                finish();
-            }
-
-        });
 
     }
     public void loadContact(){

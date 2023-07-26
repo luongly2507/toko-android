@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -24,6 +25,7 @@ public class AddressSelectionViewModel extends AndroidViewModel {
         contactRepository = new ContactRepository(getApplication());
         mListMutableLiveData = new MutableLiveData<>();
     }
+
 
     public void initData(UUID userId, String token) {
         contactRepository.LoadContact(userId, token);

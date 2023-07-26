@@ -244,7 +244,6 @@ public class AddressActivity extends AppCompatActivity {
         else {
             if (isUpdate)
             {
-                Toast.makeText(AddressActivity.this, "Update Address", Toast.LENGTH_SHORT).show();
                 addressViewModel.registerAddress(id);
                 addressViewModel.getContact().observe(AddressActivity.this, new Observer<Contact>() {
                     @Override
@@ -258,7 +257,6 @@ public class AddressActivity extends AppCompatActivity {
                 });
             }
             else {
-                Toast.makeText(AddressActivity.this, "Register Address", Toast.LENGTH_SHORT).show();
                 id = UUID.randomUUID().toString();
                 addressViewModel.registerAddress(id);
                 addressViewModel.getContact().observe(AddressActivity.this, new Observer<Contact>() {
@@ -273,6 +271,8 @@ public class AddressActivity extends AppCompatActivity {
                     }
                 });
             }
+            Intent intent = new Intent(AddressActivity.this , AddressSelectionActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             finish();
         }
     }
