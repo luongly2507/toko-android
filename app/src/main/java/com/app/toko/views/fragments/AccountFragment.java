@@ -88,6 +88,13 @@ public class AccountFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+            binding.btnAddressesManagement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity() , AddressSelectionActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             return binding.getRoot();
         }

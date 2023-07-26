@@ -41,22 +41,6 @@
                 android:textColor="@color/design_default_color_error"
                 android:text="2000"
                 />
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                app:cardCornerRadius="4dp"
-                android:layout_marginLeft="4dp"
-                app:cardBackgroundColor="@color/design_default_color_error">
-                <TextView
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="2dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/text_view_discount"
-                    android:text="-15%"
-                    />
-            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
     </LinearLayout>

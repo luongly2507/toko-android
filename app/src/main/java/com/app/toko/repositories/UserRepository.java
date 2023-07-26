@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.app.toko.payload.request.CreateOrderRequest;
 import com.app.toko.payload.request.UpdateCartItemRequest;
 import com.app.toko.payload.response.BookResponse;
 import com.app.toko.payload.response.CartResponse;
@@ -263,6 +264,25 @@ public class UserRepository {
             public void onFailure(Call<Void> call, Throwable t) {
                 // Xử lý lỗi kết nối
                 Toast.makeText(application, "Lỗi kết nối khi xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void createOrder(UUID userId , CreateOrderRequest createOrderRequest , String token)
+    {
+        userService.createOrder(userId , createOrderRequest ,"Bearer " +  token).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    isSuccessful.postValue(true);
+                }
+                else isSuccessful.postValue(false);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                isSuccessful.postValue(false);
             }
         });
     }

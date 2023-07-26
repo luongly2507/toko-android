@@ -148,8 +148,6 @@ public class CartActivity extends AppCompatActivity {
                     Intent intent = new Intent(context , BookDetailActivity.class);
                     intent.putExtra("BookDetail" , bookResponse);
                     context.startActivity(intent);
-                } else {
-                    Toast.makeText(context, "Chức năng đang phát triển", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -301,9 +299,17 @@ public class CartActivity extends AppCompatActivity {
                 if (cartItemAdapter.getSelectedItems().isEmpty())
                     Toast.makeText(CartActivity.this, "Vui lòng chọn sách", Toast.LENGTH_SHORT).show();
                 else {
-                    Intent intent = new Intent(CartActivity.this, ConfirmOrderActivity.class);
-                    intent.putExtra("selectedItems", (Serializable) cartItemAdapter.getSelectedItems());
-                    startActivity(intent);
+                    try {
+                        Contact contact = cartViewModel.getDefaultContact(cartViewModel.contactListLiveData.getValue());
+                        Intent intent = new Intent(CartActivity.this, ConfirmOrderActivity.class);
+                        intent.putExtra("selectedItems", (Serializable) cartItemAdapter.getSelectedItems());
+                        intent.putExtra("contact_id" , contact.getId().toString());
+                        startActivity(intent);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println(ex.toString());
+                    }
                 }
             }
             else {

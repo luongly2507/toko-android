@@ -23,6 +23,7 @@ public class ContactRepository {
     private ContactService contactService;
     private Application application;
     private Context appContext;
+    private MutableLiveData<Contact> contactMutableLiveData;
 
     private MutableLiveData<List<Contact>> mListMutableLiveData;
 
@@ -31,6 +32,7 @@ public class ContactRepository {
         this.application = application;
         this.appContext = application.getApplicationContext();
         this.mListMutableLiveData = new MutableLiveData<>();
+        this.contactMutableLiveData = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Contact>> getListMutableLiveData() {
@@ -64,13 +66,13 @@ public class ContactRepository {
 
                 Contact contactResult = response.body();
                 if (contactResult != null){
-                    Log.d("Contact",contactResult.toString());
+                    Toast.makeText(application, "Thêm địa chỉ thành công!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Contact> call, Throwable t) {
-                Log.d("Contact","Post API Contact Failure");
+                Toast.makeText(application, "Lỗi kết nối mạng !", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -84,12 +86,13 @@ public class ContactRepository {
                 Contact contactResult = response.body();
                 if (contactResult != null){
                     Log.d("Contact",contactResult.toString());
+                    Toast.makeText(application, "Cập nhật thành công !", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Contact> call, Throwable t) {
-                Log.d("Contact","Update API Contact Failure");
+                Toast.makeText(application, "Lỗi kết nối mạng !", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -99,16 +102,46 @@ public class ContactRepository {
             @Override
             public void onResponse(Call<Contact> call, Response<Contact> response) {
                 Log.d("Contact","Delete API Contact Success");
+                if(response.isSuccessful())
+                {
+                    Toast.makeText(application, "Xóa thành công !", Toast.LENGTH_SHORT).show();
 
-                Contact contactResult = response.body();
-                if (contactResult != null){
-                    Log.d("Contact",contactResult.toString());
+                }
+                else if (response.code() == 404)
+                {
+                    Toast.makeText(application, "Địa chỉ này hiện đã/đang đặt hàng \n Vui lòng không được xóa !", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<Contact> call, Throwable t) {
                 Log.d("Contact","Delete API Contact Failure");
+
+            }
+        });
+    }
+
+    public MutableLiveData<Contact> getContactMutableLiveData() {
+        return contactMutableLiveData;
+    }
+
+    public void getContactById(UUID userId , UUID contactId , String token)
+    {
+        contactService.getContactById(userId , contactId , token).enqueue(new Callback<Contact>() {
+            @Override
+            public void onResponse(Call<Contact> call, Response<Contact> response) {
+                if(response.isSuccessful())
+                {
+                    contactMutableLiveData.postValue(response.body());
+                }
+                else contactMutableLiveData.postValue(null);
+            }
+
+            @Override
+            public void onFailure(Call<Contact> call, Throwable t) {
+                System.out.println(t.getMessage());
+                contactMutableLiveData.postValue(null);
             }
         });
     }

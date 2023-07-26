@@ -266,18 +266,9 @@
             android:backgroundTint="@color/lightblue"
             android:elevation="10dp"
             android:ellipsize="marquee"
-            android:text="Thêm vào \n giỏ hàng"
+            android:text="Thêm vào giỏ hàng"
             android:textAllCaps="false"
             android:textSize="12sp" />
 
-        <Button
-            android:id="@+id/button_buy_now"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
-            android:ellipsize="marquee"
-            android:text="Mua ngay"
-            android:textAllCaps="false"
-            android:textSize="12sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

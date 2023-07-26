@@ -1,5 +1,6 @@
 package com.app.toko.payload.request;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -13,6 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateOrderDetailRequest {
     private int quantity;
-    private double price;
+    private BigDecimal price;
     private UUID bookId;
 }

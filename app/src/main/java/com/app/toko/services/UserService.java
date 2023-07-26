@@ -1,5 +1,6 @@
 package com.app.toko.services;
 
+import com.app.toko.payload.request.CreateOrderRequest;
 import com.app.toko.payload.request.UpdateCartItemRequest;
 import com.app.toko.payload.response.CartResponse;
 import com.app.toko.models.User;
@@ -46,4 +47,7 @@ public interface UserService {
 
     @DELETE("api/v1/users/{userId}/carts/{bookId}")
     Call<Void> deleteCartItem(@Path("userId") UUID userId , @Path("bookId") UUID bookId , @Header("Authorization") String authHeader);
+
+    @POST("api/v1/users/{userId}/orders/")
+    Call<Void> createOrder(@Path("userId") UUID userId , @Body CreateOrderRequest createOrderRequest , @Header("Authorization") String authHeader);
 }

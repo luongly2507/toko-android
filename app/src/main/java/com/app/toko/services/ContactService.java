@@ -36,4 +36,7 @@ public interface ContactService {
     Call<Contact> deleteContact(@Path("id") UUID id,
                                    @Header("Authorization") String authHeader,
                                    @Path("userID") UUID userID);
+
+    @GET("api/v1/users/{userId}/contacts/{contactId}/")
+    Call<Contact> getContactById(@Path("userId") UUID userId , @Path("contactId") UUID contactId ,@Header("Authorization") String authHeader);
 }

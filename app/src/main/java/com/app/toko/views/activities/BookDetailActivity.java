@@ -140,12 +140,7 @@ public class BookDetailActivity extends AppCompatActivity {
                 }
             }
         });
-        binding.buttonBuyNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        
         bookDetailViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSuccessful) {
