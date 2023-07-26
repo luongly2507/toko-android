@@ -55,6 +55,11 @@
     <string name="change_password">Thay đổi mật khẩu</string>
     <string name="new_password">Mật khẩu mới</string>
     <string name="repeat_password">Nhập lại mật khẩu</string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="buy">Mua hàng</string>
+    <string name="choose_all">Tất cả</string>
+    <string name="total_cost">Tổng giá</string>
+    <string name="delete">Xóa</string>
     <string name="total_order_cost">Tổng tiền</string>
     <string name="order">Đặt hàng</string>
     <string name="order_confirmation">Xác nhận đơn hàng</string>
