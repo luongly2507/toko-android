@@ -10,14 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.app.toko.payload.request.UpdateCartItemRequest;
+import com.app.toko.payload.response.BookResponse;
+import com.app.toko.payload.response.CartResponse;
 import com.app.toko.models.User;
 import com.app.toko.payload.request.AuthenticationRequest;
+import com.app.toko.payload.request.UpdateUserInfoRequest;
 import com.app.toko.payload.response.AuthenticationResponse;
+import com.app.toko.payload.response.CartResponse;
 import com.app.toko.services.AuthenticationService;
 import com.app.toko.services.UserService;
 import com.app.toko.utils.ApiService;
 import com.app.toko.views.activities.SignupSuccessActivity;
 
+import java.util.List;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -28,9 +34,10 @@ public class UserRepository {
     private AuthenticationService authenticationService;
     private UserService userService;
     private MutableLiveData<User> userMutableLiveData ;
-    private MutableLiveData<Boolean> isExistUser;
+    private MutableLiveData<Boolean> isExistUser , isSuccessful;
     private SharedPreferences sharedPreferences;
     private Application application;
+    private MutableLiveData<List<CartResponse>> cartResponsesLiveData;
 
     public UserRepository(Application application){
         this.application = application;
@@ -38,7 +45,9 @@ public class UserRepository {
         this.userService = ApiService.getUserService();
         this.userMutableLiveData = new MutableLiveData<>();
         this.isExistUser = new MutableLiveData<>();
+        this.isSuccessful = new MutableLiveData<>();
         this.sharedPreferences = application.getSharedPreferences("toko-preferences", Context.MODE_PRIVATE);
+        this.cartResponsesLiveData = new MutableLiveData<>();
     }
     public void authenticateUser(AuthenticationRequest authenticationRequest){
         authenticationService.authenticate(authenticationRequest).enqueue(
@@ -53,7 +62,7 @@ public class UserRepository {
                             Toast.makeText(application, "Đăng nhập thành công !", Toast.LENGTH_SHORT).show();
                             getUserDetail(authenticationResponse.getUserId(), "Bearer " + authenticationResponse.getAccessToken());
                         } else {
-                            Toast.makeText(application, "Đăng nhập thất bại !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(application, "Sai tài khoản hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
                             userMutableLiveData.postValue(null);
                         }
                     }
@@ -170,10 +179,94 @@ public class UserRepository {
         });
 
     }
+    public void updateUserInfo(UUID userId , UpdateUserInfoRequest updateUserInfoRequest , String token)
+    {
+        userService.updateUserInfo(userId , updateUserInfoRequest ,  token).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    Toast.makeText(application, "Thông tin đã được thay đổi!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println(t.getMessage());
+                Toast.makeText(application, "Lỗi kết nối !", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public MutableLiveData<Boolean> getIsExistUser() {
         return isExistUser;
     }
+
+    public MutableLiveData<List<CartResponse>> getCartResponsesLiveData() {
+        return cartResponsesLiveData;
+    }
+
+    public void getUserCartItems(UUID userId, String token) {
+        userService.getUserCartItems(userId, "Bearer " + token).enqueue(new Callback<List<CartResponse>>() {
+            @Override
+            public void onResponse(Call<List<CartResponse>> call, Response<List<CartResponse>> response) {
+                if (response.isSuccessful()) {
+                    cartResponsesLiveData.postValue(response.body());
+                } else {
+                    Toast.makeText(application, "Lỗi không xác định, hãy thử lại sau !", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CartResponse>> call, Throwable t) {
+                Toast.makeText(application, "Lỗi kết nối hoặc lỗi mạng !", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public MutableLiveData<Boolean> getIsSuccessful() {
+        return isSuccessful;
+    }
+
+    public void updateCartItem(UUID id , String token , UpdateCartItemRequest updateCartItemRequest)
+    {
+        userService.updateCartItem(id ,"Bearer " + token , updateCartItemRequest).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    isSuccessful.postValue(true);
+                }
+                else isSuccessful.postValue(false);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                isSuccessful.postValue(false);
+                Toast.makeText(application, "Lỗi kết nối hoặc lỗi mạng !", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void deleteCartItem(UUID userId, UUID bookId, String token) {
+        userService.deleteCartItem(userId, bookId, "Bearer " + token).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(application, "Xóa sản phẩm khỏi giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(application, "Lỗi khi xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Xử lý lỗi kết nối
+                Toast.makeText(application, "Lỗi kết nối khi xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
 
 

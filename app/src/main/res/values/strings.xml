@@ -58,4 +58,25 @@
     <string name="order_success">Bạn đã đặt hàng thành công!</string>
     <string name="thanks_for_ordering">Cảm ơn bạn vì đã mua hàng!</string>
     <string name="prepare_money">Chuẩn bị tiền: </string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="buy">Mua hàng</string>
+    <string name="choose_all">Tất cả</string>
+    <string name="total_cost">Tổng giá</string>
+    <string name="delete">Xóa</string>
+    <string name="total_order_cost">Tổng tiền</string>
+    <string name="order">Đặt hàng</string>
+    <string name="order_confirmation">Xác nhận đơn hàng</string>
+    <string name="address">Địa chỉ</string>
+    <string name="choose_shipping_method">Chọn phương thức giao hàng</string>
+    <string name="economical_delivery">Giao hàng tiết kiệm</string>
+    <string name="package_deliver_on">Gói: Giao vào </string>
+    <string name="choose_Payment_Method">Chọn phương thức thanh toán</string>
+    <string name="cash_payment">Thanh toán bằng tiền mặt</string>
+    <string name="product_value">Tạm tính</string>
+    <string name="shipping_fee">Phí vận chuyển</string>
+    <string name="old_password_string">Mật khẩu cũ</string>
+    <string name="my_orders">Đơn hàng của tôi</string>
+    <string name="see_details">Xem chi tiết</string>
+    <string name="repurchase">Mua lại</string>
+    <string name="amount">Số lượng: </string>
 </resources>
