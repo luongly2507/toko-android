@@ -23,7 +23,7 @@ public class ContactRepository {
     private ContactService contactService;
     private Application application;
     private Context appContext;
-
+    private MutableLiveData<Contact> contactMutableLiveData;
 
     private MutableLiveData<List<Contact>> mListMutableLiveData;
 
@@ -32,6 +32,7 @@ public class ContactRepository {
         this.application = application;
         this.appContext = application.getApplicationContext();
         this.mListMutableLiveData = new MutableLiveData<>();
+        this.contactMutableLiveData = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Contact>> getListMutableLiveData() {
@@ -117,6 +118,30 @@ public class ContactRepository {
             public void onFailure(Call<Contact> call, Throwable t) {
                 Log.d("Contact","Delete API Contact Failure");
 
+            }
+        });
+    }
+
+    public MutableLiveData<Contact> getContactMutableLiveData() {
+        return contactMutableLiveData;
+    }
+
+    public void getContactById(UUID userId , UUID contactId , String token)
+    {
+        contactService.getContactById(userId , contactId , token).enqueue(new Callback<Contact>() {
+            @Override
+            public void onResponse(Call<Contact> call, Response<Contact> response) {
+                if(response.isSuccessful())
+                {
+                    contactMutableLiveData.postValue(response.body());
+                }
+                else contactMutableLiveData.postValue(null);
+            }
+
+            @Override
+            public void onFailure(Call<Contact> call, Throwable t) {
+                System.out.println(t.getMessage());
+                contactMutableLiveData.postValue(null);
             }
         });
     }
