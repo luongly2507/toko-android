@@ -23,19 +23,28 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
             <TextView
-                android:id="@+id/orderStateTextView"
+                android:id="@+id/orderIdTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:text="Giao hàng thành công"/>
+                android:text="Mã đơn hàng: "/>
+            <TextView
+                android:id="@+id/orderIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/orderIdTitleTextView"
+                app:layout_constraintStart_toEndOf="@id/orderIdTitleTextView"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:text="ma don hang"/>
             <TextView
                 android:id="@+id/orderDateTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/orderStateTextView"
+                app:layout_constraintTop_toBottomOf="@id/orderIdTitleTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 android:textSize="14sp"
                 android:text="Ngày đặt: "/>
