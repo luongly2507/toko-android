@@ -107,15 +107,18 @@
                         android:textSize="14dp"
                         android:textColor="@color/deepskyblue"
                         android:text="@string/address" />
+
                     <TextView
                         android:id="@+id/addressTextView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="@id/addressTitleTextView"
-                        app:layout_constraintStart_toEndOf="@id/addressTitleTextView"
                         android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Địa chỉ"
                         android:textSize="14dp"
-                        android:text="Địa chỉ" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/addressTitleTextView"
+                        app:layout_constraintTop_toTopOf="@id/addressTitleTextView" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
             <View

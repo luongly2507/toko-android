@@ -37,7 +37,7 @@ public class ConfirmOrderViewModel extends AndroidViewModel {
 
     public void getContactById(UUID userId,UUID contactId , String token)
     {
-        contactRepository.getContactById(userId , contactId , token);
+        contactRepository.getContactById(userId , contactId ,"Bearer " + token);
     }
 
     public LiveData<Contact> getContactLiveData() {
