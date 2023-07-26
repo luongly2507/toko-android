@@ -70,7 +70,7 @@ public class CartViewModel extends AndroidViewModel {
 
     public Contact getDefaultContact(List<Contact> contacts) {
         for (Contact contact : contacts) {
-            if (contact.isDefault()) {
+            if (contact.getDefault()) {
                 return contact;
             }
         }

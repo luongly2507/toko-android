@@ -74,4 +74,42 @@ public class ContactRepository {
             }
         });
     }
+
+    public void UpdateContact(MutableLiveData<Contact> contact, UUID userId, String token, UUID userIdUpadate){
+        contactService.updateContact(contact.getValue(), userId, token, userIdUpadate).enqueue(new Callback<Contact>() {
+            @Override
+            public void onResponse(Call<Contact> call, Response<Contact> response) {
+                Log.d("Contact","Update API Contact Success");
+
+                Contact contactResult = response.body();
+                if (contactResult != null){
+                    Log.d("Contact",contactResult.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Contact> call, Throwable t) {
+                Log.d("Contact","Update API Contact Failure");
+            }
+        });
+    }
+
+    public void DeleteContact(UUID userId, String token, UUID userIdDelete){
+        contactService.deleteContact(userId, token, userIdDelete).enqueue(new Callback<Contact>() {
+            @Override
+            public void onResponse(Call<Contact> call, Response<Contact> response) {
+                Log.d("Contact","Delete API Contact Success");
+
+                Contact contactResult = response.body();
+                if (contactResult != null){
+                    Log.d("Contact",contactResult.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Contact> call, Throwable t) {
+                Log.d("Contact","Delete API Contact Failure");
+            }
+        });
+    }
 }
