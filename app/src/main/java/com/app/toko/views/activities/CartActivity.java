@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -70,32 +71,40 @@ public class CartActivity extends AppCompatActivity {
             cartItemAdapter.checkAllItems(isChecked);
         });
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
+        builder.setTitle("Xác nhận xóa sách");
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+
         // Xóa các sản phẩm được check khỏi giỏ hàng
         binding.textViewDelete.setOnClickListener(view -> {
-            List<CartItem> selectedItems = cartItemAdapter.getSelectedItems();
-            for (CartItem item : selectedItems) {
-                // Xóa phía người dùng
+            builder.setMessage("Bạn có chắc chắn muốn xóa các sản phẩm đã chọn?");
+            builder.setPositiveButton("Xóa", (dialogInterface, i) -> {
+                List<CartItem> selectedItems = cartItemAdapter.getSelectedItems();
+                for (CartItem item : selectedItems) {
+                    // Xóa phía người dùng
 
-                boolean isEmpty = cartItemAdapter.removeCartItem(cartItemAdapter
-                                                                .getCartItemList()
-                                                                .indexOf(item));
-                if (isEmpty) {
-                    binding.recyclerViewCart.setVisibility(View.GONE);
-                    binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
+                    boolean isEmpty = cartItemAdapter.removeCartItem(cartItemAdapter
+                            .getCartItemList()
+                            .indexOf(item));
+                    if (isEmpty) {
+                        binding.recyclerViewCart.setVisibility(View.GONE);
+                        binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
+                    }
+
+                    // Xóa phía database
+                    UUID bookId = UUID.fromString(item.getBookId());
+                    UUID userId = UUID.fromString(userIdString);
+                    cartViewModel.deleteCartItem(userId, bookId, token);
                 }
 
-                // Xóa phía database
-                UUID bookId = UUID.fromString(item.getBookId());
-                UUID userId = UUID.fromString(userIdString);
-                cartViewModel.deleteCartItem(userId, bookId, token);
-            }
+                // Cập nhật lại giá tiền sau khi xóa
+                BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
 
-            // Cập nhật lại giá tiền sau khi xóa
-            BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
-            binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
-
-            // Bỏ check tất cả sau khi xóa
-            binding.checkBoxSelectAll.setChecked(false);
+                // Bỏ check tất cả sau khi xóa
+                binding.checkBoxSelectAll.setChecked(false);
+            });
+            builder.show();
         });
 
         // Khởi tạo RecyclerView và adapter
@@ -108,22 +117,26 @@ public class CartActivity extends AppCompatActivity {
             // Thêm sự kiện xóa các sản phẩm bằng nút icon delete
             @Override
             public void onItemDeleteClick(int position) {
-                CartItem selectedItem = cartItemAdapter.getCartItemList().get(position);
+                builder.setMessage("Bạn có chắc chắn muốn xóa sản phẩm này?");
+                builder.setPositiveButton("Xóa", (dialogInterface, i) -> {
+                    CartItem selectedItem = cartItemAdapter.getCartItemList().get(position);
 
-                // Xóa phía người dùng, cập nhật lại tổng giá
-                boolean isEmpty = cartItemAdapter.removeCartItem(position);
-                if (isEmpty) {
-                    binding.recyclerViewCart.setVisibility(View.GONE);
-                    binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
-                }
+                    // Xóa phía người dùng, cập nhật lại tổng giá
+                    boolean isEmpty = cartItemAdapter.removeCartItem(position);
+                    if (isEmpty) {
+                        binding.recyclerViewCart.setVisibility(View.GONE);
+                        binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
+                    }
 
-                BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
-                binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
+                    BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                    binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
 
-                // Xóa ở database
-                UUID userId = UUID.fromString(userIdString);
-                UUID bookId = UUID.fromString(selectedItem.getBookId());
-                cartViewModel.deleteCartItem(userId, bookId, token);
+                    // Xóa ở database
+                    UUID userId = UUID.fromString(userIdString);
+                    UUID bookId = UUID.fromString(selectedItem.getBookId());
+                    cartViewModel.deleteCartItem(userId, bookId, token);
+                });
+                builder.show();
             }
 
             // Thêm sự kiện chuyển sang màn hình chi tiết sách khi click vào item
@@ -231,19 +244,23 @@ public class CartActivity extends AppCompatActivity {
                 }
                 else {
                     // Xóa phía người dùng, cập nhật lại tổng giá
-                    boolean isEmpty = cartItemAdapter.removeCartItem(position);
-                    if (isEmpty) {
-                        binding.recyclerViewCart.setVisibility(View.GONE);
-                        binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
-                    }
+                    builder.setMessage("Bạn có chắc chắn muốn xóa sách này khỏi giỏ hàng?");
+                    builder.setPositiveButton("Xóa", (dialog, which) -> {
+                        boolean isEmpty = cartItemAdapter.removeCartItem(position);
+                        if (isEmpty) {
+                            binding.recyclerViewCart.setVisibility(View.GONE);
+                            binding.textViewEmptyCartMessage.setVisibility(View.VISIBLE);
+                        }
 
-                    BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
-                    binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
+                        BigDecimal totalPrice = cartItemAdapter.calculateTotalPrice();
+                        binding.textViewTotalPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi" , "VN")).format(totalPrice));
 
-                    // Xóa ở database
-                    UUID userId = UUID.fromString(userIdString);
-                    UUID bookId = UUID.fromString(changedCartItem.getBookId());
-                    cartViewModel.deleteCartItem(userId, bookId, token);
+                        // Xóa ở database
+                        UUID userId = UUID.fromString(userIdString);
+                        UUID bookId = UUID.fromString(changedCartItem.getBookId());
+                        cartViewModel.deleteCartItem(userId, bookId, token);
+                    });
+                    builder.show();
                 }
             }
         });
