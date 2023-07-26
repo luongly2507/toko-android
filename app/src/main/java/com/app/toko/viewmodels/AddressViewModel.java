@@ -248,7 +248,7 @@ public class AddressViewModel extends AndroidViewModel {
 
     public boolean isValidDefault()
     {
-        if (isDefault == null || isDefault.getValue() == null) isDefault.postValue(false);
+        if (isDefault == null || isDefault.getValue() == null) return false;
         return true;
     }
 

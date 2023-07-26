@@ -191,9 +191,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         break;
 
                     case R.id.address_delete:
-                        if (position == checkPosition) checkPosition = 0;
+                        if (position == checkPosition){
+                            checkPosition = 0;
+                            notifyItemChanged(checkPosition);
+                        }
+                        if (position == setDefault) {
+                            setDefault = 0;
+                            notifyItemChanged(checkPosition);
+                        }
                         mAddressSelectionViewModel.DeleteContact(UUID.fromString(userIDStr),"Bearer " + access_token, UUID.fromString(id));
-                        updateContactList();
+                        mListContact.remove(position);
+                        notifyItemRemoved(position);
                         break;
                 }
                 return false;
@@ -234,12 +242,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     public void updateContactList() {
         mAddressSelectionViewModel.initData(UUID.fromString(userIDStr), "Bearer " + access_token);
-//        mAddressSelectionViewModel.getContactRepository().getListMutableLiveData().observe(this, new Observer<List<Contact>>() {
-//            @Override
-//            public void onChanged(List<Contact> contacts) {
-//
-//            }
-//        });
         notifyDataSetChanged();
     }
 

@@ -114,6 +114,7 @@ public class AddressSelectionActivity extends AppCompatActivity {
             public void onChanged(List<Contact> contacts) {
                 addressSelectionViewModel.mListMutableLiveData.postValue(contacts);
                 displayListContacts(contacts);
+
             }
         });
     }
@@ -129,6 +130,7 @@ public class AddressSelectionActivity extends AppCompatActivity {
 
         contactRecyclerViewAdapter = new ContactRecyclerViewAdapter(this, contacts, addressSelectionViewModel,access_token, userIDStr);
         rcvContact.setAdapter(contactRecyclerViewAdapter);
+        contactRecyclerViewAdapter.notifyDataSetChanged();
     }
 
 

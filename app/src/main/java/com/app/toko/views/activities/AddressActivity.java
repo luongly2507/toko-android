@@ -292,7 +292,8 @@ public class AddressActivity extends AppCompatActivity {
             addressViewModel.quan.postValue(mContact.getDistrict());
             addressViewModel.phuong.postValue(mContact.getWard());
             addressViewModel.duong.postValue(mContact.getLine());
-            addressViewModel.isDefault.postValue(mContact.getDefault());
+            if (mContact.getDefault() == null) addressViewModel.isDefault.postValue(false);
+            else addressViewModel.isDefault.postValue(mContact.getDefault());
 
 
         }
