@@ -24,6 +24,10 @@ import com.app.toko.viewmodels.OrderHistoryViewModel;
 import com.app.toko.viewmodels.OrderHitstoryDetailViewModel;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.UUID;
 
 public class OrderHistoryDetailActivity extends AppCompatActivity {
@@ -58,7 +62,11 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         order = (Order) intent.getSerializableExtra("order_data");
 
-        binding.deliverDate.setText(order.getPurchaseDate());
+        LocalDateTime deliverDate = LocalDateTime.parse(order.getPurchaseDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        formatter.withLocale(new Locale("vi", "VN"));
+        String formattedDate = deliverDate.format(formatter);
+        binding.deliverDate.setText(formattedDate);
         BigDecimal totalValue = BigDecimal.valueOf(0);
         for (OrderDetail orderDetail:
              order.getOrderDetails()) {

@@ -19,7 +19,10 @@ import com.app.toko.models.OrderDetail;
 import com.app.toko.views.activities.OrderHistoryActivity;
 import com.app.toko.views.activities.OrderHistoryDetailActivity;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 
 public class OrderHistoryRecyclerViewAdapter extends RecyclerView.Adapter<OrderHistoryRecyclerViewAdapter.OrderHistoryViewHolder> {
@@ -47,7 +50,11 @@ public class OrderHistoryRecyclerViewAdapter extends RecyclerView.Adapter<OrderH
             return;
         }
         holder.orderIdTextView.setText(order.getId().toString());
-        holder.orderDateTextView.setText(order.getPurchaseDate().toString());
+        LocalDateTime deliverDate = LocalDateTime.parse(order.getPurchaseDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        formatter.withLocale(new Locale("vi", "VN"));
+        String formattedDate = deliverDate.format(formatter);
+        holder.orderDateTextView.setText(formattedDate);
         List<OrderDetail> orderDetails= order.getOrderDetails();
         holder.orderHistoryDetailsRecyclerView.setAdapter(
                 new OrderHistoryDetailRecyclerViewAdapter(mContext, orderDetails)
