@@ -26,7 +26,7 @@ public class OrderProductRecyclerViewAdapter extends RecyclerView.Adapter<OrderP
     @NonNull
     @Override
     public OrderProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_history_product_item , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_history_detail_item , parent , false);
         return new OrderProductViewHolder(view);
     }
 

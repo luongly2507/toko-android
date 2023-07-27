@@ -5,6 +5,15 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     private UUID id;
 
@@ -28,7 +37,7 @@ public class Book {
 
     private int quantity;
 
-    private LocalDate publishcationDate;
+    private String publishcationDate;
 
     private String authors;
 

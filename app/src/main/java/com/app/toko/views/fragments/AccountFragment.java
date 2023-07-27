@@ -21,6 +21,7 @@ import com.app.toko.viewmodels.AccountViewModel;
 import com.app.toko.views.activities.AddressActivity;
 import com.app.toko.views.activities.AddressSelectionActivity;
 import com.app.toko.views.activities.LoginActivity;
+import com.app.toko.views.activities.OrderHistoryActivity;
 import com.app.toko.views.activities.UpdateInfoActivity;
 
 import java.util.Objects;
@@ -92,6 +93,13 @@ public class AccountFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity() , AddressSelectionActivity.class);
+                    startActivity(intent);
+                }
+            });
+            binding.textViewHistoryLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity() , OrderHistoryActivity.class);
                     startActivity(intent);
                 }
             });

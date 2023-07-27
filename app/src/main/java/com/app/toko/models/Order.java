@@ -1,6 +1,7 @@
 package com.app.toko.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -15,9 +16,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
-    UUID id;
-    LocalDateTime date;
-    BigDecimal totalPrice;
-    Contact contact;
+    private UUID id;
+    private String purchaseDate;
+    private Double totalPrice;
+    private Contact contact;
     List<OrderDetail> orderDetails;
 }

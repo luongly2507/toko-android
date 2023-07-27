@@ -21,9 +21,9 @@ public class OrderRepository {
     OrderService orderService;
     MutableLiveData<List<Order>> ordersLiveData;
 
-    public OrderRepository(OrderService orderService, MutableLiveData<List<Order>> ordersLiveData) {
+    public OrderRepository() {
         this.orderService = ApiService.getOrderService();
-        this.ordersLiveData = ordersLiveData;
+        this.ordersLiveData = new MutableLiveData<>();
     }
     public void getAllOrders(java.util.UUID userId, String access_token) {
         orderService.getAllOrders(userId, access_token).enqueue(

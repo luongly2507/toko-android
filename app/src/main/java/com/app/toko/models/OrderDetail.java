@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDetail {
-    UUID orderId;
     Book book;
-    int quantity;
+    BigDecimal quantity;
     BigDecimal price;
 }
+
