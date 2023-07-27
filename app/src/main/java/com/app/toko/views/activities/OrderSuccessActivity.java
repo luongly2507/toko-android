@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.widget.TextView;
 
 import com.app.toko.R;
+import com.app.toko.databinding.ActivityOrderSuccessBinding;
 
 public class OrderSuccessActivity extends AppCompatActivity {
 
@@ -18,12 +19,15 @@ public class OrderSuccessActivity extends AppCompatActivity {
 
     private Handler handler;
     private Runnable runnable;
+    private ActivityOrderSuccessBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_success);
-
+        binding = ActivityOrderSuccessBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        String money = getIntent().getStringExtra("   money");
+        binding.moneyPrepareTextView.setText(money);
         countdownTextView = findViewById(R.id.countdownTextView);
 
         handler = new Handler();

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.app.toko.models.CartItem;
 import com.app.toko.models.Contact;
 import com.app.toko.payload.request.CreateOrderRequest;
 import com.app.toko.repositories.ContactRepository;
@@ -38,6 +39,13 @@ public class ConfirmOrderViewModel extends AndroidViewModel {
     public void getContactById(UUID userId,UUID contactId , String token)
     {
         contactRepository.getContactById(userId , contactId ,"Bearer " + token);
+    }
+    public void deleteUserBooks(UUID userId , List<CartItem> cartItemList , String token)
+    {
+        for(CartItem cartItem : cartItemList)
+        {
+            userRepository.deleteCartItem(userId ,UUID.fromString(cartItem.getBookId()), "Bearer " + token );
+        }
     }
 
     public LiveData<Contact> getContactLiveData() {

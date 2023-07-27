@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class CreateOrderRequest {
-    private LocalDateTime purchaseDate;
+    private String purchaseDate;
     private UUID contactId;
     private List<CreateOrderDetailRequest> orderDetails;
 }

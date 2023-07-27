@@ -253,17 +253,13 @@ public class UserRepository {
         userService.deleteCartItem(userId, bookId, "Bearer " + token).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(application, "Xóa sản phẩm khỏi giỏ hàng thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(application, "Lỗi khi xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
-                }
+
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 // Xử lý lỗi kết nối
-                Toast.makeText(application, "Lỗi kết nối khi xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(application, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -273,7 +269,7 @@ public class UserRepository {
         userService.createOrder(userId , createOrderRequest ,"Bearer " +  token).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if(response.isSuccessful())
+                if(response.code() == 200)
                 {
                     isSuccessful.postValue(true);
                 }

@@ -18,6 +18,8 @@
         <activity
             android:name=".views.activities.OrderHistoryDetailActivity"
             android:exported="false" />
+        <activity android:name=".views.activities.OrderSuccessActivity"
+            android:exported="false"/>
         <activity
             android:name=".views.activities.OrderHistoryActivity"
             android:exported="false"></activity>

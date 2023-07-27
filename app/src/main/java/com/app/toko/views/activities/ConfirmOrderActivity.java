@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.app.toko.R;
 import com.app.toko.adapters.OrderProductRecyclerViewAdapter;
@@ -46,17 +47,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         String token = sharedPreferences.getString("access_token", null);
         String contactIdString = getIntent().getStringExtra("contact_id");
         confirmOrderViewModel = new ViewModelProvider(this).get(ConfirmOrderViewModel.class);
-        confirmOrderViewModel.getIsSuccess().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean)
-                {
-                    Intent intent = new Intent(ConfirmOrderActivity.this , OrderSuccessActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
+
         List<CartItem> selectedItemsList = (List<CartItem>) getIntent().getExtras().getSerializable("selectedItems");
         binding.buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +57,19 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         });
         if(selectedItemsList != null)
         {
+            confirmOrderViewModel.getIsSuccess().observe(this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean aBoolean) {
+                    if(aBoolean)
+                    {
+                        confirmOrderViewModel.deleteUserBooks(UUID.fromString(userIdString) , selectedItemsList , token);
+                        Intent intent = new Intent(ConfirmOrderActivity.this , OrderSuccessActivity.class);
+                        intent.putExtra("money" , binding.totalCost.getText().toString());
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime deliverDate = now.plusDays(7);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -110,8 +114,9 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     LocalDateTime localDateTime = LocalDateTime.now();
-                    CreateOrderRequest createOrderRequest = new CreateOrderRequest(localDateTime , UUID.fromString(contactIdString) , detailRequests);
+                    CreateOrderRequest createOrderRequest = new CreateOrderRequest(localDateTime.toString() , UUID.fromString(contactIdString) , detailRequests);
                     confirmOrderViewModel.createOrder(UUID.fromString(userIdString) , createOrderRequest , token);
+
                 }
             });
         }
