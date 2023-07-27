@@ -80,7 +80,11 @@ public class UpdateInfoActivity extends AppCompatActivity {
                                 updateInfoViewModel.lastname.getValue() ,
                                 updateInfoViewModel.email.getValue());
                         updateInfoViewModel.updateUserInfo(UUID.fromString(userIDStr) , updateUserInfoRequest , access_token);
-                        onBackPressed();
+                        Intent intent = new Intent(UpdateInfoActivity.this , MainActivity.class);
+                        intent.putExtra("toFrag" , "account");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
                     }
                 }
             });
