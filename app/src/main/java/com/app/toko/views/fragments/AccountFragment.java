@@ -92,6 +92,7 @@ public class AccountFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity() , AddressSelectionActivity.class);
+                    intent.putExtra("from" , "AccountFragment");
                     startActivity(intent);
                 }
             });

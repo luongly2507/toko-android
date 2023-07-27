@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -110,6 +111,18 @@ public class AddressSelectionActivity extends AppCompatActivity {
         rcvContact.addItemDecoration(itemDecoration);
 
         contactRecyclerViewAdapter = new ContactRecyclerViewAdapter(this, contacts, addressSelectionViewModel,access_token, userIDStr);
+        contactRecyclerViewAdapter.setOnAdapterResultListener(new ContactRecyclerViewAdapter.OnAdapterResultListener() {
+            @Override
+            public void onResult(String addressData) {
+                if ("CartActivity".equals(getIntent().getStringExtra("from"))) {
+                    Intent toNewPassIntent = new Intent(AddressSelectionActivity.this, CartActivity.class);
+                    toNewPassIntent.putExtra("address", addressData);
+                    startActivity(toNewPassIntent);
+                    finish();
+                }
+            }
+        });
+
         rcvContact.setAdapter(contactRecyclerViewAdapter);
         contactRecyclerViewAdapter.notifyDataSetChanged();
     }

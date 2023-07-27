@@ -1,5 +1,6 @@
 package com.app.toko.views.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,9 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +22,6 @@ import com.app.toko.models.CartItem;
 import com.app.toko.models.Contact;
 import com.app.toko.payload.request.UpdateCartItemRequest;
 import com.app.toko.payload.response.BookResponse;
-import com.app.toko.payload.response.CartResponse;
 import com.app.toko.viewmodels.CartViewModel;
 
 import java.io.Serializable;
@@ -35,6 +36,8 @@ import java.util.stream.Collectors;
 public class CartActivity extends AppCompatActivity {
     private ActivityCartBinding binding;
     private CartItemAdapter cartItemAdapter;
+    private ActivityResultLauncher<Intent> getAddressLauncher;
+    private String address = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,9 +292,23 @@ public class CartActivity extends AppCompatActivity {
             cartItemAdapter.checkAllItems(isChecked);
         });
 
+        getAddressLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Xử lý kết quả thành công
+                        Intent data = result.getData();
+                        if (data != null) {
+                            address = data.getStringExtra("address");
+                            cartViewModel.address.setValue(address);
+                        }
+
+                    }
+                });
+
         binding.cardViewUserInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(CartActivity.this, AddressSelectionActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(this, AddressSelectionActivity.class);
+            intent.putExtra("from" , "CartActivity");
+            getAddressLauncher.launch(intent);
         });
 
         binding.buttonBuy.setOnClickListener(v -> {

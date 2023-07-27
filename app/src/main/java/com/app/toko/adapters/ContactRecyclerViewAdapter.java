@@ -42,7 +42,15 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private int checkPosition = -1;
     private int setDefault = -1;
     private boolean start = true;
+    private OnAdapterResultListener onAdapterResultListener;
 
+    public interface OnAdapterResultListener {
+        void onResult(String addressData);
+    }
+
+    public void setOnAdapterResultListener(OnAdapterResultListener listener) {
+        this.onAdapterResultListener = listener;
+    }
 
     public ContactRecyclerViewAdapter(Context context, List<Contact> mListContact, AddressSelectionViewModel addressSelectionViewModel, String access_token, String userIDStr) {
         this.mListContact = mListContact;
@@ -178,6 +186,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         notifyItemChanged(previousDefault);
                         notifyItemChanged(setDefault);
 
+                        if (onAdapterResultListener != null) {
+                            onAdapterResultListener.onResult(updateContact.getLine()
+                                    + ", " + updateContact.getWard()
+                                    + ", " + updateContact.getDistrict()
+                                    + ", " + updateContact.getCity());
+                        }
                         break;
 
                     case R.id.address_update:
