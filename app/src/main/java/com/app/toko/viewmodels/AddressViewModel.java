@@ -195,7 +195,8 @@ public class AddressViewModel extends AndroidViewModel {
 
     public boolean isValidName (){
         if (ht == null || ht.getValue() == null) return false;
-        return true;
+        String name = ht.getValue().trim();
+        return name.matches("^[a-zA-Z\\p{L}\\s]{6,}$");
     }
 
     public boolean isValidPhone()  {
@@ -222,7 +223,26 @@ public class AddressViewModel extends AndroidViewModel {
 
     public boolean isValidAddress() {
         if (duong == null || duong.getValue() == null) return false;
-        return true;
+        String address = duong.getValue().trim();
+        // Biểu thức chính quy để kiểm tra địa chỉ có hợp lệ hay không
+        String regex0 = "^(?:[^,]*,){1,2}[^,]*$";
+        String regex3 = "[^a-zA-Z0-9\\/\\s,À-ỹ]";
+
+        // Kiểm tra nếu địa chỉ khớp với bất kỳ một biểu thức chính quy nào
+        if (!address.matches(regex3)){
+            if (!address.startsWith(",") && !address.endsWith(",")) {
+                if (address.matches(regex0)) {
+
+                    // Kiểm tra kể từ dấu phẩy cuối cùng nếu không có chữ
+                    int lastCommaIndex = address.lastIndexOf(",");
+                    String afterLastComma = address.substring(lastCommaIndex + 1).trim();
+                    if (afterLastComma.isEmpty() || afterLastComma.matches(".*[a-zA-ZÀ-ỹ].*")) {
+                        return true;
+                    }  return false;
+
+                } return false;
+            } return false;
+        } return false;
     }
 
 

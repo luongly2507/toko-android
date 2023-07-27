@@ -37,7 +37,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private String userIDStr;
     private List<Contact> mListContact;
     private Context mContext;
-    private Owner mOwner;
 
     private int checkPosition = -1;
     private int setDefault = -1;
@@ -204,21 +203,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         break;
 
                     case R.id.address_delete:
-                        mAddressSelectionViewModel.DeleteContact(UUID.fromString(userIDStr),"Bearer " + access_token, UUID.fromString(id));
-                        int oldSize = mListContact.size();
-                        mListContact = mAddressSelectionViewModel.mListMutableLiveData.getValue();
-                        if(mListContact.size() != oldSize)
-                        {
-                            if (position == checkPosition){
-                                checkPosition = 0;
-                                notifyItemChanged(checkPosition);
-                            }
-                            if (position == setDefault) {
-                                setDefault = 0;
-                                notifyItemChanged(setDefault);
-                            }
+                        if (position == checkPosition){
+                            checkPosition = 0;
+                            notifyItemChanged(checkPosition);
                         }
-                        notifyDataSetChanged();
+                        if (position == setDefault) {
+                            setDefault = 0;
+                            notifyItemChanged(setDefault);
+                        }
+                        mAddressSelectionViewModel.DeleteContact(UUID.fromString(userIDStr),"Bearer " + access_token, UUID.fromString(id));
+                        mListContact.remove(position);
+                        notifyItemRemoved(position);
                         break;
                 }
                 return false;

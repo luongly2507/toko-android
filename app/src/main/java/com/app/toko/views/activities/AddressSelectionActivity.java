@@ -125,7 +125,7 @@ public class AddressSelectionActivity extends AppCompatActivity {
         });
 
         rcvContact.setAdapter(contactRecyclerViewAdapter);
-        contactRecyclerViewAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -133,6 +133,7 @@ public class AddressSelectionActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
     }
     @Override
     protected void onStart() {

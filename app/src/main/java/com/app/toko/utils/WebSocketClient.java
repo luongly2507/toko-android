@@ -13,7 +13,7 @@ public class WebSocketClient extends WebSocketListener {
     public void connectWebSocket() {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("ws://192.168.1.105:3000/app/application")
+                .url("ws://192.168.1.11:3000/app/application")
                 .build();
         System.out.println(request);
         webSocket = client.newWebSocket(request, this);
