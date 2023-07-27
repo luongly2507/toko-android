@@ -44,7 +44,7 @@ public class ConfirmOrderViewModel extends AndroidViewModel {
     {
         for(CartItem cartItem : cartItemList)
         {
-            userRepository.deleteCartItem(userId ,UUID.fromString(cartItem.getBookId()), "Bearer " + token );
+            userRepository.deleteCartItem(userId ,UUID.fromString(cartItem.getBookId()), token );
         }
     }
 
