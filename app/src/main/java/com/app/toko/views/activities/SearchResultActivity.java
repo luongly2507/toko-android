@@ -78,7 +78,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 public void onChanged(Integer integer) {
                     if(integer - 1 <= pageNumber)
                     {
-                        //binding.buttonMore.setVisibility(GONE);
+                        binding.buttonMore.setVisibility(GONE);
                         binding.textViewNothing.setVisibility(View.VISIBLE);
                     } else binding.buttonMore.setVisibility(View.VISIBLE);
                 }
