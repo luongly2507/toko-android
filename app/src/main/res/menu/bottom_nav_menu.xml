@@ -9,11 +9,6 @@
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard"
         android:title="@string/title_navigation_dashboard" />
-
-    <item
-        android:id="@+id/navigation_notification"
-        android:icon="@drawable/ic_notification"
-        android:title="@string/title_navigation_notification" />
     <item
         android:id="@+id/navigation_account"
         android:icon="@drawable/ic_account"

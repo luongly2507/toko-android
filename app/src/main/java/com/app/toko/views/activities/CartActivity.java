@@ -59,8 +59,9 @@ public class CartActivity extends AppCompatActivity {
             cartViewModel.fetchContacts(UUID.fromString(userIdString), token);
         }
         else {
-            Toast.makeText(this, "Không nhận được token", Toast.LENGTH_SHORT).show();
-            return;
+            Intent intent = new Intent(CartActivity.this , LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         // Thiết lập sự kiện cho nút back

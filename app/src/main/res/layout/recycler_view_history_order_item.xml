@@ -31,30 +31,34 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:text="Mã đơn hàng: "/>
+
             <TextView
                 android:id="@+id/orderIdTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/orderIdTitleTextView"
-                app:layout_constraintStart_toEndOf="@id/orderIdTitleTextView"
+                android:text="ma don hang"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:text="ma don hang"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/orderIdTitleTextView"
+                app:layout_constraintTop_toTopOf="@id/orderIdTitleTextView" />
+
             <TextView
                 android:id="@+id/orderDateTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/orderIdTitleTextView"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="Ngày đặt: "
                 android:textSize="14sp"
-                android:text="Ngày đặt: "/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orderIdTextView" />
+
             <TextView
                 android:id="@+id/orderDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/orderDateTitleTextView"
-                app:layout_constraintStart_toEndOf="@id/orderDateTitleTextView"
-                android:text="12/05/2023"/>
+                android:text="12/05/2023"
+                app:layout_constraintStart_toEndOf="@+id/orderDateTitleTextView"
+                app:layout_constraintTop_toBottomOf="@+id/orderIdTextView" />
             <View
                 style="@style/HorizontalSeparator"
                 android:layout_height="1dp"
