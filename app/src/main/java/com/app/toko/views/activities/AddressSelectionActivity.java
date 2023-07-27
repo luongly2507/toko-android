@@ -117,6 +117,7 @@ public class AddressSelectionActivity extends AppCompatActivity {
                 if ("CartActivity".equals(getIntent().getStringExtra("from"))) {
                     Intent toNewPassIntent = new Intent(AddressSelectionActivity.this, CartActivity.class);
                     toNewPassIntent.putExtra("address", addressData);
+                    toNewPassIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(toNewPassIntent);
                     finish();
                 }
