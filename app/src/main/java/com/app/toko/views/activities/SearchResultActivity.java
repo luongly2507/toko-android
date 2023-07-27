@@ -94,7 +94,9 @@ public class SearchResultActivity extends AppCompatActivity {
                             if(Objects.equals(c.getName(), categoryName))
                             {
                                 categoryNameList.add(categoryName);
-                                categoryNameList.addAll(c.getChildren().stream().map(category -> category.getName()).collect(Collectors.toList()));
+                                if (c.getChildren() != null) {
+                                    categoryNameList.addAll(c.getChildren().stream().map(category -> category.getName()).collect(Collectors.toList()));
+                                }
                                 break;
                             }
                             else
