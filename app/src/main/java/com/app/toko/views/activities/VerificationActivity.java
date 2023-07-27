@@ -76,8 +76,6 @@ public class VerificationActivity extends AppCompatActivity {
         setupETOTP();
         //open keyboard at opt1 as default
         showKeyboard(binding.editTextOTP1);
-        //start resend timer countdown
-        startCountdownTimer();
 
         binding.buttonResend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +94,8 @@ public class VerificationActivity extends AppCompatActivity {
             sendOTP(phoneNumber, false);
             //Change button
             binding.buttonVerify.setText("XÁC THỰC");
+            //start resend timer countdown
+            startCountdownTimer();
             //SetOnclickListener
             binding.buttonVerify.setOnClickListener(new View.OnClickListener() {
                 @Override

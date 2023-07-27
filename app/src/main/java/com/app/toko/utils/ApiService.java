@@ -5,6 +5,8 @@ import com.app.toko.services.AuthenticationService;
 import com.app.toko.services.BookService;
 import com.app.toko.services.CategoryService;
 import com.app.toko.services.ContactService;
+import com.app.toko.services.OrderDetailService;
+import com.app.toko.services.OrderService;
 import com.app.toko.services.UserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiService {
 
-    public static final String SERVICE_BASE_URL = "http://192.168.1.105:3000/";
+    public static final String SERVICE_BASE_URL = "http://192.168.1.4:3000/";
     public static final String SERVICE_BASE_URL2 = "https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/";
 
     public static CategoryService getCategoryService() {
@@ -48,5 +50,13 @@ public class ApiService {
                 .create(AddressService.class);
 
         return addressService;
+    }
+    public static OrderService getOrderService()
+    {
+        return RetrofitClient.getClient(SERVICE_BASE_URL).create(OrderService.class);
+    }
+    public static OrderDetailService getOrderDetailService()
+    {
+        return RetrofitClient.getClient(SERVICE_BASE_URL).create(OrderDetailService.class);
     }
 }

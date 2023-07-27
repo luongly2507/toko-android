@@ -52,6 +52,7 @@ public class BookDetailActivity extends AppCompatActivity {
         });
         strUserId = sharedPreferences.getString("user_id" , null);
         accessToken = sharedPreferences.getString("access_token" , null);
+
         BookResponse selectedBook = (BookResponse) getIntent().getSerializableExtra("BookDetail");
         if(selectedBook != null)
         {

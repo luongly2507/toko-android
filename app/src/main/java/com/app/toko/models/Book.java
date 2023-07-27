@@ -1,11 +1,21 @@
 package com.app.toko.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-public class Book {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Book implements Serializable {
     private UUID id;
 
     private String title;
@@ -28,7 +38,7 @@ public class Book {
 
     private int quantity;
 
-    private LocalDate publishcationDate;
+    private String publishcationDate;
 
     private String authors;
 
