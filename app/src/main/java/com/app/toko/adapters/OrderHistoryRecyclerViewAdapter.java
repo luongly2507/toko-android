@@ -1,6 +1,7 @@
 package com.app.toko.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.toko.R;
 import com.app.toko.models.Order;
 import com.app.toko.models.OrderDetail;
+import com.app.toko.views.activities.OrderHistoryActivity;
+import com.app.toko.views.activities.OrderHistoryDetailActivity;
 
 import java.util.List;
 
@@ -50,6 +53,14 @@ public class OrderHistoryRecyclerViewAdapter extends RecyclerView.Adapter<OrderH
                 new OrderHistoryDetailRecyclerViewAdapter(mContext, orderDetails)
         );
         holder.orderHistoryDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        holder.seeDetailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, OrderHistoryDetailActivity.class);
+                intent.putExtra("order_data", order);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -68,6 +79,7 @@ public class OrderHistoryRecyclerViewAdapter extends RecyclerView.Adapter<OrderH
             orderIdTextView = itemView.findViewById(R.id.orderIdTextView);
             orderDateTextView = itemView.findViewById(R.id.orderDateTextView);
             orderHistoryDetailsRecyclerView = itemView.findViewById(R.id.orderHistoryDetailsRecyclerView);
+            seeDetailsButton = itemView.findViewById(R.id.seeDetailsButton);
         }
     }
 }
